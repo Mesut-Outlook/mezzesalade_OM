@@ -1,0 +1,823 @@
+[
+    {
+        "id": 19,
+        "name": "Babagannus",
+        "price": 19,
+        "category": "Mezeler",
+        "description": "Aubergine, tomato, green and red pepper, onion, parsley",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/09/babagannus-e1632641687202.jpg",
+        "variations": [
+            "Small",
+            "Standard",
+            "Large"
+        ]
+    },
+    {
+        "id": 67,
+        "name": "Mercimekli Köfte",
+        "price": 18,
+        "category": "Mezeler",
+        "description": "",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/14fd640e-cc0a-4ff9-9bd0-4af71ace2566.jpg"
+    },
+    {
+        "id": 69,
+        "name": "Mücver",
+        "price": 20,
+        "category": "Mezeler",
+        "description": "",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2023/10/Mucver.jpeg"
+    },
+    {
+        "id": 70,
+        "name": "Sigara Böreği",
+        "price": 18,
+        "category": "Börek Poğaça",
+        "description": "Thin phyllo dough filled with fresh white cheese",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/09/Sigara-Boregi.png"
+    },
+    {
+        "id": 71,
+        "name": "Zeytinyağlı Yeşil Fasulye",
+        "price": 18,
+        "category": "Zeytinyağlı Yemekler",
+        "description": "Green Bean, tomato, onion, olive oil",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/09/Yesil-Fasulye-Green-Bean-with-olive-oil.jpg"
+    },
+    {
+        "id": 73,
+        "name": "Haydari",
+        "price": 18,
+        "category": "Mezeler",
+        "description": "Yogurt, white cheese, olive oil",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/09/Haydari-scaled.jpeg"
+    },
+    {
+        "id": 74,
+        "name": "Fava",
+        "price": 17,
+        "category": "Mezeler",
+        "description": "Broad Bean, onion, dill",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/11/Screenshot-2021-11-22-at-22.35.06.png"
+    },
+    {
+        "id": 76,
+        "name": "Çerkez Tavuğu",
+        "price": 20,
+        "category": "Mezeler",
+        "description": "Chicken, walnut, bread crumbs, garlic",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2023/01/Cerkez-Tavugu-e1696679782548.jpeg"
+    },
+    {
+        "id": 77,
+        "name": "Patates Salatası",
+        "price": 17,
+        "category": "Salatalar",
+        "description": "Potato, onion, corn, parsley, olive oil",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/09/Patates-Salatasi-Potato-Salad.jpeg"
+    },
+    {
+        "id": 78,
+        "name": "Sebzeli Kereviz",
+        "price": 17,
+        "category": "Zeytinyağlı Yemekler",
+        "description": "",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/09/Kereviz-Celery-with-olive-oil.png"
+    },
+    {
+        "id": 83,
+        "name": "Muhammara",
+        "price": 18,
+        "category": "Mezeler",
+        "description": "",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2023/01/Muhammara-e1696679568682.jpeg"
+    },
+    {
+        "id": 84,
+        "name": "Kuru Dolma",
+        "price": 22,
+        "category": "Dolma Sarma",
+        "description": "Dried peppers or eggplants stuffed with rice and meat/olive oil",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2023/10/Kuru-Patlican-Dolma.jpeg",
+        "variations": [
+            "Etli",
+            "Zeytinyağlı"
+        ],
+        "variationPrices": {
+            "Etli": 22,
+            "Zeytinyağlı": 20
+        }
+    },
+    {
+        "id": 102,
+        "name": "Lahana Sarma",
+        "price": 22,
+        "category": "Dolma Sarma",
+        "description": "Cabbage rolls with rice and meat/olive oil",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/09/Screenshot-2021-09-21-at-23.15.09.png",
+        "variations": [
+            "Etli",
+            "Zeytinyağlı"
+        ],
+        "variationPrices": {
+            "Etli": 22,
+            "Zeytinyağlı": 20
+        }
+    },
+    {
+        "id": 116,
+        "name": "Mercimek Çorbası",
+        "price": 15,
+        "category": "Çorbalar",
+        "description": "Classic Turkish lentil soup",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-07-at-19.38.23.png"
+    },
+    {
+        "id": 117,
+        "name": "Pirinç Pilavı",
+        "price": 15,
+        "category": "Pilavlar",
+        "description": "",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-05-at-22.46.47.png",
+        "variations": [
+            "Small",
+            "Medium",
+            "Large"
+        ]
+    },
+    {
+        "id": 122,
+        "name": "Patlıcan Kebabı",
+        "price": 24,
+        "category": "Köfte Kebap",
+        "description": "Eggplant and meat kebab",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/09/241392260_397599131871540_1521625808484700261_n_17926333900764068-e1632258076278.jpg"
+    },
+    {
+        "id": 139,
+        "name": "Karışık Kızartma",
+        "price": 18,
+        "category": "Mezeler",
+        "description": "Fried vegetables: potato, aubergine, pepper, tomato",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/09/Karisik-Kizartma-scaled.jpeg"
+    },
+    {
+        "id": 143,
+        "name": "Etli Patlıcan Tava",
+        "price": 21,
+        "category": "Etli Yemekler",
+        "description": "Lamb, eggplant, and tomatoes stew",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-05-at-22.52.08-e1633467259418.png"
+    },
+    {
+        "id": 144,
+        "name": "Şehriyeli Tavuk Çorbası",
+        "price": 17,
+        "category": "Çorbalar",
+        "description": "Chicken soup with orzo",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-07-at-19.49.19.png"
+    },
+    {
+        "id": 146,
+        "name": "Meyhane Pilavı",
+        "price": 15,
+        "category": "Pilavlar",
+        "description": "",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-05-at-23.06.35.png"
+    },
+    {
+        "id": 149,
+        "name": "Bakla",
+        "price": 17,
+        "category": "Zeytinyağlı Yemekler",
+        "description": "",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-05-at-22.48.50.png"
+    },
+    {
+        "id": 160,
+        "name": "Kadınbudu Köfte",
+        "price": 20,
+        "category": "Köfte Kebap",
+        "description": "Meatballs with rice",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/09/Kadinbudu-Kofte.png"
+    },
+    {
+        "id": 162,
+        "name": "Kısır",
+        "price": 18,
+        "category": "Mezeler",
+        "description": "Bulgur, tomato, green onion, parsley",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/09/Kisir.jpg",
+        "variations": [
+            "Small",
+            "Medium",
+            "Large"
+        ]
+    },
+    {
+        "id": 163,
+        "name": "Fellah Köfte",
+        "price": 19,
+        "category": "Mezeler",
+        "description": "Bulgur, corn semolina, flour, tomato, garlic sauce",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/09/Sarimsakli-Kofte-scaled.jpeg"
+    },
+    {
+        "id": 210,
+        "name": "Kuşbaşı Etli Bezelye",
+        "price": 20,
+        "category": "Etli Yemekler",
+        "description": "Diced lamb with fresh green peas",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-05-at-22.51.01.png"
+    },
+    {
+        "id": 211,
+        "name": "Makarna Salatası",
+        "price": 17,
+        "category": "Salatalar",
+        "description": "",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-07-at-19.37.04.png"
+    },
+    {
+        "id": 212,
+        "name": "Sebzeli Kuşbaşı Dana Et Sote",
+        "price": 22,
+        "category": "Etli Yemekler",
+        "description": "Diced lamb sautéed with fresh vegetables",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2023/10/Screenshot-2023-10-07-at-14.44.32.png"
+    },
+    {
+        "id": 227,
+        "name": "Kuşbaşı Etli Nohut",
+        "price": 20,
+        "category": "Etli Yemekler",
+        "description": "Diced lamb with chickpeas",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-07-at-19.37.28-e1633850209263.png",
+        "variations": [
+            "Etli",
+            "Zeytinyağlı"
+        ],
+        "variationPrices": {
+            "Etli": 20,
+            "Zeytinyağlı": 18
+        }
+    },
+    {
+        "id": 234,
+        "name": "Ezogelin Çorbası",
+        "price": 15,
+        "category": "Çorbalar",
+        "description": "Lentils, bulgur, and spices",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-07-at-19.24.46.png"
+    },
+    {
+        "id": 235,
+        "name": "Zeytinyağlı Kabak",
+        "price": 17,
+        "category": "Zeytinyağlı Yemekler",
+        "description": "",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-05-at-22.46.26.png"
+    },
+    {
+        "id": 236,
+        "name": "Ispanaklı Börek",
+        "price": 18,
+        "category": "Börek Poğaça",
+        "description": "Spinach börek",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-05-at-22.45.56-e1696766609935.png"
+    },
+    {
+        "id": 268,
+        "name": "Zeytinyağlı Pırasa",
+        "price": 17,
+        "category": "Zeytinyağlı Yemekler",
+        "description": "",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-06-at-00.01.30.png"
+    },
+    {
+        "id": 270,
+        "name": "İmam Bayıldı",
+        "price": 18,
+        "category": "Zeytinyağlı Yemekler",
+        "description": "",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/11/Screenshot-2021-11-26-at-00.20.47.png"
+    },
+    {
+        "id": 271,
+        "name": "İzmir Köfte",
+        "price": 21,
+        "category": "Köfte Kebap",
+        "description": "Meatballs with tomatoes and peppers",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-06-at-00.00.35.png"
+    },
+    {
+        "id": 273,
+        "name": "Tarhana Çorbası",
+        "price": 15,
+        "category": "Çorbalar",
+        "description": "Fermented flour and yogurt soup",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/40FBB12B-B389-47D7-971C-2BDCA001F8FE_1_105_c-e1636270537330.jpeg"
+    },
+    {
+        "id": 274,
+        "name": "Etli Pide (1 Kilo)",
+        "price": 40,
+        "category": "Börek Poğaça",
+        "description": "Meat pide with spiced ground meat",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2023/10/Etli-Pide.jpeg"
+    },
+    {
+        "id": 279,
+        "name": "Humus Sade",
+        "price": 18,
+        "category": "Mezeler",
+        "description": "Chickpea, tahini, spices",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/09/Screenshot-2021-09-21-at-23.04.34.png"
+    },
+    {
+        "id": 283,
+        "name": "Kereviz Kapama",
+        "price": 17,
+        "category": "Zeytinyağlı Yemekler",
+        "description": "",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/A0B4D004-5B53-40F9-A272-5A9588265DA4_1_105_c.jpeg"
+    },
+    {
+        "id": 290,
+        "name": "Zeytinyağlı Ispanak",
+        "price": 17,
+        "category": "Zeytinyağlı Yemekler",
+        "description": "Spinach, onion, olive oil",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/c9378a76-85e7-4130-9138-b8c2c5e10589.jpg"
+    },
+    {
+        "id": 297,
+        "name": "Kuşbaşı Etli Bamya",
+        "price": 20,
+        "category": "Etli Yemekler",
+        "description": "Diced lamb with okra",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2023/10/WhatsApp-Image-2023-10-07-at-14.02.26-e1696680385202.jpeg",
+        "variations": [
+            "Etli",
+            "Zeytinyağlı"
+        ],
+        "variationPrices": {
+            "Etli": 20,
+            "Zeytinyağlı": 18
+        }
+    },
+    {
+        "id": 311,
+        "name": "Fırında Patatesli Tavuk",
+        "price": 22,
+        "category": "Etli Yemekler",
+        "description": "Baked chicken with potatoes",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/4455132A-DB6D-4A8C-B898-01C6CA3C5C06_1_105_c.jpeg"
+    },
+    {
+        "id": 315,
+        "name": "Bulgur Pilavı",
+        "price": 15,
+        "category": "Pilavlar",
+        "description": "",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-07-at-19.34.26.png"
+    },
+    {
+        "id": 318,
+        "name": "Havuç Tarator",
+        "price": 17,
+        "category": "Mezeler",
+        "description": "",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-12-20-at-10.49.40.png"
+    },
+    {
+        "id": 319,
+        "name": "Yoğurtlu Pancar",
+        "price": 15,
+        "category": "Salatalar",
+        "description": "",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-10-at-12.24.36.png"
+    },
+    {
+        "id": 321,
+        "name": "Marul Tarator",
+        "price": 17,
+        "category": "Mezeler",
+        "description": "",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/Marul-Tarator.jpeg"
+    },
+    {
+        "id": 322,
+        "name": "Atom Meze",
+        "price": 17,
+        "category": "Mezeler",
+        "description": "",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-10-at-12.27.35.png"
+    },
+    {
+        "id": 324,
+        "name": "Közlenmiş Biber Salatası",
+        "price": 17,
+        "category": "Salatalar",
+        "description": "",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-18-at-11.13.14-e1634548514595.png"
+    },
+    {
+        "id": 325,
+        "name": "Şakşuka",
+        "price": 18,
+        "category": "Mezeler",
+        "description": "",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2023/01/Saksuka.jpeg"
+    },
+    {
+        "id": 326,
+        "name": "Gavurdağı Salatası",
+        "price": 17,
+        "category": "Salatalar",
+        "description": "",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/966986D5-F259-4584-BCDD-D1D53E156965_1_105_c.jpeg"
+    },
+    {
+        "id": 351,
+        "name": "Fasulye Piyaz",
+        "price": 18,
+        "category": "Mezeler",
+        "description": "",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/09/Fasulye-Bean-Piyaz.png"
+    },
+    {
+        "id": 352,
+        "name": "Yeşil Mercimek Salatası",
+        "price": 17,
+        "category": "Salatalar",
+        "description": "",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/09/Yesil-Mercimek-Salatasi-Green-Lentil-Salad.png"
+    },
+    {
+        "id": 353,
+        "name": "Barbunya Pilaki",
+        "price": 18,
+        "category": "Mezeler",
+        "description": "Borlotti bean, carrot, parsley, olive oil",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/09/Barbunya-Pilaki.png"
+    },
+    {
+        "id": 407,
+        "name": "Yayla Çorbası",
+        "price": 15,
+        "category": "Çorbalar",
+        "description": "Yogurt, mint, and spices soup",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/Yayla-Corbasi.jpeg"
+    },
+    {
+        "id": 420,
+        "name": "Kıymalı Karnabahar",
+        "price": 20,
+        "category": "Etli Yemekler",
+        "description": "Mixed lamb and beef mince with cauliflower",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/11/31EC6EC6-655B-4B53-A313-A29DD9DC4D24_1_105_c-e1635965530987.jpeg"
+    },
+    {
+        "id": 425,
+        "name": "Kuşbaşı Etli Kuru Fasulye",
+        "price": 20,
+        "category": "Etli Yemekler",
+        "description": "Diced lamb with white beans",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/11/IMG_5953-scaled-e1635966627701.jpeg"
+    },
+    {
+        "id": 431,
+        "name": "Kıymalı Börülce",
+        "price": 20,
+        "category": "Etli Yemekler",
+        "description": "Lamb and beef mince with black-eyed peas",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/11/F4C77B13-2516-4E5C-99E1-D76FA676CE4B_1_105_c-e1636270694379.jpeg"
+    },
+    {
+        "id": 432,
+        "name": "Erişteli Yeşil Mercimek",
+        "price": 17,
+        "category": "Zeytinyağlı Yemekler",
+        "description": "",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/11/00C50305-7CD2-4759-9D2E-CEF67DC26191_1_105_c.jpeg"
+    },
+    {
+        "id": 447,
+        "name": "Ispanak Salatası",
+        "price": 17,
+        "category": "Salatalar",
+        "description": "",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/11/Screenshot-2021-11-22-at-22.28.10.png"
+    },
+    {
+        "id": 451,
+        "name": "Enginarli Pilav",
+        "price": 18,
+        "category": "Pilavlar",
+        "description": "",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/11/Screenshot-2021-11-24-at-19.35.39-e1637882485611.png"
+    },
+    {
+        "id": 467,
+        "name": "Peynirli Poğaça (30 adet)",
+        "price": 34,
+        "category": "Börek Poğaça",
+        "description": "Cheese pastry, 30 pieces per kg",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2023/01/Peynirli-Pogaca-1.jpeg"
+    },
+    {
+        "id": 507,
+        "name": "Sakallı Peynirli Poğaça (30 adet)",
+        "price": 34,
+        "category": "Börek Poğaça",
+        "description": "Bearded cheese pastry, 30 pieces per kg",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/09/Sakalli-Pogaca-scaled.jpeg"
+    },
+    {
+        "id": 519,
+        "name": "Börülce Salatası",
+        "price": 17,
+        "category": "Salatalar",
+        "description": "",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/12/7a6228c3-7f46-4fd1-a59a-cca37c821875.jpg"
+    },
+    {
+        "id": 539,
+        "name": "Mercimekli Bulgur Pilavı",
+        "price": 15,
+        "category": "Pilavlar",
+        "description": "",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/12/140036289_849977359114015_3396104366951605284_n.jpg"
+    },
+    {
+        "id": 550,
+        "name": "Kıymalı Musakka",
+        "price": 21,
+        "category": "Etli Yemekler",
+        "description": "Eggplant with mixed lamb and beef mince",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2022/01/Musakka.jpeg"
+    },
+    {
+        "id": 620,
+        "name": "Kıymalı Patates Oturtma",
+        "price": 20,
+        "category": "Etli Yemekler",
+        "description": "Lamb and beef mince with potatoes",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2022/09/7e578fe3-c73b-45c4-81f5-c9468c54d0c8.jpg"
+    },
+    {
+        "id": 626,
+        "name": "Tabule Salatası",
+        "price": 18,
+        "category": "Mezeler",
+        "description": "",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2022/09/94539818-8c5e-4d2d-a2c2-ebf7b132ba96.jpg"
+    },
+    {
+        "id": 627,
+        "name": "Orman Kebabı",
+        "price": 21,
+        "category": "Köfte Kebap",
+        "description": "Vegetables and meat kebab",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2023/01/WhatsApp-Image-2023-10-07-at-13.11.00-e1696682151364.jpeg"
+    },
+    {
+        "id": 631,
+        "name": "Pırasa Graten",
+        "price": 17,
+        "category": "Zeytinyağlı Yemekler",
+        "description": "",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2022/09/c8226e41-90e2-4e17-938b-fecfd4ddf647.jpg"
+    },
+    {
+        "id": 633,
+        "name": "Sebzeli Köfte",
+        "price": 21,
+        "category": "Köfte Kebap",
+        "description": "Meatballs with vegetables",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2023/01/WhatsApp-Image-2023-10-07-at-11.46.02.jpeg"
+    },
+    {
+        "id": 635,
+        "name": "Et Kavurma",
+        "price": 24,
+        "category": "Köfte Kebap",
+        "description": "Sautéed meat at high heat",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2022/09/274f0775-e4e7-479a-a102-c7c1b8d908aa-e1662913162668.jpg"
+    },
+    {
+        "id": 650,
+        "name": "Ekşili Köfte",
+        "price": 20,
+        "category": "Köfte Kebap",
+        "description": "Meatballs with Turkish sour sauce",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2022/12/Eksili-Kofte.jpeg"
+    },
+    {
+        "id": 747,
+        "name": "Domates Çorbası",
+        "price": 15,
+        "category": "Çorbalar",
+        "description": "Fresh tomato soup",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2023/01/Screenshot-2023-01-01-at-17.28.53.png"
+    },
+    {
+        "id": 751,
+        "name": "Tavuk Sote",
+        "price": 22,
+        "category": "Etli Yemekler",
+        "description": "Chicken sautéed with vegetables",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2023/01/GetResizeImage.jpeg"
+    },
+    {
+        "id": 752,
+        "name": "Kremalı Tavuk Çorbası",
+        "price": 15,
+        "category": "Çorbalar",
+        "description": "Creamy chicken soup",
+        "image": ""
+    },
+    {
+        "id": 753,
+        "name": "Milföy Börek",
+        "price": 20,
+        "category": "Börek Poğaça",
+        "description": "Puff pastry börek (20 pieces)",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2022/01/75b57c1e-1f43-406f-a347-47fd73d99261-e1696680271565.jpg",
+        "variations": [
+            "Kıymalı",
+            "Peynirli",
+            "Sosisli"
+        ],
+        "variationPrices": {
+            "Kıymalı": 20,
+            "Peynirli": 18,
+            "Sosisli": 20
+        }
+    },
+    {
+        "id": 754,
+        "name": "Kuskus Pilavı",
+        "price": 15,
+        "category": "Pilavlar",
+        "description": "",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2023/10/Screenshot-2023-10-07-at-14.30.36.png"
+    },
+    {
+        "id": 755,
+        "name": "Karnıyarık",
+        "price": 21,
+        "category": "Etli Yemekler",
+        "description": "Stuffed eggplant with mince",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2023/01/Karniyarikjpeg-e1696678363182.jpeg"
+    },
+    {
+        "id": 756,
+        "name": "Mütebbel",
+        "price": 18,
+        "category": "Mezeler",
+        "description": "",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2023/01/Mutebbel-e1744575907919.jpg"
+    },
+    {
+        "id": 757,
+        "name": "Köpoğlu",
+        "price": 18,
+        "category": "Mezeler",
+        "description": "",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2023/01/Kopoglu.jpeg"
+    },
+    {
+        "id": 758,
+        "name": "Pancar Salatası",
+        "price": 15,
+        "category": "Salatalar",
+        "description": "",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2023/01/Pancar-Salatasi.jpg"
+    },
+    {
+        "id": 759,
+        "name": "Yoğurtlu Kereviz",
+        "price": 15,
+        "category": "Salatalar",
+        "description": "",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2023/01/Screenshot-2023-02-05-at-14.47.28.png"
+    },
+    {
+        "id": 760,
+        "name": "Tavuklu Nohutlu Pilav",
+        "price": 20,
+        "category": "Etli Yemekler",
+        "description": "Chicken and chickpea rice",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2023/01/Screenshot-2023-02-05-at-14.52.46.png"
+    },
+    {
+        "id": 764,
+        "name": "Çanak Köfte",
+        "price": 21,
+        "category": "Köfte Kebap",
+        "description": "Meatballs with special sauce",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2023/01/Canak-Kofte-2.jpeg"
+    },
+    {
+        "id": 767,
+        "name": "Kuru Köfte",
+        "price": 22,
+        "category": "Köfte Kebap",
+        "description": "Traditional meatballs",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2023/01/Screenshot-2023-01-21-at-11.51.28.png"
+    },
+    {
+        "id": 841,
+        "name": "Fırın Biber Dolma",
+        "price": 22,
+        "category": "Dolma Sarma",
+        "description": "Oven baked stuffed peppers",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2023/10/Firin-Biber-Dolma-2.jpeg",
+        "variations": [
+            "Etli",
+            "Zeytinyağlı"
+        ],
+        "variationPrices": {
+            "Etli": 22,
+            "Zeytinyağlı": 20
+        }
+    },
+    {
+        "id": 844,
+        "name": "Soğuk Yoğurt Çorbası",
+        "price": 15,
+        "category": "Çorbalar",
+        "description": "Cold yogurt soup with mint",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2023/01/Soguk-Yogut-Corbasi.jpeg"
+    },
+    {
+        "id": 846,
+        "name": "Köfteli Patlıcan Sarma",
+        "price": 21,
+        "category": "Köfte Kebap",
+        "description": "Eggplant wrap with meatballs",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2023/10/WhatsApp-Image-2023-10-07-at-14.13.04.jpeg"
+    },
+    {
+        "id": 848,
+        "name": "Dana Rosto ve Patates Püre",
+        "price": 24,
+        "category": "Köfte Kebap",
+        "description": "",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2023/10/WhatsApp-Image-2023-10-02-at-18.16.25.jpeg"
+    },
+    {
+        "id": 849,
+        "name": "Sinkonta",
+        "price": 18,
+        "category": "Mezeler",
+        "description": "Squash and vegetables cooked with olive oil",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2023/10/WhatsApp-Image-2023-10-07-at-14.27.49.jpeg",
+        "variations": [
+            "Acılı",
+            "Acısız"
+        ]
+    },
+    {
+        "id": 850,
+        "name": "Karnabahar Salatası",
+        "price": 18,
+        "category": "Salatalar",
+        "description": "",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2023/01/WhatsApp-Image-2023-10-07-at-13.22.40.jpeg"
+    },
+    {
+        "id": 853,
+        "name": "Mantarlı Sebze Yemeği",
+        "price": 17,
+        "category": "Zeytinyağlı Yemekler",
+        "description": "",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2023/01/WhatsApp-Image-2023-10-07-at-13.17.03.jpeg"
+    },
+    {
+        "id": 855,
+        "name": "Kabak Şayan",
+        "price": 18,
+        "category": "Mezeler",
+        "description": "",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2023/10/Screenshot-2023-10-07-at-14.39.29.png"
+    },
+    {
+        "id": 896,
+        "name": "Yoğurtlu Patlıcan",
+        "price": 18,
+        "category": "Mezeler",
+        "description": "",
+        "image": "https://mezzesalade.nl/wp-content/uploads/2025/04/YOGURTLU-PATLICAN.jpeg"
+    },
+    {
+        "id": 1018,
+        "name": "Mangal Köfte",
+        "price": 45,
+        "category": "Köfte Kebap",
+        "description": "",
+        "image": ""
+    }
+]
