@@ -37,8 +37,7 @@ export default function TopNav() {
         <header className="top-nav-header">
             {/* Logo */}
             <Link to="/" className="logo">
-                <span className="logo-icon">🍽️</span>
-                <span className="logo-text">Mezzesalade</span>
+                <img src="/images/logo.png" alt="Mezzesalade" className="logo-image" />
             </Link>
 
             {/* Navigation Items - Icons Only with Tooltips */}

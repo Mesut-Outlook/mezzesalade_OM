@@ -5,36 +5,36 @@
 
 /* CSS Variables */
 :root {
-  /* Colors - Dark Theme */
-  --bg-primary: #0f0f1a;
-  --bg-secondary: #1a1a2e;
-  --bg-tertiary: #16213e;
-  --bg-card: rgba(26, 26, 46, 0.8);
-  --bg-glass: rgba(255, 255, 255, 0.05);
+  /* Colors - Orange Gradient Theme */
+  --bg-primary: #1a0f0a;
+  --bg-secondary: #2d1810;
+  --bg-tertiary: #3d2415;
+  --bg-card: rgba(61, 36, 21, 0.8);
+  --bg-glass: rgba(255, 140, 0, 0.05);
 
   --text-primary: #ffffff;
-  --text-secondary: #b8b8d1;
-  --text-muted: #6c6c8a;
+  --text-secondary: #ffd4a3;
+  --text-muted: #b8956a;
 
-  --accent-primary: #e94560;
-  --accent-secondary: #0f3460;
+  --accent-primary: #ff8c00;
+  --accent-secondary: #d2691e;
   --accent-success: #00d9a5;
   --accent-warning: #ffc107;
-  --accent-info: #17a2b8;
+  --accent-info: #ff6b35;
 
-  --border-color: rgba(255, 255, 255, 0.1);
+  --border-color: rgba(255, 140, 0, 0.2);
   --shadow-color: rgba(0, 0, 0, 0.3);
 
   /* Category Colors */
-  --cat-mezeler: #e94560;
+  --cat-mezeler: #ff8c00;
   --cat-corbalar: #ff6b35;
-  --cat-etli: #8b0000;
-  --cat-zeytinyagli: #228b22;
+  --cat-etli: #d2691e;
+  --cat-zeytinyagli: #cd853f;
   --cat-borek: #daa520;
-  --cat-salatalar: #32cd32;
-  --cat-pilavlar: #f4a460;
-  --cat-kofte: #cd5c5c;
-  --cat-dolma: #9370db;
+  --cat-salatalar: #f4a460;
+  --cat-pilavlar: #ffb347;
+  --cat-kofte: #ff7f50;
+  --cat-dolma: #ff9966;
 
   /* Spacing */
   --spacing-xs: 0.25rem;
@@ -79,7 +79,8 @@ html {
 
 body {
   font-family: var(--font-family);
-  background: var(--bg-primary);
+  background: radial-gradient(ellipse at top, #ff8c00 0%, #ff6b35 25%, #d2691e 50%, #8b4513 75%, var(--bg-primary) 100%);
+  background-attachment: fixed;
   color: var(--text-primary);
   line-height: 1.6;
   min-height: 100vh;
@@ -104,6 +105,7 @@ h6 {
   font-weight: 600;
   line-height: 1.3;
   color: var(--text-primary);
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
 }
 
 h1 {
@@ -124,6 +126,7 @@ h4 {
 
 p {
   color: var(--text-secondary);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 a {
@@ -154,8 +157,8 @@ a {
   top: 0;
   left: 0;
   right: 0;
-  background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
-  border-bottom: 1px solid var(--border-color);
+  background: linear-gradient(135deg, #ff8c00, #ff6b35, #d2691e);
+  border-bottom: 1px solid rgba(255, 140, 0, 0.3);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -164,6 +167,7 @@ a {
   z-index: 1000;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(255, 140, 0, 0.3);
 }
 
 .top-nav-items {
@@ -323,13 +327,14 @@ a {
 
 /* Top Header with Logo */
 .top-header {
-  background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
-  border-bottom: 1px solid var(--border-color);
+  background: linear-gradient(135deg, #ff8c00, #ff6b35, #d2691e);
+  border-bottom: 1px solid rgba(255, 140, 0, 0.3);
   position: sticky;
   top: 0;
   z-index: 100;
   padding: var(--spacing-sm) var(--spacing-md);
   padding-top: calc(var(--spacing-sm) + var(--safe-area-top));
+  box-shadow: 0 4px 20px rgba(255, 140, 0, 0.3);
 }
 
 .top-header-content {
@@ -364,6 +369,18 @@ a {
   gap: var(--spacing-sm);
   text-decoration: none;
   color: var(--text-primary);
+  transition: var(--transition-fast);
+}
+
+.logo:hover {
+  transform: scale(1.05);
+}
+
+.logo-image {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 8px rgba(255, 140, 0, 0.3));
 }
 
 .logo-icon {
@@ -373,7 +390,7 @@ a {
 .logo-text {
   font-size: 1.25rem;
   font-weight: 700;
-  background: linear-gradient(135deg, var(--accent-primary), #ff6b6b);
+  background: linear-gradient(135deg, #ffb347, #ff8c00);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -420,6 +437,7 @@ a {
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   transition: var(--transition-normal);
+  box-shadow: 0 4px 15px rgba(255, 140, 0, 0.1);
 }
 
 .card:active {
@@ -455,9 +473,9 @@ a {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--accent-primary), #ff6b6b);
+  background: linear-gradient(135deg, #ff8c00, #ff6b35);
   color: white;
-  box-shadow: 0 4px 15px rgba(233, 69, 96, 0.3);
+  box-shadow: 0 4px 15px rgba(255, 140, 0, 0.4);
 }
 
 .btn-secondary {
@@ -1107,18 +1125,22 @@ a {
 
 .font-bold {
   font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .text-lg {
   font-size: 1.125rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .text-xl {
   font-size: 1.25rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .text-2xl {
   font-size: 1.5rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 /* Print Styles */
@@ -1175,6 +1197,7 @@ a {
     margin: 0 auto;
   }
 }
+
 /* ==================== DASHBOARD ==================== */
 
 .dashboard-container {
@@ -1186,8 +1209,15 @@ a {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .welcome-section {
@@ -1213,7 +1243,14 @@ a {
   align-items: center;
   justify-content: center;
   border: 1px solid var(--border-color);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.dashboard-logo {
+  height: 60px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 12px rgba(255, 140, 0, 0.4));
 }
 
 .summary-card {
@@ -1223,7 +1260,7 @@ a {
   color: white;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
   margin-bottom: var(--spacing-xl);
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
@@ -1296,7 +1333,7 @@ a {
   align-items: center;
   justify-content: center;
   color: white;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
   margin-bottom: 4px;
 }
 
@@ -1341,5 +1378,5 @@ a {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
 }

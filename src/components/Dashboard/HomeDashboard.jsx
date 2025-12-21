@@ -105,14 +105,21 @@ export default function HomeDashboard({ orders = [], customers = [], products = 
             {/* Header / Welcome */}
             <div className="welcome-section">
                 <div className="user-info">
-                    <div className="user-avatar">
-                        <User size={24} className="text-muted" />
-                    </div>
+                    <img src="/images/logo.png" alt="Mezzesalade" className="dashboard-logo" />
                     <div>
-                        <p className="text-xs text-muted" style={{ fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                        <p className="text-xs" style={{
+                            fontWeight: 600,
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.05em',
+                            color: '#ffffff',
+                            textShadow: '0 2px 8px rgba(0, 0, 0, 0.5)'
+                        }}>
                             Hoş Geldiniz
                         </p>
-                        <h2 className="text-lg font-bold">Mezzesalade Yönetim</h2>
+                        <h2 className="text-lg font-bold" style={{
+                            color: '#ffffff',
+                            textShadow: '0 2px 8px rgba(0, 0, 0, 0.5)'
+                        }}>Mezzesalade Yönetim</h2>
                     </div>
                 </div>
                 <div style={{ position: 'relative' }}>
