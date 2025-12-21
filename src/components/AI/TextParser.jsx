@@ -20,6 +20,12 @@ export default function TextParser({ customers, products = [], addCustomer, addO
     const handleParse = () => {
         if (!inputText.trim()) return;
 
+        // Check if products are loaded
+        if (!products || products.length === 0) {
+            alert('Ürünler henüz yüklenmedi. Lütfen birkaç saniye bekleyin ve tekrar deneyin.');
+            return;
+        }
+
         const result = parseOrderText(inputText, products, customers);
         setParsedResults(result.products);
         setExtractedInfo(result.metadata);

@@ -142,7 +142,35 @@ export async function addOrder(order) {
 
     // Then, insert order items
     if (order.items && order.items.length > 0) {
-        const orderItems = order.items.map(item => ({
+        // Filter out items with invalid product IDs (must be valid UUID or integer from Supabase)
+        const validItems = order.items.filter(item => {
+            // Check if productId exists and is valid
+            if (!item.productId) {
+                console.warn('⚠️ Skipping item without productId:', item.name);
+                return false;
+            }
+
+            // Check if it's a valid UUID format (for Supabase products)
+            const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(item.productId);
+
+            // Check if it's a valid integer (for legacy products)
+            const isInteger = Number.isInteger(item.productId) || /^\d+$/.test(String(item.productId));
+
+            if (!isUUID && !isInteger) {
+                console.warn('⚠️ Skipping item with invalid productId:', item.name, item.productId);
+                return false;
+            }
+
+            return true;
+        });
+
+        if (validItems.length === 0) {
+            console.warn('⚠️ No valid items to insert');
+            alert('Hiçbir geçerli ürün bulunamadı. Lütfen ürünlerin veritabanında tanımlı olduğundan emin olun.');
+            return null;
+        }
+
+        const orderItems = validItems.map(item => ({
             order_id: orderData.id,
             product_id: item.productId,
             name: item.name,
@@ -153,6 +181,9 @@ export async function addOrder(order) {
         }));
 
         console.log('📦 Adding order items:', orderItems);
+        if (validItems.length < order.items.length) {
+            console.warn(`⚠️ ${order.items.length - validItems.length} item(s) were skipped due to invalid product IDs`);
+        }
 
         const { error: itemsError } = await supabase
             .from('order_items')
@@ -164,6 +195,9 @@ export async function addOrder(order) {
             // Don't return null here, order is already created
         } else {
             console.log('✅ Order items added successfully');
+            if (validItems.length < order.items.length) {
+                alert(`Sipariş oluşturuldu! Not: ${order.items.length - validItems.length} ürün veritabanında bulunamadığı için eklenmedi.`);
+            }
         }
     }
 

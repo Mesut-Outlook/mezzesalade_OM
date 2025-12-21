@@ -206,8 +206,23 @@ function isLikelyName(text, productMatch) {
 
 // Main function to parse WhatsApp message text
 export function parseOrderText(text, productList = [], existingCustomers = []) {
-    const productsToUse = productList.length > 0 ? productList : localProducts;
-    const searchable = getSearchableProducts(productsToUse);
+    // Only use products from the provided list (Supabase products)
+    // Don't fall back to local products to avoid ID mismatches
+    if (!productList || productList.length === 0) {
+        console.warn('⚠️ No products provided to parseOrderText. Cannot match products.');
+        return {
+            products: [],
+            metadata: {
+                date: null,
+                phone: null,
+                name: null,
+                address: null,
+                matchedCustomer: null
+            }
+        };
+    }
+
+    const searchable = getSearchableProducts(productList);
     const fuse = createFuse(searchable);
 
     const lines = text.split(/[\n]+/).filter(line => line.trim());
@@ -307,8 +322,8 @@ export function parseOrderText(text, productList = [], existingCustomers = []) {
 
 export function searchProducts(query, productList = []) {
     if (!query || query.length < 2) return [];
-    const productsToUse = productList.length > 0 ? productList : localProducts;
-    const searchable = getSearchableProducts(productsToUse);
+    if (!productList || productList.length === 0) return [];
+    const searchable = getSearchableProducts(productList);
     const fuse = createFuse(searchable);
 
     const normalizedQuery = normalizeTurkish(query);
@@ -321,13 +336,13 @@ export function searchProducts(query, productList = []) {
 }
 
 export function getAllProducts(productList = []) {
-    return productList.length > 0 ? productList : localProducts;
+    return productList || [];
 }
 
 export function getProductsByCategory(productList = []) {
-    const productsToUse = productList.length > 0 ? productList : localProducts;
+    if (!productList || productList.length === 0) return {};
     const categories = {};
-    for (const product of productsToUse) {
+    for (const product of productList) {
         if (!categories[product.category]) {
             categories[product.category] = [];
         }
@@ -337,6 +352,6 @@ export function getProductsByCategory(productList = []) {
 }
 
 export function getProductById(id, productList = []) {
-    const productsToUse = productList.length > 0 ? productList : localProducts;
-    return productsToUse.find(p => p.id === id || p.id === parseInt(id));
+    if (!productList || productList.length === 0) return null;
+    return productList.find(p => p.id === id || p.id === parseInt(id));
 }
