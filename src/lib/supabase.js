@@ -108,23 +108,33 @@ export async function fetchOrders() {
 export async function addOrder(order) {
     console.log('📝 Creating order:', order);
 
+    const dataToInsert = {
+        customer_id: order.customerId,
+        date: order.date,
+        status: order.status || 'new',
+        notes: order.notes || null,
+        shipping: parseFloat(order.shipping) || 0,
+        total: parseFloat(order.total) || 0
+    };
+
+    console.log('📤 Data being sent to Supabase:', dataToInsert);
+
     // First, insert the order
     const { data: orderData, error: orderError } = await supabase
         .from('orders')
-        .insert([{
-            customer_id: order.customerId,
-            date: order.date,
-            status: order.status || 'new',
-            notes: order.notes || null,
-            shipping: parseFloat(order.shipping) || 0,
-            total: parseFloat(order.total) || 0
-        }])
+        .insert([dataToInsert])
         .select()
         .single();
 
     if (orderError) {
         console.error('❌ Error adding order:', orderError);
-        alert(`Sipariş kaydedilemedi: ${orderError.message}`);
+        console.error('Error details:', {
+            message: orderError.message,
+            details: orderError.details,
+            hint: orderError.hint,
+            code: orderError.code
+        });
+        alert(`Sipariş kaydedilemedi: ${orderError.message}\n${orderError.hint || ''}`);
         return null;
     }
 
