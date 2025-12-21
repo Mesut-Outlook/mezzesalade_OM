@@ -320,6 +320,27 @@ export async function migrateProducts(products) {
     return data;
 }
 
+export async function uploadProductImage(file) {
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${Math.random().toString(36).substring(2)}_${Date.now()}.${fileExt}`;
+    const filePath = `${fileName}`;
+
+    const { error: uploadError } = await supabase.storage
+        .from('product-images')
+        .upload(filePath, file);
+
+    if (uploadError) {
+        console.error('Error uploading image:', uploadError);
+        return null;
+    }
+
+    const { data } = supabase.storage
+        .from('product-images')
+        .getPublicUrl(filePath);
+
+    return data.publicUrl;
+}
+
 export function subscribeToProducts(callback) {
     const subscription = supabase
         .channel('products-channel')

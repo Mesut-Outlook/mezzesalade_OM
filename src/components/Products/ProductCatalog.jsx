@@ -2,6 +2,7 @@ import { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { migrateProducts } from '../../lib/supabase';
 import localProducts from '../../data/products.json';
+import ProductFormModal from './ProductFormModal';
 
 export default function ProductCatalog({ products: allProducts = [], addProduct, updateProduct, deactivateProduct }) {
     const navigate = useNavigate();

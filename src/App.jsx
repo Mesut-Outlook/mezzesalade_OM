@@ -21,6 +21,7 @@ import TopNav from './components/Layout/TopNav';
 import CalendarDashboard from './components/Dashboard/CalendarDashboard';
 import OrderForm from './components/Orders/OrderForm';
 import OrderList from './components/Orders/OrderList';
+import AllOrders from './components/Orders/AllOrders';
 import OrderDetail from './components/Orders/OrderDetail';
 import DailySummary from './components/Orders/DailySummary';
 import CustomerList from './components/Customers/CustomerList';
@@ -257,6 +258,16 @@ function AppContent() {
                         path="/orders"
                         element={
                             <OrderList
+                                orders={orders}
+                                customers={customers}
+                                getCustomer={getCustomer}
+                            />
+                        }
+                    />
+                    <Route
+                        path="/all-orders"
+                        element={
+                            <AllOrders
                                 orders={orders}
                                 customers={customers}
                                 getCustomer={getCustomer}

@@ -61,6 +61,13 @@ export default function HomeDashboard({ orders = [], customers = [], products = 
             path: '/new-order'
         },
         {
+            id: 'allOrders',
+            title: 'Tüm Siparişler',
+            icon: <ShoppingBag size={32} />,
+            color: '#8b5cf6', // Purple
+            path: '/all-orders'
+        },
+        {
             id: 'calendar',
             title: 'Takvim',
             icon: <Calendar size={32} />,
