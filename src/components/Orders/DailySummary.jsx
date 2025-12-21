@@ -182,69 +182,69 @@ export default function DailySummary({ orders, products = [] }) {
                     <p>Bu tarihte sipariş yok</p>
                 </div>
             ) : (
-                Object.entries(byCategory).map(([category, items]) => (
-                    <div key={category} className="card mb-md">
-                        <h3 style={{
-                            color: categoryColors[category] || 'var(--text-primary)',
-                            marginBottom: 'var(--spacing-md)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: 8
+                <>
+                    {Object.entries(byCategory).map(([category, items]) => (
+                        <div key={category} className="card mb-md">
+                            <h3 style={{
+                                color: categoryColors[category] || 'var(--text-primary)',
+                                marginBottom: 'var(--spacing-md)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 8
+                            }}>
+                                <span style={{
+                                    width: 12,
+                                    height: 12,
+                                    borderRadius: '50%',
+                                    background: categoryColors[category] || 'var(--text-muted)'
+                                }} />
+                                {category}
+                            </h3>
+
+                            {items.map(item => (
+                                <div
+                                    key={item.key}
+                                    className={`summary-item ${checkedItems[item.key] ? 'checked' : ''}`}
+                                    onClick={() => toggleCheck(item.key)}
+                                    style={{ cursor: 'pointer' }}
+                                >
+                                    <input
+                                        type="checkbox"
+                                        className="checkbox"
+                                        checked={checkedItems[item.key] || false}
+                                        onChange={() => toggleCheck(item.key)}
+                                        onClick={e => e.stopPropagation()}
+                                    />
+                                    <div style={{ flex: 1 }}>
+                                        <span className="font-bold">{item.name}</span>
+                                        {item.variation && (
+                                            <span className="text-muted"> ({item.variation})</span>
+                                        )}
+                                    </div>
+                                    <div className="font-bold text-lg" style={{
+                                        background: 'var(--bg-secondary)',
+                                        padding: '4px 12px',
+                                        borderRadius: 'var(--radius-sm)'
+                                    }}>
+                                        {item.quantity}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    ))}
+
+                    {/* Total */}
+                    {totalItems > 0 && (
+                        <div className="card mb-md" style={{
+                            background: 'var(--bg-secondary)'
                         }}>
-                            <span style={{
-                                width: 12,
-                                height: 12,
-                                borderRadius: '50%',
-                                background: categoryColors[category] || 'var(--text-muted)'
-                            }} />
-                            {category}
-                        </h3>
-
-                        {items.map(item => (
-                            <div
-                                key={item.key}
-                                className={`summary-item ${checkedItems[item.key] ? 'checked' : ''}`}
-                                onClick={() => toggleCheck(item.key)}
-                                style={{ cursor: 'pointer' }}
-                            >
-                                <input
-                                    type="checkbox"
-                                    className="checkbox"
-                                    checked={checkedItems[item.key] || false}
-                                    onChange={() => toggleCheck(item.key)}
-                                    onClick={e => e.stopPropagation()}
-                                />
-                                <div style={{ flex: 1 }}>
-                                    <span className="font-bold">{item.name}</span>
-                                    {item.variation && (
-                                        <span className="text-muted"> ({item.variation})</span>
-                                    )}
-                                </div>
-                                <div className="font-bold text-lg" style={{
-                                    background: 'var(--bg-secondary)',
-                                    padding: '4px 12px',
-                                    borderRadius: 'var(--radius-sm)'
-                                }}>
-                                    {item.quantity}
-                                </div>
+                            <div className="flex justify-between items-center">
+                                <span className="text-lg font-bold">Toplam Ürün</span>
+                                <span className="text-2xl font-bold">{totalItems} adet</span>
                             </div>
-                        ))}
-                    </div>
-                ))
-            )}
-
-            {/* Total */}
-            {totalItems > 0 && (
-                <div className="card" style={{
-                    position: 'sticky',
-                    bottom: 100,
-                    background: 'var(--bg-secondary)'
-                }}>
-                    <div className="flex justify-between items-center">
-                        <span className="text-lg font-bold">Toplam Ürün</span>
-                        <span className="text-2xl font-bold">{totalItems} adet</span>
-                    </div>
-                </div>
+                        </div>
+                    )}
+                </>
             )}
         </div>
     );
