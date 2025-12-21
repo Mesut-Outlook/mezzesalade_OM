@@ -106,6 +106,8 @@ export async function fetchOrders() {
 }
 
 export async function addOrder(order) {
+    console.log('📝 Creating order:', order);
+
     // First, insert the order
     const { data: orderData, error: orderError } = await supabase
         .from('orders')
@@ -114,16 +116,19 @@ export async function addOrder(order) {
             date: order.date,
             status: order.status || 'new',
             notes: order.notes || null,
-            shipping: order.shipping || 0,
-            total: order.total || 0
+            shipping: parseFloat(order.shipping) || 0,
+            total: parseFloat(order.total) || 0
         }])
         .select()
         .single();
 
     if (orderError) {
-        console.error('Error adding order:', orderError);
+        console.error('❌ Error adding order:', orderError);
+        alert(`Sipariş kaydedilemedi: ${orderError.message}`);
         return null;
     }
+
+    console.log('✅ Order created:', orderData);
 
     // Then, insert order items
     if (order.items && order.items.length > 0) {
@@ -131,18 +136,24 @@ export async function addOrder(order) {
             order_id: orderData.id,
             product_id: item.productId,
             name: item.name,
-            price: item.price,
-            quantity: item.quantity,
+            price: parseFloat(item.price),
+            quantity: parseInt(item.quantity),
             variation: item.variation || null,
             category: item.category || null
         }));
+
+        console.log('📦 Adding order items:', orderItems);
 
         const { error: itemsError } = await supabase
             .from('order_items')
             .insert(orderItems);
 
         if (itemsError) {
-            console.error('Error adding order items:', itemsError);
+            console.error('❌ Error adding order items:', itemsError);
+            alert(`Ürünler kaydedilemedi: ${itemsError.message}`);
+            // Don't return null here, order is already created
+        } else {
+            console.log('✅ Order items added successfully');
         }
     }
 
