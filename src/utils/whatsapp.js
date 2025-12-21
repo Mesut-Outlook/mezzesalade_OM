@@ -32,7 +32,14 @@ export function generateWhatsAppMessage(order, customer, items) {
     }
 
     message += `\n────────────────────\n`;
-    message += `💰 *TOPLAM: ${formatCurrency(total)}*\n`;
+
+    if (order.shipping && order.shipping > 0) {
+        message += `💵 Ara Toplam: ${formatCurrency(total)}\n`;
+        message += `🚚 Kargo: ${formatCurrency(order.shipping)}\n`;
+        message += `\n*TOPLAM: ${formatCurrency(total + order.shipping)}*\n`;
+    } else {
+        message += `💰 *TOPLAM: ${formatCurrency(total)}*\n`;
+    }
 
     if (order.notes) {
         message += `\n📝 Not: ${order.notes}\n`;

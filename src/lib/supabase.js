@@ -91,6 +91,7 @@ export async function fetchOrders() {
         date: order.date,
         status: order.status,
         notes: order.notes,
+        shipping: parseFloat(order.shipping) || 0,
         total: parseFloat(order.total) || 0,
         createdAt: order.created_at,
         items: (order.order_items || []).map(item => ({
@@ -113,6 +114,7 @@ export async function addOrder(order) {
             date: order.date,
             status: order.status || 'new',
             notes: order.notes || null,
+            shipping: order.shipping || 0,
             total: order.total || 0
         }])
         .select()
@@ -156,7 +158,9 @@ export async function updateOrder(id, updates) {
     if (updates.status !== undefined) updateData.status = updates.status;
     if (updates.notes !== undefined) updateData.notes = updates.notes;
     if (updates.date !== undefined) updateData.date = updates.date;
+    if (updates.shipping !== undefined) updateData.shipping = updates.shipping;
     if (updates.total !== undefined) updateData.total = updates.total;
+    if (updates.customerId !== undefined) updateData.customer_id = updates.customerId;
 
     const { data, error } = await supabase
         .from('orders')
@@ -169,6 +173,35 @@ export async function updateOrder(id, updates) {
         console.error('Error updating order:', error);
         return null;
     }
+
+    // If items are provided, replace them
+    if (updates.items) {
+        // Delete existing items
+        await supabase
+            .from('order_items')
+            .delete()
+            .eq('order_id', id);
+
+        // Insert new items
+        const orderItems = updates.items.map(item => ({
+            order_id: id,
+            product_id: item.productId,
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity,
+            variation: item.variation || null,
+            category: item.category || null
+        }));
+
+        const { error: itemsError } = await supabase
+            .from('order_items')
+            .insert(orderItems);
+
+        if (itemsError) {
+            console.error('Error updating order items:', itemsError);
+        }
+    }
+
     return data;
 }
 
@@ -184,6 +217,122 @@ export async function deleteOrder(id) {
         return false;
     }
     return true;
+}
+
+// ==================== PRODUCTS ====================
+
+export async function fetchProducts() {
+    const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .order('name', { ascending: true });
+
+    if (error) {
+        console.error('Error fetching products:', error);
+        return [];
+    }
+
+    // Transform to match local format
+    return (data || []).map(p => ({
+        ...p,
+        variationPrices: p.variation_prices || {}
+    }));
+}
+
+export async function addProduct(product) {
+    const { data, error } = await supabase
+        .from('products')
+        .insert([{
+            name: product.name,
+            price: parseFloat(product.price),
+            category: product.category,
+            description: product.description || null,
+            image: product.image || null,
+            variations: product.variations || [],
+            variation_prices: product.variationPrices || {},
+            is_active: true
+        }])
+        .select()
+        .single();
+
+    if (error) {
+        console.error('Error adding product:', error);
+        return null;
+    }
+    return { ...data, variationPrices: data.variation_prices };
+}
+
+export async function updateProduct(id, updates) {
+    const transformedUpdates = { ...updates };
+    if (updates.variationPrices) {
+        transformedUpdates.variation_prices = updates.variationPrices;
+        delete transformedUpdates.variationPrices;
+    }
+
+    const { data, error } = await supabase
+        .from('products')
+        .update(transformedUpdates)
+        .eq('id', id)
+        .select()
+        .single();
+
+    if (error) {
+        console.error('Error updating product:', error);
+        return null;
+    }
+    return { ...data, variationPrices: data.variation_prices };
+}
+
+export async function deactivateProduct(id) {
+    const { error } = await supabase
+        .from('products')
+        .update({ is_active: false })
+        .eq('id', id);
+
+    if (error) {
+        console.error('Error deactivating product:', error);
+        return false;
+    }
+    return true;
+}
+
+export async function migrateProducts(products) {
+    const transformed = products.map(p => ({
+        name: p.name,
+        price: parseFloat(p.price),
+        category: p.category,
+        description: p.description || null,
+        image: p.image || null,
+        variations: p.variations || [],
+        variation_prices: p.variationPrices || p.variation_prices || {},
+        is_active: true
+    }));
+
+    const { data, error } = await supabase
+        .from('products')
+        .insert(transformed)
+        .select();
+
+    if (error) {
+        console.error('Error migrating products:', error);
+        return null;
+    }
+    return data;
+}
+
+export function subscribeToProducts(callback) {
+    const subscription = supabase
+        .channel('products-channel')
+        .on('postgres_changes',
+            { event: '*', schema: 'public', table: 'products' },
+            (payload) => {
+                console.log('Product change:', payload);
+                callback();
+            }
+        )
+        .subscribe();
+
+    return () => subscription.unsubscribe();
 }
 
 // ==================== REAL-TIME SUBSCRIPTIONS ====================

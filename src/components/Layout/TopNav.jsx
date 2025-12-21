@@ -2,6 +2,7 @@ import { NavLink, Link, useLocation } from 'react-router-dom';
 import { useState, useRef, useEffect } from 'react';
 
 const mainNavItems = [
+    { path: '/', icon: '🏠', label: 'Ana Sayfa' },
     { path: '/calendar', icon: '📅', label: 'Takvim' },
     { path: '/new-order', icon: '📝', label: 'Sipariş' },
     { path: '/ai-parser', icon: '🤖', label: 'AI' },
@@ -35,7 +36,7 @@ export default function TopNav() {
     return (
         <header className="top-nav-header">
             {/* Logo */}
-            <Link to="/calendar" className="logo">
+            <Link to="/" className="logo">
                 <span className="logo-icon">🍽️</span>
                 <span className="logo-text">Mezzesalade</span>
             </Link>

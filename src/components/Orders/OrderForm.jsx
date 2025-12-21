@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getAllProducts, searchProducts, getProductsByCategory } from '../../hooks/useProductMatcher';
 
-export default function OrderForm({ customers, addCustomer, addOrder }) {
+export default function OrderForm({ customers, products = [], orders = [], addCustomer, addOrder, updateOrder }) {
     const navigate = useNavigate();
-    const allProducts = getAllProducts();
-    const productsByCategory = getProductsByCategory();
+    const allProducts = getAllProducts(products);
+    const productsByCategory = getProductsByCategory(products);
 
     // Form state
     const [selectedCustomer, setSelectedCustomer] = useState(null);
@@ -14,6 +14,7 @@ export default function OrderForm({ customers, addCustomer, addOrder }) {
     const [orderItems, setOrderItems] = useState([]);
     const [orderNotes, setOrderNotes] = useState('');
     const [orderDate, setOrderDate] = useState(new Date().toISOString().split('T')[0]);
+    const [shippingFee, setShippingFee] = useState(0);
 
     // New customer form
     const [newCustomer, setNewCustomer] = useState({ name: '', phone: '', address: '', notes: '' });
@@ -23,11 +24,29 @@ export default function OrderForm({ customers, addCustomer, addOrder }) {
     const [searchResults, setSearchResults] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
 
+    // Editing mode logic
+    const { id } = useParams();
+    const isEditMode = !!id;
+
+    useEffect(() => {
+        if (isEditMode && orders.length > 0 && customers.length > 0) {
+            const orderToEdit = orders.find(o => o.id === id);
+            if (orderToEdit) {
+                setOrderItems(orderToEdit.items || []);
+                setOrderNotes(orderToEdit.notes || '');
+                setOrderDate(orderToEdit.date);
+                setShippingFee(orderToEdit.shipping || 0);
+                const customer = customers.find(c => c.id === orderToEdit.customerId);
+                if (customer) setSelectedCustomer(customer);
+            }
+        }
+    }, [id, isEditMode, orders, customers, products]);
+
     // Handle product search
     const handleSearch = (query) => {
         setSearchQuery(query);
         if (query.length >= 2) {
-            const results = searchProducts(query);
+            const results = searchProducts(query, products);
             setSearchResults(results);
         } else {
             setSearchResults([]);
@@ -80,6 +99,13 @@ export default function OrderForm({ customers, addCustomer, addOrder }) {
         setOrderItems(newItems);
     };
 
+    // Update item price
+    const updateItemPrice = (index, newPrice) => {
+        const newItems = [...orderItems];
+        newItems[index].price = parseFloat(newPrice) || 0;
+        setOrderItems(newItems);
+    };
+
     // Remove item
     const removeItem = (index) => {
         const newItems = [...orderItems];
@@ -88,7 +114,8 @@ export default function OrderForm({ customers, addCustomer, addOrder }) {
     };
 
     // Calculate total
-    const total = orderItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const subtotal = orderItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const total = subtotal + (parseFloat(shippingFee) || 0);
 
     // Save new customer
     const handleSaveCustomer = async () => {
@@ -126,15 +153,21 @@ export default function OrderForm({ customers, addCustomer, addOrder }) {
             items: orderItems,
             notes: orderNotes,
             date: orderDate,
-            status: 'new',
+            shipping: parseFloat(shippingFee) || 0,
+            status: isEditMode ? undefined : 'new',
             total
         };
 
-        const newOrder = await addOrder(order);
+        let result;
+        if (isEditMode) {
+            result = await updateOrder(id, order);
+        } else {
+            result = await addOrder(order);
+        }
         setSubmitting(false);
 
-        if (newOrder) {
-            navigate(`/order/${newOrder.id}`);
+        if (result) {
+            navigate(`/order/${isEditMode ? id : result.id}`);
         }
     };
 
@@ -144,7 +177,7 @@ export default function OrderForm({ customers, addCustomer, addOrder }) {
                 <button className="btn btn-icon btn-secondary" onClick={() => navigate(-1)}>
                     ←
                 </button>
-                <h1>📝 Yeni Sipariş</h1>
+                <h1>{isEditMode ? '✏️ Siparişi Düzenle' : '📝 Yeni Sipariş'}</h1>
                 <div style={{ width: 40 }} />
             </header>
 
@@ -226,7 +259,23 @@ export default function OrderForm({ customers, addCustomer, addOrder }) {
                                         {item.name}
                                         {item.variation && <span className="text-muted"> ({item.variation})</span>}
                                     </div>
-                                    <div className="text-success">€{item.price.toFixed(2)}</div>
+                                    <div className="flex items-center gap-xs">
+                                        <span className="text-muted">€</span>
+                                        <input
+                                            type="number"
+                                            className="form-input"
+                                            style={{
+                                                padding: '2px 4px',
+                                                minHeight: 'auto',
+                                                width: '60px',
+                                                fontSize: '0.875rem',
+                                                background: 'rgba(255,255,255,0.05)'
+                                            }}
+                                            value={item.price}
+                                            onChange={(e) => updateItemPrice(index, e.target.value)}
+                                            step="0.01"
+                                        />
+                                    </div>
                                 </div>
                                 <div className="quantity">
                                     <button
@@ -235,7 +284,7 @@ export default function OrderForm({ customers, addCustomer, addOrder }) {
                                     >
                                         −
                                     </button>
-                                    <span style={{ minWidth: 30, textAlign: 'center' }}>{item.quantity}</span>
+                                    <span style={{ minWidth: 25, textAlign: 'center' }}>{item.quantity}</span>
                                     <button
                                         className="quantity-btn"
                                         onClick={() => updateQuantity(index, 1)}
@@ -243,13 +292,47 @@ export default function OrderForm({ customers, addCustomer, addOrder }) {
                                         +
                                     </button>
                                 </div>
-                                <div className="font-bold" style={{ minWidth: 60, textAlign: 'right' }}>
+                                <button
+                                    className="btn btn-secondary btn-icon"
+                                    onClick={() => removeItem(index)}
+                                    style={{
+                                        minWidth: 36,
+                                        width: 36,
+                                        height: 36,
+                                        minHeight: 36,
+                                        padding: 0,
+                                        marginLeft: 8,
+                                        fontSize: '0.8rem'
+                                    }}
+                                >
+                                    ❌
+                                </button>
+                                <div className="font-bold" style={{ minWidth: 60, textAlign: 'right', marginLeft: 8 }}>
                                     €{(item.price * item.quantity).toFixed(2)}
                                 </div>
                             </div>
                         ))}
                     </div>
                 )}
+            </div>
+
+            {/* Shipping & Notes Row */}
+            <div className="grid grid-2 gap-md">
+                <div className="form-group">
+                    <label className="form-label">🚚 Kargo Ücreti</label>
+                    <div style={{ position: 'relative' }}>
+                        <span style={{ position: 'absolute', left: 12, top: 12, color: 'var(--text-muted)' }}>€</span>
+                        <input
+                            type="number"
+                            className="form-input"
+                            style={{ paddingLeft: 30 }}
+                            value={shippingFee}
+                            onChange={(e) => setShippingFee(e.target.value)}
+                            step="0.01"
+                            placeholder="0.00"
+                        />
+                    </div>
+                </div>
             </div>
 
             {/* Order Notes */}
@@ -264,17 +347,29 @@ export default function OrderForm({ customers, addCustomer, addOrder }) {
             </div>
 
             {/* Total and Submit */}
-            <div className="card" style={{ position: 'sticky', bottom: 100 }}>
-                <div className="flex justify-between items-center mb-md">
-                    <span className="text-lg">Toplam:</span>
-                    <span className="text-2xl font-bold text-success">€{total.toFixed(2)}</span>
+            <div className="card" style={{ position: 'sticky', bottom: 100, zIndex: 90 }}>
+                <div className="flex flex-col gap-xs mb-md">
+                    <div className="flex justify-between items-center text-muted">
+                        <span>Ara Toplam:</span>
+                        <span>€{subtotal.toFixed(2)}</span>
+                    </div>
+                    {shippingFee > 0 && (
+                        <div className="flex justify-between items-center text-muted">
+                            <span>Kargo:</span>
+                            <span>€{parseFloat(shippingFee).toFixed(2)}</span>
+                        </div>
+                    )}
+                    <div className="flex justify-between items-center pt-sm border-top" style={{ borderTop: '1px solid var(--border-color)' }}>
+                        <span className="text-lg">Toplam:</span>
+                        <span className="text-2xl font-bold text-success">€{total.toFixed(2)}</span>
+                    </div>
                 </div>
                 <button
                     className="btn btn-primary btn-block btn-lg"
                     onClick={handleSubmit}
                     disabled={!selectedCustomer || orderItems.length === 0 || submitting}
                 >
-                    {submitting ? '⏳ Kaydediliyor...' : '✓ Siparişi Kaydet'}
+                    {submitting ? '⏳ Kaydediliyor...' : (isEditMode ? '✓ Değişiklikleri Kaydet' : '✓ Siparişi Kaydet')}
                 </button>
             </div>
 

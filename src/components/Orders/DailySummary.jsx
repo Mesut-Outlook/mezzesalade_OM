@@ -1,8 +1,9 @@
 import { useState, useMemo } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { getProductById } from '../../hooks/useProductMatcher';
+import { openDailySummaryWhatsApp } from '../AI/SummaryGenerator';
 
-export default function DailySummary({ orders }) {
+export default function DailySummary({ orders, products = [] }) {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const dateParam = searchParams.get('date');
@@ -125,10 +126,11 @@ export default function DailySummary({ orders }) {
                 </button>
                 <h1>📊 Günlük Özet</h1>
                 <button
-                    className="btn btn-icon btn-secondary"
-                    onClick={() => window.print()}
+                    className="btn btn-icon btn-success"
+                    onClick={() => openDailySummaryWhatsApp(new Date(selectedDate), byCategory, totalItems)}
+                    title="WhatsApp ile Paylaş"
                 >
-                    🖨️
+                    📱
                 </button>
             </header>
 

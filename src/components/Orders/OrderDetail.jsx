@@ -36,7 +36,9 @@ export default function OrderDetail({ orders, customers, getOrder, getCustomer, 
         );
     }
 
-    const totalPrice = order.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const subtotal = order.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const shipping = order.shipping || 0;
+    const total = subtotal + shipping;
     const totalItems = order.items.reduce((sum, item) => sum + item.quantity, 0);
 
     const handleStatusChange = (newStatus) => {
@@ -61,13 +63,21 @@ export default function OrderDetail({ orders, customers, getOrder, getCustomer, 
                     ←
                 </button>
                 <h1>#{order.id.slice(-6).toUpperCase()}</h1>
-                <button
-                    className="btn btn-icon btn-secondary"
-                    onClick={() => setShowDeleteConfirm(true)}
-                    style={{ color: 'var(--accent-primary)' }}
-                >
-                    🗑️
-                </button>
+                <div className="flex gap-sm">
+                    <button
+                        className="btn btn-icon btn-secondary"
+                        onClick={() => navigate(`/edit-order/${order.id}`)}
+                    >
+                        ✏️
+                    </button>
+                    <button
+                        className="btn btn-icon btn-secondary"
+                        onClick={() => setShowDeleteConfirm(true)}
+                        style={{ color: 'var(--accent-primary)' }}
+                    >
+                        🗑️
+                    </button>
+                </div>
             </header>
 
             {/* Status */}
@@ -129,13 +139,25 @@ export default function OrderDetail({ orders, customers, getOrder, getCustomer, 
                     </div>
                 ))}
 
-                <div className="flex justify-between items-center mt-lg" style={{
+                <div className="flex flex-col gap-sm mt-lg" style={{
                     padding: 'var(--spacing-md)',
                     background: 'var(--bg-tertiary)',
                     borderRadius: 'var(--radius-md)'
                 }}>
-                    <span className="text-lg font-bold">Toplam</span>
-                    <span className="text-2xl font-bold text-success">€{totalPrice.toFixed(2)}</span>
+                    <div className="flex justify-between items-center text-muted">
+                        <span>Ara Toplam</span>
+                        <span>€{subtotal.toFixed(2)}</span>
+                    </div>
+                    {shipping > 0 && (
+                        <div className="flex justify-between items-center text-muted">
+                            <span>Kargo</span>
+                            <span>€{shipping.toFixed(2)}</span>
+                        </div>
+                    )}
+                    <div className="flex justify-between items-center pt-sm mt-xs" style={{ borderTop: '1px solid var(--border-color)' }}>
+                        <span className="text-lg font-bold">Toplam</span>
+                        <span className="text-2xl font-bold text-success">€{total.toFixed(2)}</span>
+                    </div>
                 </div>
             </div>
 

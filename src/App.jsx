@@ -9,8 +9,13 @@ import {
     addOrder as addOrderDb,
     updateOrder as updateOrderDb,
     deleteOrder as deleteOrderDb,
+    fetchProducts,
+    addProduct as addProductDb,
+    updateProduct as updateProductDb,
+    deactivateProduct as deactivateProductDb,
     subscribeToOrders,
-    subscribeToCustomers
+    subscribeToCustomers,
+    subscribeToProducts
 } from './lib/supabase';
 import TopNav from './components/Layout/TopNav';
 import CalendarDashboard from './components/Dashboard/CalendarDashboard';
@@ -21,11 +26,13 @@ import DailySummary from './components/Orders/DailySummary';
 import CustomerList from './components/Customers/CustomerList';
 import TextParser from './components/AI/TextParser';
 import ProductCatalog from './components/Products/ProductCatalog';
+import HomeDashboard from './components/Dashboard/HomeDashboard';
 
 function AppContent() {
     const location = useLocation();
     const [orders, setOrders] = useState([]);
     const [customers, setCustomers] = useState([]);
+    const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [syncing, setSyncing] = useState(false);
 
@@ -33,12 +40,14 @@ function AppContent() {
     const loadData = useCallback(async () => {
         setSyncing(true);
         try {
-            const [ordersData, customersData] = await Promise.all([
+            const [ordersData, customersData, productsData] = await Promise.all([
                 fetchOrders(),
-                fetchCustomers()
+                fetchCustomers(),
+                fetchProducts()
             ]);
             setOrders(ordersData);
             setCustomers(customersData);
+            setProducts(productsData);
         } catch (error) {
             console.error('Error loading data:', error);
         } finally {
@@ -54,10 +63,12 @@ function AppContent() {
         // Subscribe to real-time changes
         const unsubOrders = subscribeToOrders(loadData);
         const unsubCustomers = subscribeToCustomers(loadData);
+        const unsubProducts = subscribeToProducts(loadData);
 
         return () => {
             unsubOrders();
             unsubCustomers();
+            unsubProducts();
         };
     }, [loadData]);
 
@@ -76,12 +87,13 @@ function AppContent() {
     // Update an order
     const updateOrder = async (orderId, updates) => {
         setSyncing(true);
-        await updateOrderDb(orderId, updates);
+        const result = await updateOrderDb(orderId, updates);
         // Optimistically update local state
         setOrders(prev => prev.map(order =>
-            order.id === orderId ? { ...order, ...updates } : order
+            order.id === orderId ? { ...order, ...updates, ...result } : order
         ));
         setSyncing(false);
+        return result;
     };
 
     // Delete an order
@@ -119,6 +131,41 @@ function AppContent() {
         await deleteCustomerDb(customerId);
         setCustomers(prev => prev.filter(customer => customer.id !== customerId));
         setSyncing(false);
+    };
+
+    // Add a new product
+    const addProduct = async (product) => {
+        setSyncing(true);
+        const newProduct = await addProductDb(product);
+        if (newProduct) {
+            setProducts(prev => [newProduct, ...prev]);
+        }
+        setSyncing(false);
+        return newProduct;
+    };
+
+    // Update a product
+    const updateProduct = async (productId, updates) => {
+        setSyncing(true);
+        const result = await updateProductDb(productId, updates);
+        setProducts(prev => prev.map(p =>
+            p.id === productId ? { ...p, ...updates, ...result } : p
+        ));
+        setSyncing(false);
+        return result;
+    };
+
+    // Deactivate a product
+    const deactivateProduct = async (productId) => {
+        setSyncing(true);
+        const success = await deactivateProductDb(productId);
+        if (success) {
+            setProducts(prev => prev.map(p =>
+                p.id === productId ? { ...p, is_active: false } : p
+            ));
+        }
+        setSyncing(false);
+        return success;
     };
 
     // Get customer by ID
@@ -172,11 +219,20 @@ function AppContent() {
                 </div>
             )}
 
-            <TopNav />
+            {location.pathname !== '/' && <TopNav />}
 
             <main className="main-content">
                 <Routes>
-                    <Route path="/" element={<Navigate to="/calendar" replace />} />
+                    <Route
+                        path="/"
+                        element={
+                            <HomeDashboard
+                                orders={orders}
+                                customers={customers}
+                                products={products}
+                            />
+                        }
+                    />
                     <Route
                         path="/calendar"
                         element={
@@ -191,6 +247,7 @@ function AppContent() {
                         element={
                             <OrderForm
                                 customers={customers}
+                                products={products}
                                 addCustomer={addCustomer}
                                 addOrder={addOrder}
                             />
@@ -203,6 +260,19 @@ function AppContent() {
                                 orders={orders}
                                 customers={customers}
                                 getCustomer={getCustomer}
+                            />
+                        }
+                    />
+                    <Route
+                        path="/edit-order/:id"
+                        element={
+                            <OrderForm
+                                customers={customers}
+                                products={products}
+                                orders={orders}
+                                addCustomer={addCustomer}
+                                addOrder={addOrder}
+                                updateOrder={updateOrder}
                             />
                         }
                     />
@@ -224,6 +294,7 @@ function AppContent() {
                         element={
                             <DailySummary
                                 orders={orders}
+                                products={products}
                             />
                         }
                     />
@@ -244,6 +315,7 @@ function AppContent() {
                         element={
                             <TextParser
                                 customers={customers}
+                                products={products}
                                 addCustomer={addCustomer}
                                 addOrder={addOrder}
                             />
@@ -251,7 +323,14 @@ function AppContent() {
                     />
                     <Route
                         path="/products"
-                        element={<ProductCatalog />}
+                        element={
+                            <ProductCatalog
+                                products={products}
+                                addProduct={addProduct}
+                                updateProduct={updateProduct}
+                                deactivateProduct={deactivateProduct}
+                            />
+                        }
                     />
                 </Routes>
             </main>

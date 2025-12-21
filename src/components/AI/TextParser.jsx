@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { parseOrderText } from '../../hooks/useProductMatcher';
 
-export default function TextParser({ customers, addCustomer, addOrder }) {
+export default function TextParser({ customers, products = [], addCustomer, addOrder }) {
     const navigate = useNavigate();
     const [inputText, setInputText] = useState('');
     const [parsedResults, setParsedResults] = useState([]);
@@ -20,7 +20,7 @@ export default function TextParser({ customers, addCustomer, addOrder }) {
     const handleParse = () => {
         if (!inputText.trim()) return;
 
-        const result = parseOrderText(inputText, customers);
+        const result = parseOrderText(inputText, products, customers);
         setParsedResults(result.products);
         setExtractedInfo(result.metadata);
 
