@@ -184,7 +184,7 @@ Lahana Sarma`}
                     <h4 className="mb-sm">✨ Otomatik Algılanan Bilgiler</h4>
                     <div style={{ fontSize: '0.875rem' }}>
                         {extractedInfo.date && (
-                            <div>📅 Tarih: <strong>{new Date(extractedInfo.date).toLocaleDateString('tr-TR')}</strong></div>
+                            <div>📅 Tarih: <strong>{new Date(extractedInfo.date).toLocaleDateString('tr-TR', { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' })}</strong></div>
                         )}
                         {extractedInfo.name && (
                             <div>👤 İsim: <strong>{extractedInfo.name}</strong></div>
