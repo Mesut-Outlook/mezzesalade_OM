@@ -231,6 +231,7 @@ function AppContent() {
                                 orders={orders}
                                 customers={customers}
                                 products={products}
+                                getCustomer={getCustomer}
                             />
                         }
                     />

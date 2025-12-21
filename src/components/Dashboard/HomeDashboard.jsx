@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
     PlusCircle,
@@ -12,10 +12,11 @@ import {
     User,
     ShoppingBag
 } from 'lucide-react';
-import { formatCurrency } from '../../hooks/useLocalStorage';
+import { formatCurrency, formatDate } from '../../hooks/useLocalStorage';
 
-export default function HomeDashboard({ orders = [], customers = [], products = [] }) {
+export default function HomeDashboard({ orders = [], customers = [], products = [], getCustomer }) {
     const navigate = useNavigate();
+    const [showNotifications, setShowNotifications] = useState(false);
 
     // Stats Calculation
     const stats = useMemo(() => {
@@ -36,11 +37,13 @@ export default function HomeDashboard({ orders = [], customers = [], products = 
         }
 
         const pendingOrders = orders.filter(o => o.status === 'new' || o.status === 'preparing').slice(0, 3);
+        const notificationOrders = orders.filter(o => o.status === 'new' || o.status === 'preparing');
 
         return {
             todayTotal,
             trend,
             pendingOrders,
+            notificationOrders,
             totalOrders: todayOrders.length
         };
     }, [orders]);
@@ -112,9 +115,102 @@ export default function HomeDashboard({ orders = [], customers = [], products = 
                         <h2 className="text-lg font-bold">Mezzesalade Yönetim</h2>
                     </div>
                 </div>
-                <button className="btn btn-icon btn-secondary" style={{ borderRadius: '50%' }}>
-                    <Bell size={20} />
-                </button>
+                <div style={{ position: 'relative' }}>
+                    <button
+                        className="btn btn-icon btn-secondary"
+                        style={{ borderRadius: '50%', position: 'relative' }}
+                        onClick={() => setShowNotifications(!showNotifications)}
+                    >
+                        <Bell size={20} />
+                        {stats.notificationOrders.length > 0 && (
+                            <span style={{
+                                position: 'absolute',
+                                top: '-4px',
+                                right: '-4px',
+                                background: 'var(--accent-primary)',
+                                color: 'white',
+                                borderRadius: '50%',
+                                width: '20px',
+                                height: '20px',
+                                fontSize: '0.7rem',
+                                fontWeight: '700',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                border: '2px solid var(--bg-primary)'
+                            }}>
+                                {stats.notificationOrders.length}
+                            </span>
+                        )}
+                    </button>
+
+                    {/* Notification Dropdown */}
+                    {showNotifications && (
+                        <div style={{
+                            position: 'absolute',
+                            top: '50px',
+                            right: 0,
+                            width: '320px',
+                            maxHeight: '400px',
+                            overflowY: 'auto',
+                            background: 'var(--bg-primary)',
+                            border: '1px solid var(--border-color)',
+                            borderRadius: 'var(--radius-lg)',
+                            boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+                            zIndex: 1000
+                        }}>
+                            <div style={{ padding: '16px', borderBottom: '1px solid var(--border-color)' }}>
+                                <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: '700' }}>
+                                    🔔 Bildirimler ({stats.notificationOrders.length})
+                                </h3>
+                            </div>
+                            {stats.notificationOrders.length === 0 ? (
+                                <div style={{ padding: '32px', textAlign: 'center', color: 'var(--text-muted)' }}>
+                                    <Bell size={48} style={{ opacity: 0.3, marginBottom: '12px' }} />
+                                    <p>Yeni bildirim yok</p>
+                                </div>
+                            ) : (
+                                <div>
+                                    {stats.notificationOrders.map(order => {
+                                        const customer = getCustomer ? getCustomer(order.customerId) : null;
+                                        return (
+                                            <div
+                                                key={order.id}
+                                                onClick={() => {
+                                                    setShowNotifications(false);
+                                                    navigate(`/order/${order.id}`);
+                                                }}
+                                                style={{
+                                                    padding: '12px 16px',
+                                                    borderBottom: '1px solid var(--border-color)',
+                                                    cursor: 'pointer',
+                                                    transition: 'background 0.2s'
+                                                }}
+                                                onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg-secondary)'}
+                                                onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                                            >
+                                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '4px' }}>
+                                                    <span style={{ fontWeight: '600', fontSize: '0.95rem' }}>
+                                                        {customer?.name || 'Bilinmeyen'}
+                                                    </span>
+                                                    <span className={`badge badge-${order.status}`} style={{ fontSize: '0.7rem' }}>
+                                                        {order.status === 'new' ? 'Yeni' : 'Hazırlanıyor'}
+                                                    </span>
+                                                </div>
+                                                <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                                                    {order.items.length} ürün • {formatCurrency(order.total || 0)}
+                                                </div>
+                                                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '4px' }}>
+                                                    {formatDate(order.date)}
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            )}
+                        </div>
+                    )}
+                </div>
             </div>
 
             {/* Total Sales Card */}
