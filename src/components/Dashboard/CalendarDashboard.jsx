@@ -18,6 +18,7 @@ const categoryColors = {
     'Pilavlar': '#f4a460',
     'Köfte Kebap': '#cd5c5c',
     'Dolma Sarma': '#9370db',
+    'Paketler': '#ff7f50',
 };
 
 function getCalendarDays(year, month) {

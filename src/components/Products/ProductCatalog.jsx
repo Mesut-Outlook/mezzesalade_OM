@@ -77,6 +77,7 @@ export default function ProductCatalog({ products: allProducts = [], addProduct,
         'Pilavlar': '#f4a460',
         'Köfte Kebap': '#cd5c5c',
         'Dolma Sarma': '#9370db',
+        'Paketler': '#ff7f50',
     };
 
     const categoryEmojis = {
@@ -89,6 +90,7 @@ export default function ProductCatalog({ products: allProducts = [], addProduct,
         'Pilavlar': '🍚',
         'Köfte Kebap': '🍢',
         'Dolma Sarma': '🫑',
+        'Paketler': '🎁',
     };
 
     return (

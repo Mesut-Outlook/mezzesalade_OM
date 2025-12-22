@@ -116,6 +116,7 @@ export default function DailySummary({ orders, products = [] }) {
         'Pilavlar': '#f4a460',
         'Köfte Kebap': '#cd5c5c',
         'Dolma Sarma': '#9370db',
+        'Paketler': '#ff7f50',
     };
 
     return (
