@@ -10,7 +10,8 @@ import {
     Bell,
     ChevronRight,
     User,
-    ShoppingBag
+    ShoppingBag,
+    TrendingUp
 } from 'lucide-react';
 import { formatCurrency, formatDate } from '../../hooks/useLocalStorage';
 
@@ -36,8 +37,15 @@ export default function HomeDashboard({ orders = [], customers = [], products = 
             trend = 100;
         }
 
-        const pendingOrders = orders.filter(o => o.status === 'new' || o.status === 'preparing').slice(0, 3);
-        const notificationOrders = orders.filter(o => o.status === 'new' || o.status === 'preparing');
+        const pendingOrders = orders
+            .filter(o => o.status === 'new' || o.status === 'preparing')
+            .sort((a, b) => new Date(a.date) - new Date(b.date))
+            .slice(0, 3);
+
+        // Notifications sorted by nearest date first
+        const notificationOrders = orders
+            .filter(o => o.status === 'new' || o.status === 'preparing')
+            .sort((a, b) => new Date(a.date) - new Date(b.date));
 
         return {
             todayTotal,
@@ -51,24 +59,31 @@ export default function HomeDashboard({ orders = [], customers = [], products = 
     const menuItems = [
         {
             id: 'ai',
-            title: 'AI Sipariş',
+            title: 'AI Siparis',
             icon: <Sparkles size={32} />,
             color: 'var(--accent-primary)',
             path: '/ai-parser'
         },
         {
             id: 'manual',
-            title: 'Yeni Sipariş',
+            title: 'Yeni Siparis',
             icon: <PlusCircle size={32} />,
             color: '#3b82f6', // Blue
             path: '/new-order'
         },
         {
             id: 'allOrders',
-            title: 'Tüm Siparişler',
+            title: 'Tum Siparisler',
             icon: <ShoppingBag size={32} />,
             color: '#8b5cf6', // Purple
             path: '/all-orders'
+        },
+        {
+            id: 'revenue',
+            title: 'Ciro Raporu',
+            icon: <TrendingUp size={32} />,
+            color: '#10b981', // Emerald
+            path: '/revenue'
         },
         {
             id: 'calendar',
@@ -79,21 +94,21 @@ export default function HomeDashboard({ orders = [], customers = [], products = 
         },
         {
             id: 'summary',
-            title: 'Günlük Özet',
+            title: 'Gunluk Ozet',
             icon: <BarChart3 size={32} />,
             color: 'var(--accent-success)',
             path: '/daily-summary'
         },
         {
             id: 'products',
-            title: 'Ürünler',
+            title: 'Urunler',
             icon: <Package size={32} />,
             color: '#f59e0b', // Amber
             path: '/products'
         },
         {
             id: 'customers',
-            title: 'Müşteriler',
+            title: 'Musteriler',
             icon: <Users size={32} />,
             color: '#ec4899', // Rose
             path: '/customers'
@@ -253,36 +268,48 @@ export default function HomeDashboard({ orders = [], customers = [], products = 
 
             {/* Pending Transactions */}
             <div className="section-header">
-                <h4 className="font-bold">Bekleyen Siparişler</h4>
-                <button className="text-sm font-bold" onClick={() => navigate('/calendar')} style={{ color: 'var(--accent-primary)', background: 'none', border: 'none', cursor: 'pointer' }}>
-                    Tümünü Gör
+                <h4 className="font-bold">Bekleyen Siparisler</h4>
+                <button className="text-sm font-bold" onClick={() => navigate('/revenue')} style={{ color: 'var(--accent-primary)', background: 'none', border: 'none', cursor: 'pointer' }}>
+                    Tumunu Gor
                 </button>
             </div>
 
             <div className="activity-list">
                 {stats.pendingOrders.length === 0 ? (
                     <div className="card text-center p-md text-muted italic">
-                        Bekleyen işlem bulunmuyor
+                        Bekleyen islem bulunmuyor
                     </div>
                 ) : (
                     stats.pendingOrders.map((order) => {
                         const customer = customers.find(c => c.id === order.customerId);
+                        const days = ['Paz', 'Pzt', 'Sal', 'Car', 'Per', 'Cum', 'Cmt'];
+                        const orderDate = new Date(order.date);
+                        const dayName = days[orderDate.getDay()];
+                        const dateStr = `${orderDate.getDate()}/${orderDate.getMonth() + 1}`;
                         return (
                             <div
                                 key={order.id}
                                 className="activity-item"
                                 onClick={() => navigate(`/order/${order.id}`)}
                             >
-                                <div className="flex items-center gap-md">
+                                <div className="flex items-center gap-md" style={{ flex: 1 }}>
                                     <div className="activity-icon">
                                         <Package size={20} className="text-muted" />
                                     </div>
-                                    <div>
-                                        <p className="text-sm font-bold">{customer?.name || 'Bilinmeyen Müşteri'}</p>
+                                    <div style={{ flex: 1 }}>
+                                        <p className="text-sm font-bold">{customer?.name || 'Bilinmeyen Musteri'}</p>
                                         <p className="text-xs text-muted">
-                                            {order.items.length} ürün • {order.status === 'new' ? 'Yeni' : 'Hazırlanıyor'}
+                                            {order.items.length} urun • {order.status === 'new' ? 'Yeni' : 'Hazirlaniyor'}
                                         </p>
                                     </div>
+                                </div>
+                                <div style={{ textAlign: 'right', marginRight: '8px' }}>
+                                    <p style={{ fontWeight: '700', fontSize: '0.95rem', color: 'var(--accent-success)' }}>
+                                        {formatCurrency(order.total || 0)}
+                                    </p>
+                                    <p className="text-xs text-muted">
+                                        {dayName}, {dateStr}
+                                    </p>
                                 </div>
                                 <ChevronRight size={18} className="text-muted" />
                             </div>

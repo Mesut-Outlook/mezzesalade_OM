@@ -19,6 +19,7 @@ import {
 } from './lib/supabase';
 import TopNav from './components/Layout/TopNav';
 import CalendarDashboard from './components/Dashboard/CalendarDashboard';
+import RevenueReport from './components/Dashboard/RevenueReport';
 import OrderForm from './components/Orders/OrderForm';
 import OrderList from './components/Orders/OrderList';
 import AllOrders from './components/Orders/AllOrders';
@@ -241,6 +242,16 @@ function AppContent() {
                             <CalendarDashboard
                                 orders={orders}
                                 customers={customers}
+                            />
+                        }
+                    />
+                    <Route
+                        path="/revenue"
+                        element={
+                            <RevenueReport
+                                orders={orders}
+                                customers={customers}
+                                getCustomer={getCustomer}
                             />
                         }
                     />
