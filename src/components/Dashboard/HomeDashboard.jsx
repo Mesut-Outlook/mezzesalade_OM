@@ -235,21 +235,6 @@ export default function HomeDashboard({ orders = [], customers = [], products = 
                 </div>
             </div>
 
-            {/* Total Sales Card */}
-            <div className="summary-card">
-                <div>
-                    <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>Bugünkü Toplam Ciro</p>
-                    <div className="summary-value">{formatCurrency(stats.todayTotal)}</div>
-                    <div className={`trend-indicator ${stats.trend >= 0 ? 'trend-up' : 'trend-down'}`}>
-                        <span>{stats.trend >= 0 ? '↑' : '↓'} {Math.abs(stats.trend).toFixed(1)}%</span>
-                        <span style={{ opacity: 0.7, fontWeight: 400 }}>Düne göre</span>
-                    </div>
-                </div>
-                <div style={{ position: 'absolute', right: 20, bottom: 20, opacity: 0.1 }}>
-                    <ShoppingBag size={80} />
-                </div>
-            </div>
-
             {/* Grid Menu */}
             <div className="dashboard-menu">
                 {menuItems.map((item) => (
