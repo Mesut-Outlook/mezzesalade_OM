@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { getProductById } from '../../hooks/useProductMatcher';
 import { openDailySummaryWhatsApp } from '../AI/SummaryGenerator';
-import { ShoppingCart, ClipboardList, ChevronLeft, ChevronRight, MessageCircle } from 'lucide-react';
+import { ShoppingCart, ClipboardList, ChevronLeft, ChevronRight, MessageCircle, Trash2 } from 'lucide-react';
 
 export default function DailySummary({ orders, products = [] }) {
     const navigate = useNavigate();
@@ -145,6 +145,7 @@ export default function DailySummary({ orders, products = [] }) {
     // Check state (local only, not persisted)
     const [checkedItems, setCheckedItems] = useState({});
     const [checkedIngredients, setCheckedIngredients] = useState({});
+    const [hiddenIngredients, setHiddenIngredients] = useState({});
 
     const toggleCheck = (key) => {
         setCheckedItems(prev => ({
@@ -160,9 +161,17 @@ export default function DailySummary({ orders, products = [] }) {
         }));
     };
 
+    const deleteIngredient = (key, e) => {
+        e.stopPropagation();
+        setHiddenIngredients(prev => ({
+            ...prev,
+            [key]: true
+        }));
+    };
+
     // Total items
     const totalItems = Object.values(productSummary).reduce((sum, item) => sum + item.quantity, 0);
-    const totalIngredients = Object.values(shoppingList).flat().length;
+    const totalIngredients = Object.values(shoppingList).flat().filter((_, idx) => !hiddenIngredients[idx]).length;
 
     // Format date for display
     const formatDisplayDate = (dateStr) => {
@@ -357,34 +366,49 @@ export default function DailySummary({ orders, products = [] }) {
                                     {group} ({ingredients.length})
                                 </h3>
 
-                                {ingredients.map((ing, idx) => (
-                                    <div
-                                        key={`${group}-${idx}`}
-                                        className={`summary-item ${checkedIngredients[`${group}-${idx}`] ? 'checked' : ''}`}
-                                        onClick={() => toggleIngredient(`${group}-${idx}`)}
-                                        style={{ cursor: 'pointer' }}
-                                    >
-                                        <input
-                                            type="checkbox"
-                                            className="checkbox"
-                                            checked={checkedIngredients[`${group}-${idx}`] || false}
-                                            onChange={() => toggleIngredient(`${group}-${idx}`)}
-                                            onClick={e => e.stopPropagation()}
-                                        />
-                                        <div style={{ flex: 1 }}>
-                                            <span className="font-bold">{ing.text}</span>
-                                            {ing.productCount > 1 && (
-                                                <span className="text-muted" style={{ marginLeft: '8px' }}>
-                                                    (x{ing.productCount})
-                                                </span>
-                                            )}
-                                            <div className="text-xs text-muted" style={{ marginTop: '2px' }}>
-                                                {ing.products.slice(0, 3).join(', ')}
-                                                {ing.products.length > 3 && ` +${ing.products.length - 3}`}
+                                {ingredients.filter((_, idx) => !hiddenIngredients[`${group}-${idx}`]).map((ing, idx) => {
+                                    const itemKey = `${group}-${idx}`;
+                                    return (
+                                        <div
+                                            key={itemKey}
+                                            className={`summary-item ${checkedIngredients[itemKey] ? 'checked' : ''}`}
+                                            onClick={() => toggleIngredient(itemKey)}
+                                            style={{ cursor: 'pointer' }}
+                                        >
+                                            <input
+                                                type="checkbox"
+                                                className="checkbox"
+                                                checked={checkedIngredients[itemKey] || false}
+                                                onChange={() => toggleIngredient(itemKey)}
+                                                onClick={e => e.stopPropagation()}
+                                            />
+                                            <div style={{ flex: 1 }}>
+                                                <span className="font-bold">{ing.text}</span>
+                                                {ing.productCount > 1 && (
+                                                    <span className="text-muted" style={{ marginLeft: '8px' }}>
+                                                        (x{ing.productCount})
+                                                    </span>
+                                                )}
+                                                <div className="text-xs text-muted" style={{ marginTop: '2px' }}>
+                                                    {ing.products.slice(0, 3).join(', ')}
+                                                    {ing.products.length > 3 && ` +${ing.products.length - 3}`}
+                                                </div>
                                             </div>
+                                            <button
+                                                className="btn btn-icon"
+                                                onClick={(e) => deleteIngredient(itemKey, e)}
+                                                style={{
+                                                    padding: '6px',
+                                                    background: 'transparent',
+                                                    color: 'var(--text-muted)',
+                                                    minWidth: 'auto'
+                                                }}
+                                            >
+                                                <Trash2 size={16} />
+                                            </button>
                                         </div>
-                                    </div>
-                                ))}
+                                    );
+                                })}
                             </div>
                         ))
                     )}
