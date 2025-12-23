@@ -303,6 +303,7 @@ export async function addProduct(product) {
             category: product.category,
             description: product.description || null,
             image: product.image || null,
+            ingredients: product.ingredients || null,
             variations: product.variations || [],
             variation_prices: product.variationPrices || {},
             is_active: true

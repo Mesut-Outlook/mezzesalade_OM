@@ -9,6 +9,7 @@ export default function ProductFormModal({ product, onClose, onSave, onDeactivat
         price: product?.price || '',
         description: product?.description || '',
         image: product?.image || '',
+        ingredients: product?.ingredients || '',
         variations: product?.variations || [],
         variationPrices: product?.variationPrices || product?.variation_prices || {}
     });
@@ -206,15 +207,45 @@ export default function ProductFormModal({ product, onClose, onSave, onDeactivat
 
                     {/* Description */}
                     <div style={{ marginBottom: '20px' }}>
-                        <label style={{ display: 'block', marginBottom: '8px', fontSize: '1.1rem', fontWeight: '600' }}>Açıklama</label>
+                        <label style={{ display: 'block', marginBottom: '8px', fontSize: '1.1rem', fontWeight: '600' }}>Aciklama</label>
                         <textarea
                             className="form-textarea"
                             style={{ fontSize: '1rem', padding: '14px', width: '100%', lineHeight: '1.6' }}
                             value={formData.description}
                             onChange={e => setFormData({ ...formData, description: e.target.value })}
-                            placeholder="Ürün içeriği, alerjen bilgisi vb."
-                            rows={3}
+                            placeholder="Urun icerigi, alerjen bilgisi vb."
+                            rows={2}
                         />
+                    </div>
+
+                    {/* Ingredients */}
+                    <div style={{ marginBottom: '20px' }}>
+                        <label style={{ display: 'block', marginBottom: '8px', fontSize: '1.1rem', fontWeight: '600' }}>
+                            🥕 Malzeme Listesi
+                        </label>
+                        <textarea
+                            className="form-textarea"
+                            style={{
+                                fontSize: '1rem',
+                                padding: '14px',
+                                width: '100%',
+                                lineHeight: '1.8',
+                                fontFamily: 'monospace',
+                                background: 'var(--bg-tertiary)'
+                            }}
+                            value={formData.ingredients}
+                            onChange={e => setFormData({ ...formData, ingredients: e.target.value })}
+                            placeholder="Her satira bir malzeme yazin:
+500g mercimek
+2 adet sogan
+3 dis sarimsak
+1 yemek kasigi domates salcasi
+Tuz, karabiber"
+                            rows={5}
+                        />
+                        <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '6px' }}>
+                            Her satira bir malzeme yazin. Gunluk ozette alisveris listesi olusturulacak.
+                        </p>
                     </div>
 
                     {/* Variations */}
