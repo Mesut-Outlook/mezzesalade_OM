@@ -325,6 +325,11 @@ a {
   bottom: -35px;
 }
 
+.logout-btn:hover {
+  background: rgba(239, 68, 68, 0.1) !important;
+  color: #ff4d4d !important;
+}
+
 /* Top Header with Logo */
 .top-header {
   background: linear-gradient(135deg, #ff8c00, #ff6b35, #d2691e);

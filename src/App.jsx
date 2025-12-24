@@ -29,9 +29,12 @@ import CustomerList from './components/Customers/CustomerList';
 import TextParser from './components/AI/TextParser';
 import ProductCatalog from './components/Products/ProductCatalog';
 import HomeDashboard from './components/Dashboard/HomeDashboard';
+import LoginPage from './components/Auth/LoginPage';
+import { AuthProvider, useAuth } from './context/AuthContext';
 
 function AppContent() {
     const location = useLocation();
+    const { isAuthenticated } = useAuth();
     const [orders, setOrders] = useState([]);
     const [customers, setCustomers] = useState([]);
     const [products, setProducts] = useState([]);
@@ -40,6 +43,7 @@ function AppContent() {
 
     // Load data from Supabase
     const loadData = useCallback(async () => {
+        if (!isAuthenticated) return;
         setSyncing(true);
         try {
             const [ordersData, customersData, productsData] = await Promise.all([
@@ -56,10 +60,15 @@ function AppContent() {
             setLoading(false);
             setSyncing(false);
         }
-    }, []);
+    }, [isAuthenticated]);
 
     // Initial load and real-time subscriptions
     useEffect(() => {
+        if (!isAuthenticated) {
+            setLoading(false);
+            return;
+        }
+
         loadData();
 
         // Subscribe to real-time changes
@@ -72,7 +81,7 @@ function AppContent() {
             unsubCustomers();
             unsubProducts();
         };
-    }, [loadData]);
+    }, [loadData, isAuthenticated]);
 
     // Add a new order
     const addOrder = async (order) => {
@@ -195,6 +204,14 @@ function AppContent() {
                     <p className="text-muted">Veriler yükleniyor...</p>
                 </div>
             </div>
+        );
+    }
+
+    if (!isAuthenticated) {
+        return (
+            <Routes>
+                <Route path="*" element={<LoginPage />} />
+            </Routes>
         );
     }
 
@@ -355,9 +372,9 @@ function AppContent() {
                             />
                         }
                     />
+                    <Route path="/login" element={<Navigate to="/" replace />} />
                 </Routes>
             </main>
-
         </div>
     );
 }
@@ -365,9 +382,12 @@ function AppContent() {
 function App() {
     return (
         <BrowserRouter>
-            <AppContent />
+            <AuthProvider>
+                <AppContent />
+            </AuthProvider>
         </BrowserRouter>
     );
 }
 
 export default App;
+

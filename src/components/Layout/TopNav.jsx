@@ -1,5 +1,6 @@
 import { NavLink, Link, useLocation } from 'react-router-dom';
 import { useState, useRef, useEffect } from 'react';
+import { useAuth } from '../../context/AuthContext';
 
 const mainNavItems = [
     { path: '/', icon: '🏠', label: 'Ana Sayfa' },
@@ -16,6 +17,7 @@ const otherNavItems = [
 
 export default function TopNav() {
     const location = useLocation();
+    const { logout } = useAuth();
     const [showOtherMenu, setShowOtherMenu] = useState(false);
     const menuRef = useRef(null);
 
@@ -81,6 +83,15 @@ export default function TopNav() {
                         </div>
                     )}
                 </div>
+                {/* Logout Button */}
+                <button
+                    className="nav-icon-btn logout-btn"
+                    onClick={logout}
+                    title="Çıkış Yap"
+                >
+                    <span className="nav-icon">🚪</span>
+                    <span className="nav-tooltip">Çıkış</span>
+                </button>
             </nav>
         </header>
     );
