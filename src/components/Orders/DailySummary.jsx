@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { getProductById } from '../../hooks/useProductMatcher';
-import { openDailySummaryWhatsApp } from '../AI/SummaryGenerator';
+import { openDailySummaryWhatsApp, openCustomerMenuWhatsApp } from '../AI/SummaryGenerator';
 import { ShoppingCart, ClipboardList, ChevronLeft, ChevronRight, MessageCircle, Trash2 } from 'lucide-react';
 
 export default function DailySummary({ orders, products = [] }) {
@@ -34,13 +34,25 @@ export default function DailySummary({ orders, products = [] }) {
                     : `${item.productId}`;
 
                 if (!summary[key]) {
+                    const product = products.find(p => p.id === item.productId);
+                    let price = 0;
+                    if (product) {
+                        if (item.variation) {
+                            const vPrices = product.variationPrices || product.variation_prices || {};
+                            price = vPrices[item.variation] || product.price;
+                        } else {
+                            price = product.price;
+                        }
+                    }
+
                     summary[key] = {
                         productId: item.productId,
                         name: item.name,
                         variation: item.variation,
                         category: item.category || 'Diger',
                         quantity: 0,
-                        checked: false
+                        checked: false,
+                        price: price
                     };
                 }
                 summary[key].quantity += item.quantity;
@@ -48,7 +60,7 @@ export default function DailySummary({ orders, products = [] }) {
         }
 
         return summary;
-    }, [dayOrders]);
+    }, [dayOrders, products]);
 
     // Generate shopping list from ingredients
     const shoppingList = useMemo(() => {
@@ -233,7 +245,15 @@ export default function DailySummary({ orders, products = [] }) {
                 <button
                     className="btn btn-icon btn-success"
                     onClick={() => openDailySummaryWhatsApp(new Date(selectedDate), byCategory, totalItems)}
-                    title="WhatsApp ile Paylas"
+                    title="Ozet Raporu Paylas"
+                >
+                    <ClipboardList size={20} />
+                </button>
+                <button
+                    className="btn btn-icon btn-primary"
+                    onClick={() => openCustomerMenuWhatsApp(new Date(selectedDate), byCategory)}
+                    title="Musteri Menusu Paylas"
+                    style={{ marginLeft: '8px' }}
                 >
                     <MessageCircle size={20} />
                 </button>
