@@ -30,6 +30,7 @@ import TextParser from './components/AI/TextParser';
 import ProductCatalog from './components/Products/ProductCatalog';
 import HomeDashboard from './components/Dashboard/HomeDashboard';
 import LoginPage from './components/Auth/LoginPage';
+import CustomerOrderView from './components/Customer/CustomerOrderView';
 import { AuthProvider, useAuth } from './context/AuthContext';
 
 function AppContent() {
@@ -41,14 +42,17 @@ function AppContent() {
     const [loading, setLoading] = useState(true);
     const [syncing, setSyncing] = useState(false);
 
+    // Public route check
+    const isPublicRoute = location.pathname === '/siparis';
+
     // Load data from Supabase
     const loadData = useCallback(async () => {
-        if (!isAuthenticated) return;
+        // Even for public route we need products
         setSyncing(true);
         try {
             const [ordersData, customersData, productsData] = await Promise.all([
-                fetchOrders(),
-                fetchCustomers(),
+                isAuthenticated ? fetchOrders() : Promise.resolve([]),
+                isAuthenticated ? fetchCustomers() : Promise.resolve([]),
                 fetchProducts()
             ]);
             setOrders(ordersData);
@@ -64,12 +68,9 @@ function AppContent() {
 
     // Initial load and real-time subscriptions
     useEffect(() => {
-        if (!isAuthenticated) {
-            setLoading(false);
-            return;
-        }
-
         loadData();
+
+        if (!isAuthenticated) return;
 
         // Subscribe to real-time changes
         const unsubOrders = subscribeToOrders(loadData);
@@ -204,6 +205,24 @@ function AppContent() {
                     <p className="text-muted">Veriler yükleniyor...</p>
                 </div>
             </div>
+        );
+    }
+
+    // Special handling for Customer Order Page (Public)
+    if (isPublicRoute) {
+        return (
+            <Routes>
+                <Route
+                    path="/siparis"
+                    element={
+                        <CustomerOrderView
+                            products={products}
+                            addOrder={addOrderDb}
+                            addCustomer={addCustomerDb}
+                        />
+                    }
+                />
+            </Routes>
         );
     }
 
