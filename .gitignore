@@ -25,4 +25,6 @@ npm-debug.log*
 *.tsbuildinfo
 .vercel
 
+user  = admin   
+password = admin123!
 
