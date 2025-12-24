@@ -27,4 +27,5 @@ npm-debug.log*
 
 user  = admin   
 password = admin123!
-
+admin_telefon = +31634316902
+admin_email = mezzesalade@gmail.com

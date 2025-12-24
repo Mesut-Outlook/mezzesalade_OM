@@ -68,6 +68,50 @@ export async function deleteCustomer(id) {
     return true;
 }
 
+// Public function to find customer by phone
+export async function fetchCustomerByPhone(phone) {
+    const cleanPhone = phone.replace(/\D/g, '');
+    const { data, error } = await supabase
+        .from('customers')
+        .select('*');
+
+    if (error) return null;
+
+    // Filter in JS for flexible matching
+    return data.find(c => {
+        const custPhone = c.phone.replace(/\D/g, '');
+        return custPhone.endsWith(cleanPhone.slice(-9)) || cleanPhone.endsWith(custPhone.slice(-9));
+    });
+}
+
+// Public function to fetch specific customer orders
+export async function fetchOrdersByCustomerId(customerId) {
+    const { data, error } = await supabase
+        .from('orders')
+        .select(`
+          *,
+          order_items (*)
+        `)
+        .eq('customer_id', customerId)
+        .order('date', { ascending: false });
+
+    if (error) return [];
+
+    return data.map(order => ({
+        id: order.id,
+        date: order.date,
+        status: order.status,
+        total: parseFloat(order.total) || 0,
+        shipping: parseFloat(order.shipping) || 0,
+        items: (order.order_items || []).map(item => ({
+            name: item.name,
+            price: parseFloat(item.price),
+            quantity: item.quantity,
+            variation: item.variation
+        }))
+    }));
+}
+
 // ==================== ORDERS ====================
 
 export async function fetchOrders() {

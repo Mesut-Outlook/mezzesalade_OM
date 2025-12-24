@@ -6,27 +6,36 @@ import {
     getProductsByCategory,
     getAllProducts
 } from '../../hooks/useProductMatcher';
+import { fetchCustomerByPhone, fetchOrdersByCustomerId } from '../../lib/supabase';
+import { useLanguage } from '../../context/LanguageContext';
 import './CustomerOrder.css';
 
 export default function CustomerOrderView({ products = [], addOrder, addCustomer }) {
     const navigate = useNavigate();
+    const { lang, setLang, t } = useLanguage();
     const productsByCategory = getProductsByCategory(products);
 
     // UI state
     const [activeTab, setActiveTab] = useState('manual'); // 'manual' or 'ai'
     const [orderSuccess, setOrderSuccess] = useState(false);
     const [submitting, setSubmitting] = useState(false);
+    const [identifying, setIdentifying] = useState(false);
+
+    // Identity state
+    const [showLogin, setShowLogin] = useState(true);
+    const [loginPhone, setLoginPhone] = useState('');
+    const [isIdentified, setIsIdentified] = useState(false);
+    const [customerHistory, setCustomerHistory] = useState([]);
 
     // Order state
     const [orderItems, setOrderItems] = useState([]);
     const [deliveryMethod, setDeliveryMethod] = useState('home'); // 'home' or 'pickup'
-    const [customerInfo, setCustomerInfo] = useState({ name: '', phone: '', address: '' });
+    const [customerInfo, setCustomerInfo] = useState({ id: null, name: '', phone: '', address: '' });
     const [orderNotes, setOrderNotes] = useState('');
     const [orderDate, setOrderDate] = useState(new Date().toISOString().split('T')[0]);
 
     // AI state
     const [aiText, setAiText] = useState('');
-    const [aiResults, setAiResults] = useState([]);
 
     // Manual Selection state
     const [searchQuery, setSearchQuery] = useState('');
@@ -46,6 +55,43 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
             setSearchResults([]);
         }
     }, [searchQuery, products]);
+
+    // Handle Identification
+    const handleIdentify = async (e) => {
+        if (e) e.preventDefault();
+        if (!loginPhone || loginPhone.length < 9) return;
+
+        setIdentifying(true);
+        const customer = await fetchCustomerByPhone(loginPhone);
+
+        if (customer) {
+            setCustomerInfo({
+                id: customer.id,
+                name: customer.name,
+                phone: customer.phone,
+                address: customer.address || ''
+            });
+            setIsIdentified(true);
+            setShowLogin(false);
+
+            // Fetch history
+            const history = await fetchOrdersByCustomerId(customer.id);
+            setCustomerHistory(history);
+        } else {
+            // New customer, just proceed to form
+            setCustomerInfo(prev => ({ ...prev, phone: loginPhone }));
+            setShowLogin(false);
+        }
+        setIdentifying(false);
+    };
+
+    const handleLogout = () => {
+        setIsIdentified(false);
+        setCustomerInfo({ id: null, name: '', phone: '', address: '' });
+        setCustomerHistory([]);
+        setShowLogin(true);
+        setLoginPhone('');
+    };
 
     // Add product to order
     const addProductToOrder = (product, variation = null) => {
@@ -88,7 +134,6 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
         if (!aiText.trim()) return;
         const result = parseOrderText(aiText, products);
 
-        // Convert AI results to order items
         const newItems = result.products
             .filter(r => r.match)
             .map(r => ({
@@ -101,51 +146,36 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
             }));
 
         if (newItems.length > 0) {
-            setOrderItems(prev => {
-                // Merge common items or just add? Let's add and let user adjust
-                return [...prev, ...newItems];
-            });
+            setOrderItems(prev => [...prev, ...newItems]);
             setActiveTab('manual');
             setAiText('');
-            alert(`${newItems.length} ürün listenize eklendi!`);
-        } else {
-            alert('Üzgünüz, yazdıklarınızdan herhangi bir ürün eşleştiremedik.');
         }
 
-        // Fill metadata if available
-        if (result.metadata.name) setCustomerInfo(prev => ({ ...prev, name: result.metadata.name }));
-        if (result.metadata.phone) setCustomerInfo(prev => ({ ...prev, phone: result.metadata.phone }));
-        if (result.metadata.address) setCustomerInfo(prev => ({ ...prev, address: result.metadata.address }));
+        if (result.metadata.name && !customerInfo.name) setCustomerInfo(prev => ({ ...prev, name: result.metadata.name }));
+        if (result.metadata.phone && !customerInfo.phone) setCustomerInfo(prev => ({ ...prev, phone: result.metadata.phone }));
+        if (result.metadata.address && !customerInfo.address) setCustomerInfo(prev => ({ ...prev, address: result.metadata.address }));
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (orderItems.length === 0) {
-            alert('Lütfen en az bir ürün ekleyin!');
-            return;
-        }
-        if (!customerInfo.name || !customerInfo.phone) {
-            alert('Lütfen isim ve telefon bilgilerinizi girin!');
-            return;
-        }
+        if (orderItems.length === 0) return;
+        if (!customerInfo.name || !customerInfo.phone) return;
 
         setSubmitting(true);
         try {
-            // 1. Create/Find Customer
             const customer = await addCustomer({
                 name: customerInfo.name,
                 phone: customerInfo.phone,
                 address: customerInfo.address,
-                notes: 'Müşteri tarafından oluşturuldu'
+                notes: isIdentified ? 'Sistemdeki müşteri' : 'Yeni Müşteri'
             });
 
-            if (!customer) throw new Error('Müşteri oluşturulamadı');
+            if (!customer) throw new Error('Customer error');
 
-            // 2. Create Order
             const order = {
                 customerId: customer.id,
                 items: orderItems,
-                notes: orderNotes + (deliveryMethod === 'home' ? ' (Eve Teslimat İstiyor)' : ' (Evden Alacak)'),
+                notes: orderNotes + (deliveryMethod === 'home' ? ' (Delivery)' : ' (Pickup)'),
                 date: orderDate,
                 shipping: shippingFee,
                 status: 'new',
@@ -159,7 +189,6 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
             }
         } catch (error) {
             console.error('Order error:', error);
-            alert('Sipariş oluşturulurken bir hata oluştu. Lütfen tekrar deneyin.');
         } finally {
             setSubmitting(false);
         }
@@ -170,19 +199,59 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
             <div className="customer-container success-page">
                 <div className="success-card">
                     <div className="success-icon">✅</div>
-                    <h1>Siparişiniz Alındı!</h1>
-                    <p>Mezzesalade'yi tercih ettiğiniz için teşekkür ederiz.</p>
+                    <h1>{t('success_title')}</h1>
+                    <p>{t('success_message')}</p>
                     <div className="order-summary-box">
-                        <h3>Sipariş Özeti</h3>
-                        <p><strong>Toplam:</strong> €{total.toFixed(2)}</p>
-                        <p><strong>Yöntem:</strong> {deliveryMethod === 'home' ? '🏠 Eve Teslimat' : '🛍️ Evden Alacak'}</p>
+                        <h3>{t('order_summary')}</h3>
+                        <p><strong>{t('total')}:</strong> €{total.toFixed(2)}</p>
+                        <p><strong>{t('delivery_method')}:</strong> {deliveryMethod === 'home' ? `🏠 ${t('home_delivery')}` : `🛍️ ${t('pickup')}`}</p>
                         {deliveryMethod === 'home' && customerInfo.address && (
-                            <p><strong>Teslimat Adresi:</strong> {customerInfo.address}</p>
+                            <p><strong>{t('address')}:</strong> {customerInfo.address}</p>
                         )}
                     </div>
                     <button className="btn btn-primary" onClick={() => window.location.reload()}>
-                        Yeni Sipariş Oluştur
+                        {t('new_order_btn')}
                     </button>
+                </div>
+            </div>
+        );
+    }
+
+    if (showLogin) {
+        return (
+            <div className="customer-container login-page">
+                <header className="customer-header">
+                    <img src="/images/logo.png" alt="Mezzesalade" className="customer-logo" />
+                    <h1>Mezzesalade</h1>
+                </header>
+                <div className="lang-switch-fixed">
+                    {['tr', 'en', 'nl'].map(l => (
+                        <button key={l} className={`lang-btn ${lang === l ? 'active' : ''}`} onClick={() => setLang(l)}>
+                            {l.toUpperCase()}
+                        </button>
+                    ))}
+                </div>
+                <div className="customer-main">
+                    <div className="card login-card">
+                        <h3>{t('online_order')}</h3>
+                        <p className="text-muted mb-lg">{t('login_msg')}</p>
+                        <form onSubmit={handleIdentify}>
+                            <div className="form-group">
+                                <label>{t('phone_number')}</label>
+                                <input
+                                    type="tel"
+                                    className="form-input"
+                                    placeholder="06... / +31..."
+                                    value={loginPhone}
+                                    onChange={(e) => setLoginPhone(e.target.value)}
+                                    required
+                                />
+                            </div>
+                            <button className="btn btn-primary btn-block btn-lg" type="submit" disabled={identifying}>
+                                {identifying ? t('identifying') : t('login_btn')}
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         );
@@ -191,8 +260,23 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
     return (
         <div className="customer-container">
             <header className="customer-header">
-                <img src="/images/logo.png" alt="Mezzesalade" className="customer-logo" />
-                <h1>Online Sipariş</h1>
+                <div className="header-top">
+                    <img src="/images/logo.png" alt="Mezzesalade" className="customer-logo" />
+                    <div className="lang-switch">
+                        {['tr', 'en', 'nl'].map(l => (
+                            <button key={l} className={`lang-btn ${lang === l ? 'active' : ''}`} onClick={() => setLang(l)}>
+                                {l.toUpperCase()}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+                <h1>{t('online_order')}</h1>
+                {isIdentified && (
+                    <div className="user-welcome">
+                        <span>👋 {t('your_info')}: <strong>{customerInfo.name}</strong></span>
+                        <button className="logout-link" onClick={handleLogout}>{t('logout')}</button>
+                    </div>
+                )}
             </header>
 
             <div className="tab-container">
@@ -200,46 +284,44 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
                     className={`tab-btn ${activeTab === 'manual' ? 'active' : ''}`}
                     onClick={() => setActiveTab('manual')}
                 >
-                    🛍️ Ürün Seç
+                    🛍️ {t('select_product')}
                 </button>
                 <button
                     className={`tab-btn ${activeTab === 'ai' ? 'active' : ''}`}
                     onClick={() => setActiveTab('ai')}
                 >
-                    🤖 Yazarak Sipariş
+                    🤖 {t('write_order')}
                 </button>
             </div>
 
             <main className="customer-main">
                 {activeTab === 'ai' ? (
                     <div className="ai-section card">
-                        <h3>Siparişinizi Buraya Yazın</h3>
-                        <p className="text-muted mb-md">WhatsApp mesajı gibi yazabilirsiniz. Örneğin: "2 Mercimek çorbası, 1 porsiyon İçli Köfte"</p>
+                        <h3>{t('write_order')}</h3>
+                        <p className="text-muted mb-md">{t('ai_placeholder')}</p>
                         <textarea
                             className="form-textarea"
                             value={aiText}
                             onChange={(e) => setAiText(e.target.value)}
-                            placeholder="Siparişinizi buraya yazın..."
+                            placeholder={t('ai_placeholder')}
                             rows={5}
                         />
                         <button className="btn btn-primary btn-block mt-md" onClick={handleAiParse}>
-                            🪄 Listeye Ekle
+                            🪄 {t('add_to_list')}
                         </button>
                     </div>
                 ) : (
                     <div className="selection-section">
-                        {/* Search */}
                         <div className="search-wrap">
                             <input
                                 type="text"
                                 className="search-input"
-                                placeholder="Ürün ara..."
+                                placeholder={t('select_product') + "..."}
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
                         </div>
 
-                        {/* Search Results or Categories */}
                         {searchResults.length > 0 ? (
                             <div className="product-grid">
                                 {searchResults.map(p => (
@@ -272,7 +354,7 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
                 {/* Shopping Cart */}
                 {orderItems.length > 0 && (
                     <div className="cart-section card mt-lg">
-                        <h3>🛒 Sepetiniz</h3>
+                        <h3>🛒 {t('cart')}</h3>
                         <div className="cart-items">
                             {orderItems.map((item, idx) => (
                                 <div key={idx} className="cart-item">
@@ -293,27 +375,32 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
 
                 {/* Delivery & Contact */}
                 <form className="order-form card mt-lg" onSubmit={handleSubmit}>
-                    <h3>🚚 Teslimat Yöntemi</h3>
+                    <h3>🚚 {t('delivery_method')}</h3>
                     <div className="delivery-toggle mb-lg">
                         <button
                             type="button"
                             className={`delivery-btn ${deliveryMethod === 'home' ? 'active' : ''}`}
                             onClick={() => setDeliveryMethod('home')}
                         >
-                            🏠 Eve Teslimat (+€10)
+                            🏠 {t('home_delivery')} (+€10)
                         </button>
                         <button
                             type="button"
                             className={`delivery-btn ${deliveryMethod === 'pickup' ? 'active' : ''}`}
                             onClick={() => setDeliveryMethod('pickup')}
                         >
-                            🛍️ Evden Alacağım
+                            🛍️ {t('pickup')}
                         </button>
                     </div>
 
-                    <h3>👤 Bilgileriniz</h3>
+                    <h3>👤 {t('your_info')}</h3>
+                    {!isIdentified && (
+                        <p className="text-muted mb-md" style={{ fontSize: '0.85rem' }}>
+                            {t('login_msg')}
+                        </p>
+                    )}
                     <div className="form-group">
-                        <label>Adınız Soyadınız *</label>
+                        <label>{t('full_name')} *</label>
                         <input
                             type="text"
                             required
@@ -323,34 +410,31 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
                         />
                     </div>
                     <div className="form-group">
-                        <label>Telefon Numaranız *</label>
+                        <label>{t('phone_number')} *</label>
                         <input
                             type="tel"
                             required
                             className="form-input"
                             value={customerInfo.phone}
+                            readOnly={isIdentified}
                             onChange={(e) => setCustomerInfo({ ...customerInfo, phone: e.target.value })}
                         />
                     </div>
+
                     <div className="form-group">
-                        <label>Teslimat Adresi {deliveryMethod === 'home' && '*'}</label>
+                        <label>{t('address')} {deliveryMethod === 'home' && '*'}</label>
                         <textarea
                             required={deliveryMethod === 'home'}
                             className="form-textarea"
-                            placeholder={deliveryMethod === 'home' ? "Siparişinizin teslim edileceği açık adres..." : "Adresiniz (Opsiyonel)"}
+                            placeholder={deliveryMethod === 'home' ? t('address') + "..." : t('address') + " (" + t('optional') + ")"}
                             value={customerInfo.address}
                             onChange={(e) => setCustomerInfo({ ...customerInfo, address: e.target.value })}
                             style={{ minHeight: 80 }}
                         />
-                        {deliveryMethod === 'pickup' && (
-                            <p className="text-muted" style={{ fontSize: '0.8rem', marginTop: 4 }}>
-                                * Evden alacak olsanız da adresinizi bırakabilirsiniz.
-                            </p>
-                        )}
                     </div>
 
                     <div className="form-group">
-                        <label>Sipariş Tarihi</label>
+                        <label>{t('order_date')}</label>
                         <input
                             type="date"
                             className="form-input"
@@ -360,28 +444,28 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
                     </div>
 
                     <div className="form-group">
-                        <label>Ek Notlar</label>
+                        <label>{t('notes')}</label>
                         <textarea
                             className="form-textarea"
                             value={orderNotes}
                             onChange={(e) => setOrderNotes(e.target.value)}
-                            placeholder="Alerjiler veya özel istekler..."
+                            placeholder={t('notes_placeholder')}
                         />
                     </div>
 
                     <div className="total-box mt-lg">
                         <div className="total-row">
-                            <span>Ara Toplam:</span>
+                            <span>{t('subtotal')}:</span>
                             <span>€{subtotal.toFixed(2)}</span>
                         </div>
                         {shippingFee > 0 && (
                             <div className="total-row">
-                                <span>Teslimat Ücreti:</span>
+                                <span>{t('delivery_fee')}:</span>
                                 <span>€{shippingFee.toFixed(2)}</span>
                             </div>
                         )}
                         <div className="total-row grand-total">
-                            <span>Toplam:</span>
+                            <span>{t('total')}:</span>
                             <span>€{total.toFixed(2)}</span>
                         </div>
                     </div>
@@ -391,9 +475,31 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
                         className="btn btn-primary btn-block btn-lg mt-lg"
                         disabled={submitting || orderItems.length === 0}
                     >
-                        {submitting ? '⏳ Kaydediliyor...' : '✓ Siparişi Onayla'}
+                        {submitting ? '⏳ ...' : `✓ ${t('confirm_order')}`}
                     </button>
                 </form>
+
+                {/* History Section */}
+                {isIdentified && customerHistory.length > 0 && (
+                    <div className="card mt-lg history-card">
+                        <h3>📜 {t('previous_orders')}</h3>
+                        <div className="history-list">
+                            {customerHistory.map((h, i) => (
+                                <div key={i} className="history-item">
+                                    <div className="history-header">
+                                        <span className="h-date">{new Date(h.date).toLocaleDateString(lang === 'tr' ? 'tr-TR' : 'en-GB')}</span>
+                                        <span className="h-total">€{h.total.toFixed(2)}</span>
+                                    </div>
+                                    <div className="h-items">
+                                        {h.items.map((it, j) => (
+                                            <span key={j}>{it.quantity}x {it.name}</span>
+                                        )).reduce((prev, curr) => [prev, ', ', curr])}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
             </main>
 
             <footer className="customer-footer">
