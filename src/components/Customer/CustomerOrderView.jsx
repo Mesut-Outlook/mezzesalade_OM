@@ -10,7 +10,7 @@ import { fetchCustomerByPhone, fetchOrdersByCustomerId } from '../../lib/supabas
 import { useLanguage } from '../../context/LanguageContext';
 import './CustomerOrder.css';
 
-export default function CustomerOrderView({ products = [], addOrder, addCustomer }) {
+export default function CustomerOrderView({ products = [], addOrder, addCustomer, updateOrder }) {
     const navigate = useNavigate();
     const { lang, setLang, t } = useLanguage();
     const productsByCategory = getProductsByCategory(products);
@@ -28,6 +28,7 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
     const [customerHistory, setCustomerHistory] = useState([]);
 
     // Order state
+    const [editingOrder, setEditingOrder] = useState(null);
     const [orderItems, setOrderItems] = useState([]);
     const [deliveryMethod, setDeliveryMethod] = useState('home'); // 'home' or 'pickup'
     const [customerInfo, setCustomerInfo] = useState({ id: null, name: '', phone: '', address: '' });
@@ -75,8 +76,7 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
             setShowLogin(false);
 
             // Fetch history
-            const history = await fetchOrdersByCustomerId(customer.id);
-            setCustomerHistory(history);
+            fetchHistory(customer.id);
         } else {
             // New customer, just proceed to form
             setCustomerInfo(prev => ({ ...prev, phone: loginPhone }));
@@ -85,18 +85,54 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
         setIdentifying(false);
     };
 
+    const fetchHistory = async (customerId) => {
+        const history = await fetchOrdersByCustomerId(customerId);
+        setCustomerHistory(history);
+    };
+
     const handleLogout = () => {
         setIsIdentified(false);
         setCustomerInfo({ id: null, name: '', phone: '', address: '' });
         setCustomerHistory([]);
         setShowLogin(true);
         setLoginPhone('');
+        setEditingOrder(null);
+        setOrderItems([]);
+    };
+
+    // Load order for editing
+    const handleEditOrder = (order) => {
+        if (order.status !== 'new') {
+            alert(t('cannot_edit'));
+            return;
+        }
+
+        setEditingOrder(order);
+        setOrderItems(order.items.map(it => ({
+            ...it,
+            productId: it.productId || it.product_id
+        })));
+        setDeliveryMethod(order.shipping > 0 ? 'home' : 'pickup');
+        setOrderDate(order.date);
+
+        const cleanNotes = order.notes ? order.notes.replace(' (Delivery)', '').replace(' (Pickup)', '') : '';
+        setOrderNotes(cleanNotes);
+
+        window.scrollTo(0, 0);
+        setActiveTab('manual');
+    };
+
+    const cancelEdit = () => {
+        setEditingOrder(null);
+        setOrderItems([]);
+        setOrderNotes('');
+        setOrderDate(new Date().toISOString().split('T')[0]);
     };
 
     // Add product to order
     const addProductToOrder = (product, variation = null) => {
         const existingIndex = orderItems.findIndex(
-            item => item.productId === product.id && item.variation === variation
+            item => (item.productId === product.id || item.product_id === product.id) && item.variation === variation
         );
 
         if (existingIndex >= 0) {
@@ -163,32 +199,47 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
 
         setSubmitting(true);
         try {
-            const customer = await addCustomer({
-                name: customerInfo.name,
-                phone: customerInfo.phone,
-                address: customerInfo.address,
-                notes: isIdentified ? 'Sistemdeki müşteri' : 'Yeni Müşteri'
-            });
+            // 1. Create/Find Customer
+            let currentCustomerId = customerInfo.id;
+            if (!currentCustomerId) {
+                const customer = await addCustomer({
+                    name: customerInfo.name,
+                    phone: customerInfo.phone,
+                    address: customerInfo.address,
+                    notes: 'Yeni Müşteri (Online)'
+                });
+                if (customer) currentCustomerId = customer.id;
+            }
 
-            if (!customer) throw new Error('Customer error');
+            if (!currentCustomerId) throw new Error('Customer error');
 
-            const order = {
-                customerId: customer.id,
+            const orderData = {
+                customerId: currentCustomerId,
                 items: orderItems,
                 notes: orderNotes + (deliveryMethod === 'home' ? ' (Delivery)' : ' (Pickup)'),
                 date: orderDate,
                 shipping: shippingFee,
-                status: 'new',
+                status: editingOrder ? editingOrder.status : 'new',
                 total
             };
 
-            const result = await addOrder(order);
+            let result;
+            if (editingOrder) {
+                result = await updateOrder(editingOrder.id, orderData);
+                console.log('🔔 Notification: Order updated', editingOrder.id);
+            } else {
+                result = await addOrder(orderData);
+                console.log('🔔 Notification: New order', result?.id);
+            }
+
             if (result) {
                 setOrderSuccess(true);
                 window.scrollTo(0, 0);
+                if (isIdentified) fetchHistory(customerInfo.id);
             }
         } catch (error) {
             console.error('Order error:', error);
+            alert('Hata oluştu: ' + error.message);
         } finally {
             setSubmitting(false);
         }
@@ -209,7 +260,7 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
                             <p><strong>{t('address')}:</strong> {customerInfo.address}</p>
                         )}
                     </div>
-                    <button className="btn btn-primary" onClick={() => window.location.reload()}>
+                    <button className="btn btn-primary" onClick={() => setOrderSuccess(false)}>
                         {t('new_order_btn')}
                     </button>
                 </div>
@@ -295,6 +346,13 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
             </div>
 
             <main className="customer-main">
+                {editingOrder && (
+                    <div className="edit-banner" style={{ background: '#fff3e0', padding: 15, borderRadius: 12, marginBottom: 20, display: 'flex', justifyContent: 'space-between', alignItems: 'center', border: '1px solid #ffcc80' }}>
+                        <span>📝 {t('update_order')}: #{editingOrder.id.slice(-6).toUpperCase()}</span>
+                        <button className="btn btn-sm" onClick={cancelEdit} style={{ background: '#ff8c00', color: 'white' }}>✕</button>
+                    </div>
+                )}
+
                 {activeTab === 'ai' ? (
                     <div className="ai-section card">
                         <h3>{t('write_order')}</h3>
@@ -363,9 +421,9 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
                                         <span className="cart-item-price">€{item.price.toFixed(2)}</span>
                                     </div>
                                     <div className="cart-item-controls">
-                                        <button className="qty-btn" onClick={() => updateQuantity(idx, -1)}>−</button>
+                                        <button type="button" className="qty-btn" onClick={() => updateQuantity(idx, -1)}>−</button>
                                         <span className="qty-val">{item.quantity}</span>
-                                        <button className="qty-btn" onClick={() => updateQuantity(idx, 1)}>+</button>
+                                        <button type="button" className="qty-btn" onClick={() => updateQuantity(idx, 1)}>+</button>
                                     </div>
                                 </div>
                             ))}
@@ -475,8 +533,13 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
                         className="btn btn-primary btn-block btn-lg mt-lg"
                         disabled={submitting || orderItems.length === 0}
                     >
-                        {submitting ? '⏳ ...' : `✓ ${t('confirm_order')}`}
+                        {submitting ? '⏳ ...' : `✓ ${editingOrder ? t('update_order') : t('confirm_order')}`}
                     </button>
+                    {editingOrder && (
+                        <button type="button" className="btn btn-secondary btn-block mt-md" onClick={cancelEdit}>
+                            {t('cancel')}
+                        </button>
+                    )}
                 </form>
 
                 {/* History Section */}
@@ -485,16 +548,38 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
                         <h3>📜 {t('previous_orders')}</h3>
                         <div className="history-list">
                             {customerHistory.map((h, i) => (
-                                <div key={i} className="history-item">
-                                    <div className="history-header">
-                                        <span className="h-date">{new Date(h.date).toLocaleDateString(lang === 'tr' ? 'tr-TR' : 'en-GB')}</span>
-                                        <span className="h-total">€{h.total.toFixed(2)}</span>
+                                <div key={i} className={`history-item ${editingOrder?.id === h.id ? 'editing' : ''}`} style={{ border: editingOrder?.id === h.id ? '2px solid #ff8c00' : '1px solid #eee', position: 'relative', background: 'white', padding: 15, borderRadius: 12, marginBottom: 10 }}>
+                                    <div className="history-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10 }}>
+                                        <span className="h-date" style={{ fontSize: '0.85rem', color: '#666' }}>{new Date(h.date).toLocaleDateString(lang === 'tr' ? 'tr-TR' : 'en-GB')}</span>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                                            <span className={`status-badge status-${h.status}`} style={{
+                                                padding: '2px 8px',
+                                                borderRadius: 10,
+                                                fontSize: '0.75rem',
+                                                fontWeight: 800,
+                                                background: h.status === 'new' ? '#e3f2fd' : h.status === 'preparing' ? '#fff3e0' : h.status === 'ready' ? '#e8f5e9' : '#f5f5f5',
+                                                color: h.status === 'new' ? '#1976d2' : h.status === 'preparing' ? '#ef6c00' : h.status === 'ready' ? '#2e7d32' : '#616161'
+                                            }}>
+                                                {t(`status_${h.status}`)}
+                                            </span>
+                                            <span className="h-total" style={{ fontWeight: 800, color: '#ff8c00' }}>€{h.total.toFixed(2)}</span>
+                                        </div>
                                     </div>
-                                    <div className="h-items">
+                                    <div className="h-items" style={{ marginBottom: 10, fontSize: '0.9rem', color: '#4a3022' }}>
                                         {h.items.map((it, j) => (
-                                            <span key={j}>{it.quantity}x {it.name}</span>
-                                        )).reduce((prev, curr) => [prev, ', ', curr])}
+                                            <span key={j}>{it.quantity}x {it.name}{j < h.items.length - 1 ? ', ' : ''}</span>
+                                        ))}
                                     </div>
+                                    {h.status === 'new' && (
+                                        <button
+                                            type="button"
+                                            className="btn btn-sm"
+                                            style={{ background: '#ff8c00', color: 'white', padding: '4px 12px', fontSize: '0.8rem', borderRadius: 8 }}
+                                            onClick={() => handleEditOrder(h)}
+                                        >
+                                            ✏️ {t('edit')}
+                                        </button>
+                                    )}
                                 </div>
                             ))}
                         </div>
@@ -509,47 +594,50 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
     );
 }
 
+// Sub-components
 function ProductCard({ product, onAdd }) {
-    const [showVariations, setShowVariations] = useState(false);
+    const [selectedVariation, setSelectedVariation] = useState(
+        product.variationPrices && Object.keys(product.variationPrices).length > 0
+            ? Object.keys(product.variationPrices)[0]
+            : null
+    );
+
+    const price = selectedVariation && product.variationPrices
+        ? product.variationPrices[selectedVariation]
+        : product.price;
 
     return (
         <div className="p-card">
-            {product.image && (
-                <div className="p-image">
-                    <img src={product.image} alt={product.name} />
-                </div>
-            )}
+            <div className="p-image">
+                <img src={product.image || 'https://via.placeholder.com/150'} alt={product.name} />
+            </div>
             <div className="p-content">
-                <h4 className="p-name">{product.name}</h4>
-                <p className="p-desc">{product.description}</p>
-                <div className="p-footer">
-                    <span className="p-price">€{product.price.toFixed(2)}</span>
-                    {product.variations?.length > 0 ? (
-                        <button className="p-add-btn" onClick={() => setShowVariations(!showVariations)}>
-                            Seçenekler
-                        </button>
-                    ) : (
-                        <button className="p-add-btn" onClick={() => onAdd(product)}>
-                            Ekle
-                        </button>
-                    )}
+                <div>
+                    <div className="p-name">{product.name}</div>
+                    <p className="p-desc">{product.description}</p>
                 </div>
-                {showVariations && (
-                    <div className="p-variations">
-                        {product.variations.map(v => (
-                            <button
-                                key={v}
-                                className="v-btn"
-                                onClick={() => {
-                                    onAdd(product, v);
-                                    setShowVariations(false);
-                                }}
-                            >
-                                {v} (+€{(product.variationPrices?.[v] || 0)})
-                            </button>
-                        ))}
+
+                {product.variationPrices && Object.keys(product.variationPrices).length > 0 && (
+                    <div className="p-variations mb-sm">
+                        <select
+                            className="form-input"
+                            style={{ padding: '2px 4px', fontSize: '0.8rem' }}
+                            value={selectedVariation}
+                            onChange={(e) => setSelectedVariation(e.target.value)}
+                        >
+                            {Object.keys(product.variationPrices).map(v => (
+                                <option key={v} value={v}>{v}</option>
+                            ))}
+                        </select>
                     </div>
                 )}
+
+                <div className="p-footer">
+                    <span className="p-price">€{price.toFixed(2)}</span>
+                    <button className="p-add-btn" onClick={() => onAdd(product, selectedVariation)}>
+                        +
+                    </button>
+                </div>
             </div>
         </div>
     );

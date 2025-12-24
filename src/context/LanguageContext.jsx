@@ -33,6 +33,13 @@ const translations = {
         logout: 'Çıkış Yap',
         identifying: 'Kimlik Doğrulanıyor...',
         optional: 'Opsiyonel',
+        edit: 'Düzenle',
+        update_order: 'Siparişi Güncelle',
+        status_new: 'Yeni',
+        status_preparing: 'Hazırlanıyor',
+        status_ready: 'Hazır',
+        status_delivered: 'Teslim Edildi',
+        cannot_edit: 'Bu sipariş işleme alındığı için artık düzenlenemez.',
     },
     en: {
         online_order: 'Online Order',
@@ -66,6 +73,13 @@ const translations = {
         logout: 'Logout',
         identifying: 'Identifying...',
         optional: 'Optional',
+        edit: 'Edit',
+        update_order: 'Update Order',
+        status_new: 'New',
+        status_preparing: 'Preparing',
+        status_ready: 'Ready',
+        status_delivered: 'Delivered',
+        cannot_edit: 'This order is being processed and cannot be edited anymore.',
     },
     nl: {
         online_order: 'Online Bestellen',
@@ -99,6 +113,13 @@ const translations = {
         logout: 'Uitloggen',
         identifying: 'Identificeren...',
         optional: 'Optioneel',
+        edit: 'Bewerken',
+        update_order: 'Bestelling Bijwerken',
+        status_new: 'Nieuw',
+        status_preparing: 'Voorbereiden',
+        status_ready: 'Gereed',
+        status_delivered: 'Geleverd',
+        cannot_edit: 'Deze bestelling wordt verwerkt en kan niet meer worden bewerkt.',
     }
 };
 

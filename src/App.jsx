@@ -219,6 +219,7 @@ function AppContent() {
                             products={products}
                             addOrder={addOrderDb}
                             addCustomer={addCustomerDb}
+                            updateOrder={updateOrder}
                         />
                     }
                 />
