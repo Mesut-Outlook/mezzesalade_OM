@@ -197,17 +197,34 @@ export default function OrderForm({ customers, products = [], orders = [], addCu
                 <h3 className="mb-md">👤 Müşteri</h3>
 
                 {selectedCustomer ? (
-                    <div className="flex justify-between items-center">
-                        <div>
-                            <div className="font-bold">{selectedCustomer.name}</div>
-                            <div className="text-muted">{selectedCustomer.phone}</div>
+                    <div>
+                        <div className="flex justify-between items-center mb-md">
+                            <div>
+                                <div className="font-bold">{selectedCustomer.name}</div>
+                                <div className="text-muted">{selectedCustomer.phone}</div>
+                            </div>
+                            <button
+                                className="btn btn-secondary"
+                                onClick={() => setSelectedCustomer(null)}
+                            >
+                                Değiştir
+                            </button>
                         </div>
-                        <button
-                            className="btn btn-secondary"
-                            onClick={() => setSelectedCustomer(null)}
-                        >
-                            Değiştir
-                        </button>
+                        <div className="form-group mb-0">
+                            <label className="form-label">📍 Teslimat Adresi</label>
+                            <textarea
+                                className="form-textarea"
+                                placeholder="Teslimat adresi..."
+                                value={selectedCustomer.address || ''}
+                                onChange={(e) => {
+                                    const newAddress = e.target.value;
+                                    setSelectedCustomer({ ...selectedCustomer, address: newAddress });
+                                    // Also update this in the main customers list if possible, 
+                                    // but for now we'll just handle it during save.
+                                }}
+                                style={{ minHeight: 60 }}
+                            />
+                        </div>
                     </div>
                 ) : (
                     <div className="flex gap-sm flex-col">

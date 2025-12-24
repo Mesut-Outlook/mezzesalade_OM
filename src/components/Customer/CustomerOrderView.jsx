@@ -176,6 +176,9 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
                         <h3>Sipariş Özeti</h3>
                         <p><strong>Toplam:</strong> €{total.toFixed(2)}</p>
                         <p><strong>Yöntem:</strong> {deliveryMethod === 'home' ? '🏠 Eve Teslimat' : '🛍️ Evden Alacak'}</p>
+                        {deliveryMethod === 'home' && customerInfo.address && (
+                            <p><strong>Teslimat Adresi:</strong> {customerInfo.address}</p>
+                        )}
                     </div>
                     <button className="btn btn-primary" onClick={() => window.location.reload()}>
                         Yeni Sipariş Oluştur
@@ -329,17 +332,22 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
                             onChange={(e) => setCustomerInfo({ ...customerInfo, phone: e.target.value })}
                         />
                     </div>
-                    {deliveryMethod === 'home' && (
-                        <div className="form-group fadeIn">
-                            <label>Teslimat Adresi *</label>
-                            <textarea
-                                required
-                                className="form-textarea"
-                                value={customerInfo.address}
-                                onChange={(e) => setCustomerInfo({ ...customerInfo, address: e.target.value })}
-                            />
-                        </div>
-                    )}
+                    <div className="form-group">
+                        <label>Teslimat Adresi {deliveryMethod === 'home' && '*'}</label>
+                        <textarea
+                            required={deliveryMethod === 'home'}
+                            className="form-textarea"
+                            placeholder={deliveryMethod === 'home' ? "Siparişinizin teslim edileceği açık adres..." : "Adresiniz (Opsiyonel)"}
+                            value={customerInfo.address}
+                            onChange={(e) => setCustomerInfo({ ...customerInfo, address: e.target.value })}
+                            style={{ minHeight: 80 }}
+                        />
+                        {deliveryMethod === 'pickup' && (
+                            <p className="text-muted" style={{ fontSize: '0.8rem', marginTop: 4 }}>
+                                * Evden alacak olsanız da adresinizi bırakabilirsiniz.
+                            </p>
+                        )}
+                    </div>
 
                     <div className="form-group">
                         <label>Sipariş Tarihi</label>
