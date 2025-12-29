@@ -70,16 +70,17 @@ export async function deleteCustomer(id) {
 
 // Public function to find customer by phone
 export async function fetchCustomerByPhone(phone) {
+    if (!phone) return null;
     const cleanPhone = phone.replace(/\D/g, '');
     const { data, error } = await supabase
         .from('customers')
         .select('*');
 
-    if (error) return null;
+    if (error || !data) return null;
 
     // Filter in JS for flexible matching
     return data.find(c => {
-        const custPhone = c.phone.replace(/\D/g, '');
+        const custPhone = (c.phone || '').replace(/\D/g, '');
         return custPhone.endsWith(cleanPhone.slice(-9)) || cleanPhone.endsWith(custPhone.slice(-9));
     });
 }
@@ -103,11 +104,14 @@ export async function fetchOrdersByCustomerId(customerId) {
         status: order.status,
         total: parseFloat(order.total) || 0,
         shipping: parseFloat(order.shipping) || 0,
+        notes: order.notes,
         items: (order.order_items || []).map(item => ({
+            productId: item.product_id,
             name: item.name,
             price: parseFloat(item.price),
             quantity: item.quantity,
-            variation: item.variation
+            variation: item.variation,
+            category: item.category
         }))
     }));
 }

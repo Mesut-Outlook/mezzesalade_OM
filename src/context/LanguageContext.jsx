@@ -40,6 +40,7 @@ const translations = {
         status_ready: 'Hazır',
         status_delivered: 'Teslim Edildi',
         cannot_edit: 'Bu sipariş işleme alındığı için artık düzenlenemez.',
+        cancel: 'İptal',
     },
     en: {
         online_order: 'Online Order',
@@ -80,6 +81,7 @@ const translations = {
         status_ready: 'Ready',
         status_delivered: 'Delivered',
         cannot_edit: 'This order is being processed and cannot be edited anymore.',
+        cancel: 'Cancel',
     },
     nl: {
         online_order: 'Online Bestellen',
@@ -120,7 +122,8 @@ const translations = {
         status_ready: 'Gereed',
         status_delivered: 'Geleverd',
         cannot_edit: 'Deze bestelling wordt verwerkt en kan niet meer worden bewerkt.',
-    }
+        cancel: 'Annuleren',
+    },
 };
 
 const LanguageContext = createContext();

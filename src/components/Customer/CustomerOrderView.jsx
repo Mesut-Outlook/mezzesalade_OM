@@ -41,7 +41,14 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
     // Manual Selection state
     const [searchQuery, setSearchQuery] = useState('');
     const [searchResults, setSearchResults] = useState([]);
-    const [selectedCategory, setSelectedCategory] = useState(Object.keys(productsByCategory)[0] || null);
+    const [selectedCategory, setSelectedCategory] = useState(null);
+
+    // Auto-select first category when products load
+    useEffect(() => {
+        if (!selectedCategory && Object.keys(productsByCategory).length > 0) {
+            setSelectedCategory(Object.keys(productsByCategory)[0]);
+        }
+    }, [productsByCategory, selectedCategory]);
 
     // Calculate totals
     const subtotal = orderItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
@@ -201,6 +208,15 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
         try {
             // 1. Create/Find Customer
             let currentCustomerId = customerInfo.id;
+
+            // If not identified, check if customer already exists by phone
+            if (!currentCustomerId && customerInfo.phone) {
+                const existing = await fetchCustomerByPhone(customerInfo.phone);
+                if (existing) {
+                    currentCustomerId = existing.id;
+                }
+            }
+
             if (!currentCustomerId) {
                 const customer = await addCustomer({
                     name: customerInfo.name,

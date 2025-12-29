@@ -43,7 +43,7 @@ function AppContent() {
     const [syncing, setSyncing] = useState(false);
 
     // Public route check
-    const isPublicRoute = location.pathname === '/siparis';
+    const isPublicRoute = location.pathname.startsWith('/siparis');
 
     // Load data from Supabase
     const loadData = useCallback(async () => {
