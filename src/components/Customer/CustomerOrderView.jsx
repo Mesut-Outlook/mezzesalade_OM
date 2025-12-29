@@ -318,6 +318,11 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
                                 {identifying ? t('identifying') : t('login_btn')}
                             </button>
                         </form>
+                        <div className="mt-lg pt-md border-top" style={{ borderTop: '1px solid #eee' }}>
+                            <p className="text-muted" style={{ fontSize: '0.8rem', lineHeight: '1.4' }}>
+                                {t('shortcut_tip')}
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -41,6 +41,7 @@ const translations = {
         status_delivered: 'Teslim Edildi',
         cannot_edit: 'Bu sipariş işleme alındığı için artık düzenlenemez.',
         cancel: 'İptal',
+        shortcut_tip: '💡 İpucu: Bu sayfayı telefonunuzun ana ekranına ekleyerek ("Ana Ekrana Ekle") bir uygulama gibi hızlıca sipariş verebilirsiniz.',
     },
     en: {
         online_order: 'Online Order',
@@ -82,6 +83,7 @@ const translations = {
         status_delivered: 'Delivered',
         cannot_edit: 'This order is being processed and cannot be edited anymore.',
         cancel: 'Cancel',
+        shortcut_tip: '💡 Tip: Add this page to your home screen ("Add to Home Screen") to place orders quickly like an app.',
     },
     nl: {
         online_order: 'Online Bestellen',
@@ -123,6 +125,7 @@ const translations = {
         status_delivered: 'Geleverd',
         cannot_edit: 'Deze bestelling wordt verwerkt en kan niet meer worden bewerkt.',
         cancel: 'Annuleren',
+        shortcut_tip: '💡 Tip: Voeg deze pagina toe aan uw beginscherm ("Zet op beginscherm") om snel bestellingen te plaatsen, net als bir app.',
     },
 };
 
