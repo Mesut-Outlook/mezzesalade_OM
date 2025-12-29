@@ -205,21 +205,10 @@ function isLikelyName(text, productMatch) {
 }
 
 // Main function to parse WhatsApp message text
-export function parseOrderText(text, productList = [], existingCustomers = []) {
-    // Only use products from the provided list (Supabase products)
-    // Don't fall back to local products to avoid ID mismatches
+export function parseOrderText(text, productList = []) {
     if (!productList || productList.length === 0) {
         console.warn('⚠️ No products provided to parseOrderText. Cannot match products.');
-        return {
-            products: [],
-            metadata: {
-                date: null,
-                phone: null,
-                name: null,
-                address: null,
-                matchedCustomer: null
-            }
-        };
+        return { products: [], metadata: {} };
     }
 
     const searchable = getSearchableProducts(productList);
@@ -227,35 +216,14 @@ export function parseOrderText(text, productList = [], existingCustomers = []) {
 
     const lines = text.split(/[\n]+/).filter(line => line.trim());
     const results = [];
-    let extractedDate = null;
-    let extractedPhone = null;
-    let extractedName = null;
-    let extractedAddress = null;
-
     const productLines = [];
 
     for (const line of lines) {
         const trimmedLine = line.trim();
         if (!trimmedLine) continue;
 
-        const dateMatch = parseDate(trimmedLine);
-        if (dateMatch) {
-            extractedDate = dateMatch;
-            continue;
-        }
-
-        if (isPhoneNumber(trimmedLine)) {
-            extractedPhone = trimmedLine.replace(/[\s\-\(\)\.]/g, '');
-            if (extractedPhone.startsWith('06')) {
-                extractedPhone = '+31' + extractedPhone.slice(1);
-            } else if (extractedPhone.startsWith('316')) {
-                extractedPhone = '+' + extractedPhone;
-            }
-            continue;
-        }
-
-        if (isAddressLine(trimmedLine)) {
-            extractedAddress = trimmedLine.replace(/^adres\s*[:：]\s*/i, '').trim();
+        // Skip lines that look like metadata to focus on products
+        if (isPhoneNumber(trimmedLine) || parseDate(trimmedLine) || isAddressLine(trimmedLine)) {
             continue;
         }
 
@@ -263,9 +231,9 @@ export function parseOrderText(text, productList = [], existingCustomers = []) {
         if (parsed) {
             const productMatch = matchProduct(parsed.productName, searchable, fuse);
 
+            // If it's not a strong product match, it might be a name or noise
             if (!productMatch || productMatch.confidence < 0.5) {
-                if (!extractedName && isLikelyName(trimmedLine, productMatch)) {
-                    extractedName = trimmedLine;
+                if (isLikelyName(trimmedLine, productMatch)) {
                     continue;
                 }
             }
@@ -288,34 +256,14 @@ export function parseOrderText(text, productList = [], existingCustomers = []) {
         });
     }
 
-    let matchedCustomer = null;
-    if (extractedPhone && existingCustomers.length > 0) {
-        const normalizedPhone = extractedPhone.replace(/\D/g, '');
-        matchedCustomer = existingCustomers.find(c => {
-            const custPhone = c.phone.replace(/\D/g, '');
-            return custPhone.endsWith(normalizedPhone.slice(-9)) ||
-                normalizedPhone.endsWith(custPhone.slice(-9));
-        });
-    }
-
-    if (!matchedCustomer && extractedName && existingCustomers.length > 0) {
-        const normalizedName = normalizeTurkish(extractedName.toLowerCase().trim());
-        matchedCustomer = existingCustomers.find(c => {
-            const custName = normalizeTurkish(c.name.toLowerCase().trim());
-            return custName === normalizedName ||
-                custName.includes(normalizedName) ||
-                normalizedName.includes(custName);
-        });
-    }
-
     return {
         products: results,
         metadata: {
-            date: extractedDate,
-            phone: extractedPhone,
-            name: extractedName,
-            address: extractedAddress,
-            matchedCustomer
+            date: null,
+            phone: null,
+            name: null,
+            address: null,
+            matchedCustomer: null
         }
     };
 }

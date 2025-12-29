@@ -6,6 +6,10 @@
         "category": "Mezeler",
         "description": "Aubergine, tomato, green and red pepper, onion, parsley",
         "image": "https://mezzesalade.nl/wp-content/uploads/2021/09/babagannus-e1632641687202.jpg",
+        "dietary_tags": [
+            "V",
+            "GF"
+        ],
         "variations": [
             "Small",
             "Standard",
@@ -18,6 +22,10 @@
         "price": 18,
         "category": "Mezeler",
         "description": "",
+        "dietary_tags": [
+            "VG",
+            "V"
+        ],
         "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/14fd640e-cc0a-4ff9-9bd0-4af71ace2566.jpg"
     },
     {
@@ -90,6 +98,10 @@
         "price": 18,
         "category": "Mezeler",
         "description": "",
+        "dietary_tags": [
+            "N",
+            "VG"
+        ],
         "image": "https://mezzesalade.nl/wp-content/uploads/2023/01/Muhammara-e1696679568682.jpeg"
     },
     {

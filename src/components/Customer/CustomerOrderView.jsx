@@ -13,13 +13,26 @@ import './CustomerOrder.css';
 export default function CustomerOrderView({ products = [], addOrder, addCustomer, updateOrder }) {
     const navigate = useNavigate();
     const { lang, setLang, t } = useLanguage();
-    const productsByCategory = getProductsByCategory(products);
+
+    // Diet Filters state
+    const [dietFilter, setDietFilter] = useState(null); // 'V', 'VG', 'GF', 'N'
+
+    // Filter products by diet
+    const filteredProducts = products.filter(p => {
+        if (!dietFilter) return true;
+        return (p.dietary_tags || []).includes(dietFilter);
+    });
+
+    const productsByCategory = getProductsByCategory(filteredProducts);
 
     // UI state
     const [activeTab, setActiveTab] = useState('manual'); // 'manual' or 'ai'
     const [orderSuccess, setOrderSuccess] = useState(false);
     const [submitting, setSubmitting] = useState(false);
     const [identifying, setIdentifying] = useState(false);
+    const [toast, setToast] = useState(null);
+    const [lightboxImage, setLightboxImage] = useState(null);
+    const [showSummary, setShowSummary] = useState(false);
 
     // Identity state
     const [showLogin, setShowLogin] = useState(true);
@@ -63,6 +76,18 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
             setSearchResults([]);
         }
     }, [searchQuery, products]);
+
+    // Toast Timer
+    useEffect(() => {
+        if (toast) {
+            const timer = setTimeout(() => setToast(null), 2000);
+            return () => clearTimeout(timer);
+        }
+    }, [toast]);
+
+    const showToast = (msg) => {
+        setToast(msg);
+    };
 
     // Handle Identification
     const handleIdentify = async (e) => {
@@ -161,6 +186,7 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
                 category: product.category
             }]);
         }
+        showToast(t('added_to_cart'));
     };
 
     const updateQuantity = (index, delta) => {
@@ -192,18 +218,20 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
             setOrderItems(prev => [...prev, ...newItems]);
             setActiveTab('manual');
             setAiText('');
+            showToast(t('added_to_cart'));
         }
-
-        if (result.metadata.name && !customerInfo.name) setCustomerInfo(prev => ({ ...prev, name: result.metadata.name }));
-        if (result.metadata.phone && !customerInfo.phone) setCustomerInfo(prev => ({ ...prev, phone: result.metadata.phone }));
-        if (result.metadata.address && !customerInfo.address) setCustomerInfo(prev => ({ ...prev, address: result.metadata.address }));
     };
 
-    const handleSubmit = async (e) => {
+    const openSummary = (e) => {
         e.preventDefault();
         if (orderItems.length === 0) return;
         if (!customerInfo.name || !customerInfo.phone) return;
+        if (deliveryMethod === 'home' && !customerInfo.address) return;
+        setShowSummary(true);
+    };
 
+    const handleSubmit = async () => {
+        setShowSummary(false);
         setSubmitting(true);
         try {
             // 1. Create/Find Customer
@@ -331,6 +359,68 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
 
     return (
         <div className="customer-container">
+            {toast && <div className="toast-message">{toast}</div>}
+
+            {lightboxImage && (
+                <div className="lightbox-overlay" onClick={() => setLightboxImage(null)}>
+                    <div className="lightbox-content" onClick={e => e.stopPropagation()}>
+                        <img src={lightboxImage} alt="Large format" />
+                        <button className="lightbox-close" onClick={() => setLightboxImage(null)}>×</button>
+                    </div>
+                </div>
+            )}
+
+            {showSummary && (
+                <div className="modal-overlay" onClick={() => setShowSummary(false)}>
+                    <div className="modal summary-modal" onClick={e => e.stopPropagation()}>
+                        <div className="modal-header">
+                            <h2>📋 {t('order_overview')}</h2>
+                            <button className="modal-close" onClick={() => setShowSummary(false)}>×</button>
+                        </div>
+                        <div className="summary-content">
+                            <div className="summary-items">
+                                {orderItems.map((it, idx) => (
+                                    <div key={idx} className="summary-item">
+                                        <span>{it.quantity}x {it.name} {it.variation ? `(${it.variation})` : ''}</span>
+                                        <span>€{(it.price * it.quantity).toFixed(2)}</span>
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="summary-footer mt-md">
+                                <div className="flex justify-between">
+                                    <span>{t('subtotal')}</span>
+                                    <span>€{subtotal.toFixed(2)}</span>
+                                </div>
+                                {shippingFee > 0 && (
+                                    <div className="flex justify-between">
+                                        <span>{t('delivery_fee')}</span>
+                                        <span>€{shippingFee.toFixed(2)}</span>
+                                    </div>
+                                )}
+                                <div className="flex justify-between font-bold text-lg mt-sm pt-sm border-top">
+                                    <span>{t('total')}</span>
+                                    <span>€{total.toFixed(2)}</span>
+                                </div>
+                            </div>
+                            <div className="summary-details mt-md pt-md border-top">
+                                <p>👤 <strong>{customerInfo.name}</strong></p>
+                                <p>📅 <strong>{orderDate}</strong></p>
+                                <p>🚚 <strong>{deliveryMethod === 'home' ? t('home_delivery') : t('pickup')}</strong></p>
+                                {deliveryMethod === 'home' && <p>📍 {customerInfo.address}</p>}
+                            </div>
+                        </div>
+                        <div className="modal-actions mt-lg">
+                            <button className="btn btn-secondary flex-1" onClick={() => setShowSummary(false)}>
+                                ✏️ {t('edit_order')}
+                            </button>
+                            <button className="btn btn-primary flex-1" onClick={handleSubmit} disabled={submitting}>
+                                {submitting ? '...' : `✓ ${t('confirm_and_send')}`}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             <header className="customer-header">
                 <div className="header-top">
                     <img src="/images/logo.png" alt="Mezzesalade" className="customer-logo" />
@@ -368,9 +458,9 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
 
             <main className="customer-main">
                 {editingOrder && (
-                    <div className="edit-banner" style={{ background: '#fff3e0', padding: 15, borderRadius: 12, marginBottom: 20, display: 'flex', justifyContent: 'space-between', alignItems: 'center', border: '1px solid #ffcc80' }}>
+                    <div className="edit-banner">
                         <span>📝 {t('update_order')}: #{editingOrder.id.slice(-6).toUpperCase()}</span>
-                        <button className="btn btn-sm" onClick={cancelEdit} style={{ background: '#ff8c00', color: 'white' }}>✕</button>
+                        <button className="btn btn-sm" onClick={cancelEdit}>✕</button>
                     </div>
                 )}
 
@@ -399,12 +489,42 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
+                            {searchQuery && (
+                                <button className="search-clear-btn" onClick={() => setSearchQuery('')}>×</button>
+                            )}
+                        </div>
+
+                        {/* Diet Filters */}
+                        <div className="diet-filters">
+                            <span className="diet-filter-label">{t('filter_by_diet')}:</span>
+                            <div className="diet-chips">
+                                {[
+                                    { id: 'V', label: 'V' },
+                                    { id: 'VG', label: 'VG' },
+                                    { id: 'GF', label: 'GF' },
+                                    { id: 'N', label: 'N' }
+                                ].map(chip => (
+                                    <button
+                                        key={chip.id}
+                                        className={`diet-chip ${dietFilter === chip.id ? 'active' : ''} diet-tag-${chip.id}`}
+                                        onClick={() => setDietFilter(dietFilter === chip.id ? null : chip.id)}
+                                        title={t(`diet_${chip.id.toLowerCase()}`)}
+                                    >
+                                        {chip.id}
+                                    </button>
+                                ))}
+                            </div>
                         </div>
 
                         {searchResults.length > 0 ? (
                             <div className="product-grid">
                                 {searchResults.map(p => (
-                                    <ProductCard key={p.id} product={p} onAdd={addProductToOrder} />
+                                    <ProductCard
+                                        key={p.id}
+                                        product={p}
+                                        onAdd={addProductToOrder}
+                                        onImageClick={(img) => setLightboxImage(img)}
+                                    />
                                 ))}
                             </div>
                         ) : (
@@ -422,7 +542,12 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
                                 </div>
                                 <div className="product-grid">
                                     {selectedCategory && productsByCategory[selectedCategory]?.map(p => (
-                                        <ProductCard key={p.id} product={p} onAdd={addProductToOrder} />
+                                        <ProductCard
+                                            key={p.id}
+                                            product={p}
+                                            onAdd={addProductToOrder}
+                                            onImageClick={(img) => setLightboxImage(img)}
+                                        />
                                     ))}
                                 </div>
                             </>
@@ -453,7 +578,7 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
                 )}
 
                 {/* Delivery & Contact */}
-                <form className="order-form card mt-lg" onSubmit={handleSubmit}>
+                <form className="order-form card mt-lg" onSubmit={openSummary}>
                     <h3>🚚 {t('delivery_method')}</h3>
                     <div className="delivery-toggle mb-lg">
                         <button
@@ -471,6 +596,20 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
                             🛍️ {t('pickup')}
                         </button>
                     </div>
+
+                    {deliveryMethod === 'pickup' && (
+                        <div className="pickup-card mb-lg">
+                            <h4>📍 {t('pickup_address_title')}</h4>
+                            <p className="pickup-addr">Knokkestraat 5, 1066 WK Amsterdam</p>
+                            <button
+                                type="button"
+                                className="btn btn-secondary btn-sm mt-sm"
+                                onClick={() => window.open('https://www.google.com/maps/dir/?api=1&destination=Knokkestraat+5,+1066+WK+Amsterdam', '_blank')}
+                            >
+                                🗺️ {t('get_directions')}
+                            </button>
+                        </div>
+                    )}
 
                     <h3>👤 {t('your_info')}</h3>
                     {!isIdentified && (
@@ -504,7 +643,7 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
                         <label>{t('address')} {deliveryMethod === 'home' && '*'}</label>
                         <textarea
                             required={deliveryMethod === 'home'}
-                            className="form-textarea"
+                            className="form-input"
                             placeholder={deliveryMethod === 'home' ? t('address') + "..." : t('address') + " (" + t('optional') + ")"}
                             value={customerInfo.address}
                             onChange={(e) => setCustomerInfo({ ...customerInfo, address: e.target.value })}
@@ -513,19 +652,23 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
                     </div>
 
                     <div className="form-group">
-                        <label>{t('order_date')}</label>
+                        <label>{t('order_date')} *</label>
                         <input
                             type="date"
+                            required
                             className="form-input"
                             value={orderDate}
                             onChange={(e) => setOrderDate(e.target.value)}
                         />
+                        <p className="text-muted mt-xs" style={{ fontSize: '0.75rem' }}>
+                            {t('date_confirmation_note')}
+                        </p>
                     </div>
 
                     <div className="form-group">
                         <label>{t('notes')}</label>
                         <textarea
-                            className="form-textarea"
+                            className="form-input"
                             value={orderNotes}
                             onChange={(e) => setOrderNotes(e.target.value)}
                             placeholder={t('notes_placeholder')}
@@ -554,7 +697,7 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
                         className="btn btn-primary btn-block btn-lg mt-lg"
                         disabled={submitting || orderItems.length === 0}
                     >
-                        {submitting ? '⏳ ...' : `✓ ${editingOrder ? t('update_order') : t('confirm_order')}`}
+                        {submitting ? '...' : `✓ ${editingOrder ? t('update_order') : t('confirm_order')}`}
                     </button>
                     {editingOrder && (
                         <button type="button" className="btn btn-secondary btn-block mt-md" onClick={cancelEdit}>
@@ -569,24 +712,17 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
                         <h3>📜 {t('previous_orders')}</h3>
                         <div className="history-list">
                             {customerHistory.map((h, i) => (
-                                <div key={i} className={`history-item ${editingOrder?.id === h.id ? 'editing' : ''}`} style={{ border: editingOrder?.id === h.id ? '2px solid #ff8c00' : '1px solid #eee', position: 'relative', background: 'white', padding: 15, borderRadius: 12, marginBottom: 10 }}>
-                                    <div className="history-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10 }}>
-                                        <span className="h-date" style={{ fontSize: '0.85rem', color: '#666' }}>{new Date(h.date).toLocaleDateString(lang === 'tr' ? 'tr-TR' : 'en-GB')}</span>
+                                <div key={i} className={`history-item ${editingOrder?.id === h.id ? 'editing' : ''}`}>
+                                    <div className="history-header">
+                                        <span className="h-date">{new Date(h.date).toLocaleDateString(lang === 'tr' ? 'tr-TR' : 'en-GB')}</span>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                                            <span className={`status-badge status-${h.status}`} style={{
-                                                padding: '2px 8px',
-                                                borderRadius: 10,
-                                                fontSize: '0.75rem',
-                                                fontWeight: 800,
-                                                background: h.status === 'new' ? '#e3f2fd' : h.status === 'preparing' ? '#fff3e0' : h.status === 'ready' ? '#e8f5e9' : '#f5f5f5',
-                                                color: h.status === 'new' ? '#1976d2' : h.status === 'preparing' ? '#ef6c00' : h.status === 'ready' ? '#2e7d32' : '#616161'
-                                            }}>
+                                            <span className={`status-badge status-${h.status}`}>
                                                 {t(`status_${h.status}`)}
                                             </span>
-                                            <span className="h-total" style={{ fontWeight: 800, color: '#ff8c00' }}>€{h.total.toFixed(2)}</span>
+                                            <span className="h-total">€{h.total.toFixed(2)}</span>
                                         </div>
                                     </div>
-                                    <div className="h-items" style={{ marginBottom: 10, fontSize: '0.9rem', color: '#4a3022' }}>
+                                    <div className="h-items">
                                         {h.items.map((it, j) => (
                                             <span key={j}>{it.quantity}x {it.name}{j < h.items.length - 1 ? ', ' : ''}</span>
                                         ))}
@@ -594,8 +730,7 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
                                     {h.status === 'new' && (
                                         <button
                                             type="button"
-                                            className="btn btn-sm"
-                                            style={{ background: '#ff8c00', color: 'white', padding: '4px 12px', fontSize: '0.8rem', borderRadius: 8 }}
+                                            className="btn btn-sm btn-edit-h"
                                             onClick={() => handleEditOrder(h)}
                                         >
                                             ✏️ {t('edit')}
@@ -616,7 +751,7 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
 }
 
 // Sub-components
-function ProductCard({ product, onAdd }) {
+function ProductCard({ product, onAdd, onImageClick }) {
     const [selectedVariation, setSelectedVariation] = useState(
         product.variationPrices && Object.keys(product.variationPrices).length > 0
             ? Object.keys(product.variationPrices)[0]
@@ -629,12 +764,20 @@ function ProductCard({ product, onAdd }) {
 
     return (
         <div className="p-card">
-            <div className="p-image">
-                <img src={product.image || 'https://via.placeholder.com/150'} alt={product.name} />
+            <div className="p-image" onClick={() => onImageClick(product.image || 'https://via.placeholder.com/150')}>
+                <img src={product.image || 'https://via.placeholder.com/150'} alt={product.name} loading="lazy" />
+                <div className="p-zoom-hint">🔍</div>
             </div>
             <div className="p-content">
                 <div>
-                    <div className="p-name">{product.name}</div>
+                    <div className="p-header-row">
+                        <div className="p-name">{product.name}</div>
+                        <div className="p-diet-tags">
+                            {(product.dietary_tags || []).map(tag => (
+                                <span key={tag} className={`p-diet-tag p-diet-tag-${tag}`}>{tag}</span>
+                            ))}
+                        </div>
+                    </div>
                     <p className="p-desc">{product.description}</p>
                 </div>
 
@@ -642,7 +785,7 @@ function ProductCard({ product, onAdd }) {
                     <div className="p-variations mb-sm">
                         <select
                             className="form-input"
-                            style={{ padding: '2px 4px', fontSize: '0.8rem' }}
+                            style={{ padding: '2px 4px', fontSize: '0.8rem', height: 'auto', minHeight: 'auto' }}
                             value={selectedVariation}
                             onChange={(e) => setSelectedVariation(e.target.value)}
                         >
