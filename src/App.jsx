@@ -43,11 +43,10 @@ function AppContent() {
     const [syncing, setSyncing] = useState(false);
 
     // Public route check
-    const isPublicRoute = location.pathname.startsWith('/siparis');
+    const isPublicRoute = location.pathname === '/' || location.pathname === '/siparis';
 
     // Load data from Supabase
     const loadData = useCallback(async () => {
-        // Even for public route we need products
         setSyncing(true);
         try {
             const [ordersData, customersData, productsData] = await Promise.all([
@@ -213,7 +212,7 @@ function AppContent() {
         return (
             <Routes>
                 <Route
-                    path="/siparis"
+                    path="/"
                     element={
                         <CustomerOrderView
                             products={products}
@@ -223,6 +222,11 @@ function AppContent() {
                         />
                     }
                 />
+                <Route path="/siparis" element={<Navigate to="/" replace />} />
+                {/* Fallback for admin routes when not authenticated */}
+                {!isAuthenticated && (
+                    <Route path="/admin/*" element={<LoginPage />} />
+                )}
             </Routes>
         );
     }
@@ -258,141 +262,148 @@ function AppContent() {
                 </div>
             )}
 
-            {location.pathname !== '/' && <TopNav />}
+            <TopNav />
 
             <main className="main-content">
                 <Routes>
-                    <Route
-                        path="/"
-                        element={
-                            <HomeDashboard
-                                orders={orders}
-                                customers={customers}
-                                products={products}
-                                getCustomer={getCustomer}
-                            />
-                        }
-                    />
-                    <Route
-                        path="/calendar"
-                        element={
-                            <CalendarDashboard
-                                orders={orders}
-                                customers={customers}
-                            />
-                        }
-                    />
-                    <Route
-                        path="/revenue"
-                        element={
-                            <RevenueReport
-                                orders={orders}
-                                customers={customers}
-                                getCustomer={getCustomer}
-                            />
-                        }
-                    />
-                    <Route
-                        path="/new-order"
-                        element={
-                            <OrderForm
-                                customers={customers}
-                                products={products}
-                                addCustomer={addCustomer}
-                                addOrder={addOrder}
-                            />
-                        }
-                    />
-                    <Route
-                        path="/orders"
-                        element={
-                            <OrderList
-                                orders={orders}
-                                customers={customers}
-                                getCustomer={getCustomer}
-                            />
-                        }
-                    />
-                    <Route
-                        path="/all-orders"
-                        element={
-                            <AllOrders
-                                orders={orders}
-                                customers={customers}
-                                getCustomer={getCustomer}
-                            />
-                        }
-                    />
-                    <Route
-                        path="/edit-order/:id"
-                        element={
-                            <OrderForm
-                                customers={customers}
-                                products={products}
-                                orders={orders}
-                                addCustomer={addCustomer}
-                                addOrder={addOrder}
-                                updateOrder={updateOrder}
-                            />
-                        }
-                    />
-                    <Route
-                        path="/order/:id"
-                        element={
-                            <OrderDetail
-                                orders={orders}
-                                customers={customers}
-                                getOrder={getOrder}
-                                getCustomer={getCustomer}
-                                updateOrder={updateOrder}
-                                deleteOrder={deleteOrder}
-                            />
-                        }
-                    />
-                    <Route
-                        path="/daily-summary"
-                        element={
-                            <DailySummary
-                                orders={orders}
-                                products={products}
-                            />
-                        }
-                    />
-                    <Route
-                        path="/customers"
-                        element={
-                            <CustomerList
-                                customers={customers}
-                                orders={orders}
-                                addCustomer={addCustomer}
-                                updateCustomer={updateCustomer}
-                                deleteCustomer={deleteCustomer}
-                            />
-                        }
-                    />
-                    <Route
-                        path="/ai-parser"
-                        element={
-                            <TextParser
-                                customers={customers}
-                                products={products}
-                                addCustomer={addCustomer}
-                                addOrder={addOrder}
-                            />
-                        }
-                    />
-                    <Route
-                        path="/products"
-                        element={
-                            <ProductCatalog
-                                products={products}
-                                addProduct={addProduct}
-                                updateProduct={updateProduct}
-                                deactivateProduct={deactivateProduct}
-                            />
-                        }
-                    />
-                    <Route path="/login" element={<Navigate to="/" replace />} />
+                    <Route path="/" element={<Navigate to="/admin" replace />} />
+                    <Route path="/siparis" element={<Navigate to="/" replace />} />
+
+                    <Route path="/admin">
+                        <Route
+                            index
+                            element={
+                                <HomeDashboard
+                                    orders={orders}
+                                    customers={customers}
+                                    products={products}
+                                    getCustomer={getCustomer}
+                                />
+                            }
+                        />
+                        <Route
+                            path="calendar"
+                            element={
+                                <CalendarDashboard
+                                    orders={orders}
+                                    customers={customers}
+                                />
+                            }
+                        />
+                        <Route
+                            path="revenue"
+                            element={
+                                <RevenueReport
+                                    orders={orders}
+                                    customers={customers}
+                                    getCustomer={getCustomer}
+                                />
+                            }
+                        />
+                        <Route
+                            path="new-order"
+                            element={
+                                <OrderForm
+                                    customers={customers}
+                                    products={products}
+                                    addCustomer={addCustomer}
+                                    addOrder={addOrder}
+                                />
+                            }
+                        />
+                        <Route
+                            path="orders"
+                            element={
+                                <OrderList
+                                    orders={orders}
+                                    customers={customers}
+                                    getCustomer={getCustomer}
+                                />
+                            }
+                        />
+                        <Route
+                            path="all-orders"
+                            element={
+                                <AllOrders
+                                    orders={orders}
+                                    customers={customers}
+                                    getCustomer={getCustomer}
+                                />
+                            }
+                        />
+                        <Route
+                            path="edit-order/:id"
+                            element={
+                                <OrderForm
+                                    customers={customers}
+                                    products={products}
+                                    orders={orders}
+                                    addCustomer={addCustomer}
+                                    addOrder={addOrder}
+                                    updateOrder={updateOrder}
+                                />
+                            }
+                        />
+                        <Route
+                            path="order/:id"
+                            element={
+                                <OrderDetail
+                                    orders={orders}
+                                    customers={customers}
+                                    getOrder={getOrder}
+                                    getCustomer={getCustomer}
+                                    updateOrder={updateOrder}
+                                    deleteOrder={deleteOrder}
+                                />
+                            }
+                        />
+                        <Route
+                            path="daily-summary"
+                            element={
+                                <DailySummary
+                                    orders={orders}
+                                    products={products}
+                                />
+                            }
+                        />
+                        <Route
+                            path="customers"
+                            element={
+                                <CustomerList
+                                    customers={customers}
+                                    orders={orders}
+                                    addCustomer={addCustomer}
+                                    updateCustomer={updateCustomer}
+                                    deleteCustomer={deleteCustomer}
+                                />
+                            }
+                        />
+                        <Route
+                            path="ai-parser"
+                            element={
+                                <TextParser
+                                    customers={customers}
+                                    products={products}
+                                    addCustomer={addCustomer}
+                                    addOrder={addOrder}
+                                />
+                            }
+                        />
+                        <Route
+                            path="products"
+                            element={
+                                <ProductCatalog
+                                    products={products}
+                                    addProduct={addProduct}
+                                    updateProduct={updateProduct}
+                                    deactivateProduct={deactivateProduct}
+                                />
+                            }
+                        />
+                    </Route>
+                    <Route path="/login" element={<Navigate to="/admin" replace />} />
+                    {/* Catch all for admin routes */}
+                    <Route path="/admin/*" element={<Navigate to="/admin" replace />} />
                 </Routes>
             </main>
         </div>

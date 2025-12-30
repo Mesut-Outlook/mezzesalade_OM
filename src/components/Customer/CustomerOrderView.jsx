@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
     parseOrderText,
@@ -33,6 +33,17 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
     const [toast, setToast] = useState(null);
     const [lightboxImage, setLightboxImage] = useState(null);
     const [showSummary, setShowSummary] = useState(false);
+    const cartRef = useRef(null);
+
+    // Thumbnail helper for Supabase images
+    const getThumbnail = (imageUrl) => {
+        if (!imageUrl || !imageUrl.includes('supabase.co')) return imageUrl;
+        // Basic resolution optimization for menu thumbnails
+        if (imageUrl.includes('/object/public/')) {
+            return imageUrl.replace('/object/public/', '/render/image/public/') + '?width=200&height=200&resize=cover';
+        }
+        return imageUrl;
+    };
 
     // Identity state
     const [showLogin, setShowLogin] = useState(true);
@@ -198,6 +209,14 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
         setOrderItems(newItems);
     };
 
+    const scrollToCart = () => {
+        if (cartRef.current) {
+            cartRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    };
+
+    const totalItemsCount = orderItems.reduce((sum, item) => sum + item.quantity, 0);
+
     // AI Parsing
     const handleAiParse = () => {
         if (!aiText.trim()) return;
@@ -321,8 +340,17 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
                 </header>
                 <div className="lang-switch-fixed">
                     {['tr', 'en', 'nl'].map(l => (
-                        <button key={l} className={`lang-btn ${lang === l ? 'active' : ''}`} onClick={() => setLang(l)}>
-                            {l.toUpperCase()}
+                        <button
+                            key={l}
+                            id={`lang-btn-login-${l}`}
+                            className={`lang-btn ${lang === l ? 'active' : ''}`}
+                            onClick={() => setLang(l)}
+                            aria-label={`Change language to ${l.toUpperCase()}`}
+                        >
+                            <span className="lang-flag">
+                                {l === 'tr' ? '🇹🇷' : l === 'en' ? '🇬🇧' : '🇳🇱'}
+                            </span>
+                            <span className="lang-text">{l.toUpperCase()}</span>
                         </button>
                     ))}
                 </div>
@@ -346,9 +374,9 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
                                 {identifying ? t('identifying') : t('login_btn')}
                             </button>
                         </form>
-                        <div className="mt-lg pt-md border-top" style={{ borderTop: '1px solid #eee' }}>
-                            <p className="text-muted" style={{ fontSize: '0.8rem', lineHeight: '1.4' }}>
-                                {t('shortcut_tip')}
+                        <div className="mt-lg pt-md border-top tip-section">
+                            <p className="text-muted tip-text">
+                                <span className="tip-icon">💡</span> {t('shortcut_tip')}
                             </p>
                         </div>
                     </div>
@@ -426,11 +454,26 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
                     <img src="/images/logo.png" alt="Mezzesalade" className="customer-logo" />
                     <div className="lang-switch">
                         {['tr', 'en', 'nl'].map(l => (
-                            <button key={l} className={`lang-btn ${lang === l ? 'active' : ''}`} onClick={() => setLang(l)}>
-                                {l.toUpperCase()}
+                            <button
+                                key={l}
+                                id={`lang-btn-header-${l}`}
+                                className={`lang-btn ${lang === l ? 'active' : ''}`}
+                                onClick={() => setLang(l)}
+                                aria-label={`Change language to ${l.toUpperCase()}`}
+                            >
+                                <span className="lang-flag">
+                                    {l === 'tr' ? '🇹🇷' : l === 'en' ? '🇬🇧' : '🇳🇱'}
+                                </span>
+                                <span className="lang-text">{l.toUpperCase()}</span>
                             </button>
                         ))}
                     </div>
+                    {orderItems.length > 0 && (
+                        <button className="header-cart-btn" onClick={scrollToCart} aria-label="Go to cart">
+                            <span className="cart-icon">🛒</span>
+                            <span className="cart-badge">{totalItemsCount}</span>
+                        </button>
+                    )}
                 </div>
                 <h1>{t('online_order')}</h1>
                 {isIdentified && (
@@ -524,6 +567,7 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
                                         product={p}
                                         onAdd={addProductToOrder}
                                         onImageClick={(img) => setLightboxImage(img)}
+                                        getThumbnail={getThumbnail}
                                     />
                                 ))}
                             </div>
@@ -547,6 +591,7 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
                                             product={p}
                                             onAdd={addProductToOrder}
                                             onImageClick={(img) => setLightboxImage(img)}
+                                            getThumbnail={getThumbnail}
                                         />
                                     ))}
                                 </div>
@@ -557,7 +602,7 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
 
                 {/* Shopping Cart */}
                 {orderItems.length > 0 && (
-                    <div className="cart-section card mt-lg">
+                    <div className="cart-section card mt-lg" ref={cartRef}>
                         <h3>🛒 {t('cart')}</h3>
                         <div className="cart-items">
                             {orderItems.map((item, idx) => (
@@ -751,7 +796,7 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
 }
 
 // Sub-components
-function ProductCard({ product, onAdd, onImageClick }) {
+function ProductCard({ product, onAdd, onImageClick, getThumbnail }) {
     const [selectedVariation, setSelectedVariation] = useState(
         product.variationPrices && Object.keys(product.variationPrices).length > 0
             ? Object.keys(product.variationPrices)[0]
@@ -765,7 +810,11 @@ function ProductCard({ product, onAdd, onImageClick }) {
     return (
         <div className="p-card">
             <div className="p-image" onClick={() => onImageClick(product.image || 'https://via.placeholder.com/150')}>
-                <img src={product.image || 'https://via.placeholder.com/150'} alt={product.name} loading="lazy" />
+                <img
+                    src={getThumbnail(product.image) || 'https://via.placeholder.com/150'}
+                    alt={product.name}
+                    loading="lazy"
+                />
                 <div className="p-zoom-hint">🔍</div>
             </div>
             <div className="p-content">

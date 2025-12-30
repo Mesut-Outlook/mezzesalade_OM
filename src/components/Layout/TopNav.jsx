@@ -3,16 +3,16 @@ import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 
 const mainNavItems = [
-    { path: '/', icon: '🏠', label: 'Ana Sayfa' },
-    { path: '/calendar', icon: '📅', label: 'Takvim' },
-    { path: '/new-order', icon: '📝', label: 'Sipariş' },
-    { path: '/ai-parser', icon: '🤖', label: 'AI' },
+    { path: '/admin', icon: '🏠', label: 'Ana Sayfa' },
+    { path: '/admin/calendar', icon: '📅', label: 'Takvim' },
+    { path: '/admin/new-order', icon: '📝', label: 'Sipariş' },
+    { path: '/admin/ai-parser', icon: '🤖', label: 'AI' },
 ];
 
 const otherNavItems = [
-    { path: '/customers', icon: '👥', label: 'Müşteriler' },
-    { path: '/products', icon: '📦', label: 'Ürünler' },
-    { path: '/daily-summary', icon: '📊', label: 'Özet' },
+    { path: '/admin/customers', icon: '👥', label: 'Müşteriler' },
+    { path: '/admin/products', icon: '📦', label: 'Ürünler' },
+    { path: '/admin/daily-summary', icon: '📊', label: 'Özet' },
 ];
 
 export default function TopNav() {
@@ -38,7 +38,7 @@ export default function TopNav() {
     return (
         <header className="top-nav-header">
             {/* Logo */}
-            <Link to="/" className="logo">
+            <Link to="/admin" className="logo">
                 <img src="/images/logo.png" alt="Mezzesalade" className="logo-image" />
             </Link>
 

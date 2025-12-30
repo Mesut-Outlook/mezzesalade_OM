@@ -62,56 +62,56 @@ export default function HomeDashboard({ orders = [], customers = [], products = 
             title: 'AI Siparis',
             icon: <Sparkles size={32} />,
             color: 'var(--accent-primary)',
-            path: '/ai-parser'
+            path: '/admin/ai-parser'
         },
         {
             id: 'manual',
             title: 'Yeni Siparis',
             icon: <PlusCircle size={32} />,
             color: '#3b82f6', // Blue
-            path: '/new-order'
+            path: '/admin/new-order'
         },
         {
             id: 'allOrders',
             title: 'Tum Siparisler',
             icon: <ShoppingBag size={32} />,
             color: '#8b5cf6', // Purple
-            path: '/all-orders'
+            path: '/admin/all-orders'
         },
         {
             id: 'revenue',
             title: 'Ciro Raporu',
             icon: <TrendingUp size={32} />,
             color: '#10b981', // Emerald
-            path: '/revenue'
+            path: '/admin/revenue'
         },
         {
             id: 'calendar',
             title: 'Takvim',
             icon: <Calendar size={32} />,
             color: '#f97316', // Orange
-            path: '/calendar'
+            path: '/admin/calendar'
         },
         {
             id: 'summary',
             title: 'Gunluk Ozet',
             icon: <BarChart3 size={32} />,
             color: 'var(--accent-success)',
-            path: '/daily-summary'
+            path: '/admin/daily-summary'
         },
         {
             id: 'products',
             title: 'Urunler',
             icon: <Package size={32} />,
             color: '#f59e0b', // Amber
-            path: '/products'
+            path: '/admin/products'
         },
         {
             id: 'customers',
             title: 'Musteriler',
             icon: <Users size={32} />,
             color: '#ec4899', // Rose
-            path: '/customers'
+            path: '/admin/customers'
         }
     ];
 
@@ -200,7 +200,7 @@ export default function HomeDashboard({ orders = [], customers = [], products = 
                                                 key={order.id}
                                                 onClick={() => {
                                                     setShowNotifications(false);
-                                                    navigate(`/order/${order.id}`);
+                                                    navigate(`/admin/order/${order.id}`);
                                                 }}
                                                 style={{
                                                     padding: '12px 16px',
@@ -254,7 +254,7 @@ export default function HomeDashboard({ orders = [], customers = [], products = 
             {/* Pending Transactions */}
             <div className="section-header">
                 <h4 className="font-bold">Bekleyen Siparisler</h4>
-                <button className="text-sm font-bold" onClick={() => navigate('/revenue')} style={{ color: 'var(--accent-primary)', background: 'none', border: 'none', cursor: 'pointer' }}>
+                <button className="text-sm font-bold" onClick={() => navigate('/admin/revenue')} style={{ color: 'var(--accent-primary)', background: 'none', border: 'none', cursor: 'pointer' }}>
                     Tumunu Gor
                 </button>
             </div>
@@ -275,7 +275,7 @@ export default function HomeDashboard({ orders = [], customers = [], products = 
                             <div
                                 key={order.id}
                                 className="activity-item"
-                                onClick={() => navigate(`/order/${order.id}`)}
+                                onClick={() => navigate(`/admin/order/${order.id}`)}
                             >
                                 <div className="flex items-center gap-md" style={{ flex: 1 }}>
                                     <div className="activity-icon">
