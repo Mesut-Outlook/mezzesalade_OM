@@ -240,7 +240,7 @@ function AppContent() {
     }
 
     return (
-        <div className="app">
+        <div className={`app ${location.pathname !== '/admin' ? 'has-topnav' : ''}`}>
             {/* Sync indicator */}
             {syncing && (
                 <div style={{
@@ -262,7 +262,7 @@ function AppContent() {
                 </div>
             )}
 
-            <TopNav />
+            {location.pathname !== '/admin' && <TopNav />}
 
             <main className="main-content">
                 <Routes>

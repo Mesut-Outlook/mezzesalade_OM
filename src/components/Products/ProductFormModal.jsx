@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { uploadProductImage } from '../../lib/supabase';
 import { Camera, X, Plus, Trash2, Loader2, Upload } from 'lucide-react';
+import { getThumbnail } from '../../utils/imageUtils';
 
 export default function ProductFormModal({ product, onClose, onSave, onDeactivate, saving, categories }) {
     const [formData, setFormData] = useState({
@@ -156,7 +157,7 @@ export default function ProductFormModal({ product, onClose, onSave, onDeactivat
                                     <Loader2 className="animate-spin" size={48} />
                                 ) : formData.image ? (
                                     <>
-                                        <img src={formData.image} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                        <img src={getThumbnail(formData.image, { width: 300, height: 300, resize: 'cover' })} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                         <div style={{
                                             position: 'absolute',
                                             bottom: 0,
@@ -220,7 +221,7 @@ export default function ProductFormModal({ product, onClose, onSave, onDeactivat
                                     position: 'relative',
                                     border: '2px solid var(--border-color)'
                                 }}>
-                                    <img src={img} alt={`Extra ${index}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                    <img src={getThumbnail(img, { width: 200, height: 200, resize: 'cover' })} alt={`Extra ${index}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                     <button
                                         type="button"
                                         onClick={() => removeExtraImage(index)}

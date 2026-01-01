@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { migrateProducts } from '../../lib/supabase';
 import localProducts from '../../data/products.json';
 import ProductFormModal from './ProductFormModal';
+import { getThumbnail } from '../../utils/imageUtils';
 
 export default function ProductCatalog({ products: allProducts = [], addProduct, updateProduct, deactivateProduct }) {
     const navigate = useNavigate();
@@ -403,7 +404,7 @@ function ProductCardGrid({ product, categoryColor, onEdit }) {
                 }}>
                     {product.image && !imgError ? (
                         <img
-                            src={product.image}
+                            src={getThumbnail(product.image, { width: 300, height: 240, resize: 'cover' })}
                             alt={product.name}
                             style={{
                                 width: '100%',
@@ -501,7 +502,7 @@ function ProductCardGrid({ product, categoryColor, onEdit }) {
                                         {product.extra_images.map((img, index) => (
                                             <img
                                                 key={index}
-                                                src={img}
+                                                src={getThumbnail(img, { width: 160, height: 160, resize: 'cover' })}
                                                 alt={`${product.name} extra ${index}`}
                                                 style={{
                                                     width: '80px',
@@ -639,7 +640,7 @@ function ProductCardList({ product, categoryColor, onEdit }) {
             }}>
                 {product.image && !imgError ? (
                     <img
-                        src={product.image}
+                        src={getThumbnail(product.image, { width: 140, height: 140, resize: 'cover' })}
                         alt={product.name}
                         style={{
                             width: '100%',

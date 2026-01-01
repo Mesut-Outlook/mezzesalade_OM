@@ -8,6 +8,7 @@ import {
 } from '../../hooks/useProductMatcher';
 import { fetchCustomerByPhone, fetchOrdersByCustomerId } from '../../lib/supabase';
 import { useLanguage } from '../../context/LanguageContext';
+import { getThumbnail } from '../../utils/imageUtils';
 import './CustomerOrder.css';
 
 export default function CustomerOrderView({ products = [], addOrder, addCustomer, updateOrder }) {
@@ -35,15 +36,7 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
     const [showSummary, setShowSummary] = useState(false);
     const cartRef = useRef(null);
 
-    // Thumbnail helper for Supabase images
-    const getThumbnail = (imageUrl) => {
-        if (!imageUrl || !imageUrl.includes('supabase.co')) return imageUrl;
-        // Basic resolution optimization for menu thumbnails
-        if (imageUrl.includes('/object/public/')) {
-            return imageUrl.replace('/object/public/', '/render/image/public/') + '?width=200&height=200&resize=cover';
-        }
-        return imageUrl;
-    };
+
 
     // Identity state
     const [showLogin, setShowLogin] = useState(true);

@@ -145,10 +145,15 @@ a {
 .main-content {
   flex: 1;
   padding: var(--spacing-md);
-  padding-top: calc(80px + var(--safe-area-top));
+  padding-top: var(--spacing-md);
   padding-bottom: var(--spacing-lg);
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+}
+
+/* Adjust padding when TopNav is present */
+.has-topnav .main-content {
+  padding-top: calc(80px + var(--safe-area-top));
 }
 
 /* Top Navigation Header with Logo */
@@ -1311,13 +1316,15 @@ a {
   flex-direction: column;
   align-items: center;
   gap: 12px;
-  background: var(--bg-glass);
-  border: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.4);
   border-radius: var(--radius-lg);
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   padding: var(--spacing-lg) var(--spacing-md);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
 }
 
 .menu-item:hover {
