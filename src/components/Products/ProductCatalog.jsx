@@ -411,6 +411,7 @@ function ProductCardGrid({ product, categoryColor, onEdit }) {
                                 height: '100%',
                                 objectFit: 'cover'
                             }}
+                            loading="lazy"
                             onError={() => setImgError(true)}
                         />
                     ) : (
@@ -487,7 +488,7 @@ function ProductCardGrid({ product, categoryColor, onEdit }) {
                         {product.image && !imgError && (
                             <div style={{ marginBottom: '16px' }}>
                                 <img
-                                    src={product.image}
+                                    src={getThumbnail(product.image, { width: 600, height: 480, resize: 'cover' })}
                                     alt={product.name}
                                     style={{
                                         width: '100%',
@@ -647,6 +648,7 @@ function ProductCardList({ product, categoryColor, onEdit }) {
                             height: '100%',
                             objectFit: 'cover'
                         }}
+                        loading="lazy"
                         onError={() => setImgError(true)}
                     />
                 ) : (

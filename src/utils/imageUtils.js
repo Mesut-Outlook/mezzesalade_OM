@@ -6,17 +6,22 @@
  * @param {object} options Transformation options (width, height, resize)
  * @returns {string} Optimized image URL
  */
-export const getThumbnail = (imageUrl, options = { width: 200, height: 200, resize: 'cover' }) => {
-    if (!imageUrl || !imageUrl.includes('supabase.co')) return imageUrl;
+export const getThumbnail = (imageUrl, options = { width: 300, height: 300, resize: 'cover' }) => {
+    if (!imageUrl) return 'https://via.placeholder.com/300';
 
-    // Basic resolution optimization for thumbnails using Supabase Image Transformation
-    // Note: This requires the Pro plan or specific configuration on some Supabase versions
-    // If it's not working, we fall back to the original URL
-    if (imageUrl.includes('/object/public/')) {
+    // 1. Supabase Optimization (Native)
+    if (imageUrl.includes('supabase.co') && imageUrl.includes('/object/public/')) {
         const transformPart = `/render/image/public/`;
         const queryParams = `?width=${options.width}&height=${options.height}&resize=${options.resize}`;
         return imageUrl.replace('/object/public/', transformPart) + queryParams;
     }
 
-    return imageUrl;
+    // 2. All other images (WordPress, etc.) - Use wsrv.nl image proxy for resizing and caching
+    // This is much faster than loading original 5MB+ photos from a slow server
+    try {
+        const encodedUrl = encodeURIComponent(imageUrl);
+        return `https://wsrv.nl/?url=${encodedUrl}&w=${options.width}&h=${options.height}&fit=${options.resize === 'cover' ? 'cover' : 'contain'}&q=80`;
+    } catch (e) {
+        return imageUrl;
+    }
 };
