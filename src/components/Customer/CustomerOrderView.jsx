@@ -47,7 +47,7 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
     // Order state
     const [editingOrder, setEditingOrder] = useState(null);
     const [orderItems, setOrderItems] = useState([]);
-    const [deliveryMethod, setDeliveryMethod] = useState('home'); // 'home' or 'pickup'
+    const [deliveryMethod, setDeliveryMethod] = useState('pickup'); // 'home' or 'pickup'
     const [customerInfo, setCustomerInfo] = useState({ id: null, name: '', phone: '', address: '' });
     const [orderNotes, setOrderNotes] = useState('');
     const [orderDate, setOrderDate] = useState(new Date().toISOString().split('T')[0]);
