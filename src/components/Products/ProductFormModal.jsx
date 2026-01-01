@@ -9,14 +9,36 @@ export default function ProductFormModal({ product, onClose, onSave, onDeactivat
         price: product?.price || '',
         description: product?.description || '',
         image: product?.image || '',
+        extra_images: product?.extra_images || [],
         ingredients: product?.ingredients || '',
+        dietary_tags: product?.dietary_tags || [],
         variations: product?.variations || [],
         variationPrices: product?.variationPrices || product?.variation_prices || {}
     });
 
     const [newVariation, setNewVariation] = useState('');
     const [uploading, setUploading] = useState(false);
+    const [uploadingExtra, setUploadingExtra] = useState(false);
     const fileInputRef = useRef(null);
+    const extraFileInputRef = useRef(null);
+
+    const DIETARY_LABELS = {
+        'V': 'Vegan',
+        'VG': 'Vejetaryen',
+        'GF': 'Glütensiz',
+        'N': 'Kuruyemiş'
+    };
+
+    const toggleDietaryTag = (tag) => {
+        const currentTags = [...(formData.dietary_tags || [])];
+        const index = currentTags.indexOf(tag);
+        if (index > -1) {
+            currentTags.splice(index, 1);
+        } else {
+            currentTags.push(tag);
+        }
+        setFormData({ ...formData, dietary_tags: currentTags });
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -72,6 +94,32 @@ export default function ProductFormModal({ product, onClose, onSave, onDeactivat
             alert('Görsel yüklenirken bir hata oluştu.');
         }
         setUploading(false);
+    };
+
+    const handleExtraImagesUpload = async (e) => {
+        const files = Array.from(e.target.files);
+        if (files.length === 0) return;
+
+        setUploadingExtra(true);
+        const newImages = [...formData.extra_images];
+
+        for (const file of files) {
+            const publicUrl = await uploadProductImage(file);
+            if (publicUrl) {
+                newImages.push(publicUrl);
+            }
+        }
+
+        setFormData({ ...formData, extra_images: newImages });
+        setUploadingExtra(false);
+        // Reset input
+        e.target.value = '';
+    };
+
+    const removeExtraImage = (index) => {
+        const newImages = [...formData.extra_images];
+        newImages.splice(index, 1);
+        setFormData({ ...formData, extra_images: newImages });
     };
 
     return (
@@ -153,14 +201,85 @@ export default function ProductFormModal({ product, onClose, onSave, onDeactivat
                                     ref={fileInputRef}
                                     style={{ display: 'none' }}
                                     accept="image/*"
-                                    capture="environment"
                                     onChange={handleImageUpload}
                                 />
                             </div>
                         </div>
                     </div>
 
-                    {/* Product Name */}
+                    {/* Extra Images */}
+                    <div style={{ marginBottom: '24px' }}>
+                        <label style={{ display: 'block', marginBottom: '12px', fontSize: '1.1rem', fontWeight: '600' }}>Ekstra Görseller</label>
+                        <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                            {formData.extra_images.map((img, index) => (
+                                <div key={index} style={{
+                                    width: '100px',
+                                    height: '100px',
+                                    borderRadius: '8px',
+                                    overflow: 'hidden',
+                                    position: 'relative',
+                                    border: '2px solid var(--border-color)'
+                                }}>
+                                    <img src={img} alt={`Extra ${index}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                    <button
+                                        type="button"
+                                        onClick={() => removeExtraImage(index)}
+                                        style={{
+                                            position: 'absolute',
+                                            top: '4px',
+                                            right: '4px',
+                                            padding: '4px',
+                                            background: 'rgba(255,0,0,0.7)',
+                                            color: 'white',
+                                            border: 'none',
+                                            borderRadius: '50%',
+                                            cursor: 'pointer',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center'
+                                        }}
+                                    >
+                                        <X size={14} />
+                                    </button>
+                                </div>
+                            ))}
+                            <button
+                                type="button"
+                                onClick={() => extraFileInputRef.current?.click()}
+                                disabled={uploadingExtra}
+                                style={{
+                                    width: '100px',
+                                    height: '100px',
+                                    borderRadius: '8px',
+                                    border: '2px dashed var(--border-color)',
+                                    background: 'var(--bg-tertiary)',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    cursor: 'pointer',
+                                    color: 'var(--text-muted)'
+                                }}
+                            >
+                                {uploadingExtra ? (
+                                    <Loader2 className="animate-spin" size={24} />
+                                ) : (
+                                    <>
+                                        <Plus size={24} />
+                                        <span style={{ fontSize: '0.8rem', marginTop: '4px' }}>Ekle</span>
+                                    </>
+                                )}
+                            </button>
+                        </div>
+                        <input
+                            type="file"
+                            ref={extraFileInputRef}
+                            style={{ display: 'none' }}
+                            accept="image/*"
+                            multiple
+                            onChange={handleExtraImagesUpload}
+                        />
+                    </div>
                     <div style={{ marginBottom: '20px' }}>
                         <label style={{ display: 'block', marginBottom: '8px', fontSize: '1.1rem', fontWeight: '600' }}>Ürün Adı</label>
                         <input
@@ -172,6 +291,34 @@ export default function ProductFormModal({ product, onClose, onSave, onDeactivat
                             required
                             placeholder="Örn: Mercimek Çorbası"
                         />
+                    </div>
+
+                    {/* Dietary Tags */}
+                    <div style={{ marginBottom: '20px' }}>
+                        <label style={{ display: 'block', marginBottom: '12px', fontSize: '1.1rem', fontWeight: '600' }}>Diyet Bilgisi</label>
+                        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                            {Object.entries(DIETARY_LABELS).map(([code, label]) => (
+                                <button
+                                    key={code}
+                                    type="button"
+                                    onClick={() => toggleDietaryTag(code)}
+                                    style={{
+                                        padding: '10px 16px',
+                                        borderRadius: '20px',
+                                        border: '2px solid',
+                                        borderColor: formData.dietary_tags?.includes(code) ? 'var(--accent-primary)' : 'var(--border-color)',
+                                        background: formData.dietary_tags?.includes(code) ? 'var(--accent-primary)' : 'transparent',
+                                        color: formData.dietary_tags?.includes(code) ? 'white' : 'var(--text-primary)',
+                                        cursor: 'pointer',
+                                        fontSize: '0.9rem',
+                                        fontWeight: '600',
+                                        transition: 'all 0.2s'
+                                    }}
+                                >
+                                    {code} - {label}
+                                </button>
+                            ))}
+                        </div>
                     </div>
 
                     {/* Category and Price */}

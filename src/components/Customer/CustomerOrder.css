@@ -35,9 +35,10 @@
 .lang-switch,
 .lang-switch-fixed {
     display: flex;
-    gap: 8px;
+    gap: 6px;
     justify-content: center;
     margin-bottom: 20px;
+    flex-shrink: 1;
 }
 
 .lang-switch-fixed {
@@ -47,16 +48,16 @@
 .lang-btn {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 8px 16px;
-    border-radius: 16px;
+    gap: 4px;
+    padding: 6px 10px;
+    border-radius: 12px;
     border: 1.5px solid rgba(255, 255, 255, 0.3);
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     color: rgba(255, 255, 255, 0.9);
     font-weight: 700;
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -76,29 +77,36 @@
 }
 
 .lang-flag {
-    font-size: 1.1rem;
+    font-size: 1rem;
 }
 
 .lang-text {
-    letter-spacing: 0.5px;
+    letter-spacing: 0.3px;
 }
 
 .header-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 15px;
+    gap: 10px;
     margin-bottom: 20px;
     width: 100%;
+    padding: 0 10px;
+}
+
+.header-top .customer-logo {
+    height: 50px;
+    margin: 0;
+    flex-shrink: 0;
 }
 
 .header-cart-btn {
     background: white;
     color: #ff8c00;
     border: none;
-    width: 50px;
-    height: 50px;
-    border-radius: 16px;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -106,6 +114,7 @@
     position: relative;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    flex-shrink: 0;
 }
 
 .header-cart-btn:hover {
@@ -118,19 +127,19 @@
 }
 
 .cart-icon {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
 }
 
 .cart-badge {
     position: absolute;
-    top: -8px;
-    right: -8px;
+    top: -6px;
+    right: -6px;
     background: #ff4757;
     color: white;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     font-weight: 900;
-    width: 22px;
-    height: 22px;
+    width: 18px;
+    height: 18px;
     border-radius: 50%;
     display: flex;
     align-items: center;

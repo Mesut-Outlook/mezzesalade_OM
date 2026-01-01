@@ -424,6 +424,11 @@
         "price": 17,
         "category": "Mezeler",
         "description": "",
+        "dietary_tags": [
+            "V",
+            "VG",
+            "GF"
+        ],
         "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-10-at-12.27.35.png"
     },
     {

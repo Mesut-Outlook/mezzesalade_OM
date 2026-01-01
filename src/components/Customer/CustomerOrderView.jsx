@@ -797,6 +797,7 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
 
 // Sub-components
 function ProductCard({ product, onAdd, onImageClick, getThumbnail }) {
+    const { t } = useLanguage();
     const [selectedVariation, setSelectedVariation] = useState(
         product.variationPrices && Object.keys(product.variationPrices).length > 0
             ? Object.keys(product.variationPrices)[0]
@@ -823,7 +824,9 @@ function ProductCard({ product, onAdd, onImageClick, getThumbnail }) {
                         <div className="p-name">{product.name}</div>
                         <div className="p-diet-tags">
                             {(product.dietary_tags || []).map(tag => (
-                                <span key={tag} className={`p-diet-tag p-diet-tag-${tag}`}>{tag}</span>
+                                <span key={tag} className={`p-diet-tag p-diet-tag-${tag}`}>
+                                    {t(`diet_${tag.toLowerCase()}`)}
+                                </span>
                             ))}
                         </div>
                     </div>

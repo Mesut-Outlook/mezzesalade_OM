@@ -442,14 +442,30 @@ function ProductCardGrid({ product, categoryColor, onEdit }) {
                         {product.category}
                     </div>
 
-                    {/* Price */}
-                    <div style={{
-                        fontSize: '1.125rem',
-                        fontWeight: '700',
-                        color: 'var(--accent-success)',
-                        marginTop: 'auto'
-                    }}>
-                        €{product.price}
+                    {/* Price and Tags */}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto' }}>
+                        <div style={{
+                            fontSize: '1.125rem',
+                            fontWeight: '700',
+                            color: 'var(--accent-success)'
+                        }}>
+                            €{product.price}
+                        </div>
+                        {product.dietary_tags && product.dietary_tags.length > 0 && (
+                            <div style={{ display: 'flex', gap: '4px' }}>
+                                {product.dietary_tags.map(tag => (
+                                    <span key={tag} style={{
+                                        fontSize: '0.65rem',
+                                        fontWeight: 'bold',
+                                        padding: '2px 4px',
+                                        borderRadius: '4px',
+                                        background: 'var(--bg-tertiary)',
+                                        border: '1px solid var(--border-color)',
+                                        color: 'var(--text-secondary)'
+                                    }}>{tag}</span>
+                                ))/* fix */}
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
@@ -468,17 +484,41 @@ function ProductCardGrid({ product, categoryColor, onEdit }) {
                         </div>
 
                         {product.image && !imgError && (
-                            <img
-                                src={product.image}
-                                alt={product.name}
-                                style={{
-                                    width: '100%',
-                                    height: '200px',
-                                    objectFit: 'cover',
-                                    borderRadius: 'var(--radius-md)',
-                                    marginBottom: '16px'
-                                }}
-                            />
+                            <div style={{ marginBottom: '16px' }}>
+                                <img
+                                    src={product.image}
+                                    alt={product.name}
+                                    style={{
+                                        width: '100%',
+                                        height: '240px',
+                                        objectFit: 'cover',
+                                        borderRadius: 'var(--radius-md)',
+                                        marginBottom: '8px'
+                                    }}
+                                />
+                                {product.extra_images && product.extra_images.length > 0 && (
+                                    <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '8px' }}>
+                                        {product.extra_images.map((img, index) => (
+                                            <img
+                                                key={index}
+                                                src={img}
+                                                alt={`${product.name} extra ${index}`}
+                                                style={{
+                                                    width: '80px',
+                                                    height: '80px',
+                                                    objectFit: 'cover',
+                                                    borderRadius: '8px',
+                                                    cursor: 'pointer',
+                                                    border: '2px solid var(--border-color)'
+                                                }}
+                                                onClick={() => {
+                                                    // Optional: set as main image preview or open in lightbox
+                                                }}
+                                            />
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
                         )}
 
                         <div style={{
@@ -497,8 +537,25 @@ function ProductCardGrid({ product, categoryColor, onEdit }) {
                             <p className="text-muted mb-md">{product.description}</p>
                         )}
 
-                        <div className="text-2xl font-bold text-success mb-md">
-                            €{product.price}
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                            <div className="text-2xl font-bold text-success">
+                                €{product.price}
+                            </div>
+                            {product.dietary_tags && product.dietary_tags.length > 0 && (
+                                <div style={{ display: 'flex', gap: '8px' }}>
+                                    {product.dietary_tags.map(tag => (
+                                        <span key={tag} style={{
+                                            fontSize: '0.875rem',
+                                            fontWeight: 'bold',
+                                            padding: '4px 8px',
+                                            borderRadius: '6px',
+                                            background: 'var(--bg-tertiary)',
+                                            border: '1px solid var(--border-color)',
+                                            color: 'var(--text-secondary)'
+                                        }}>{tag}</span>
+                                    ))}
+                                </div>
+                            )}
                         </div>
 
                         {product.variations && product.variations.length > 0 && (
@@ -612,6 +669,21 @@ function ProductCardList({ product, categoryColor, onEdit }) {
                 {product.variations && product.variations.length > 0 && (
                     <div className="text-muted" style={{ fontSize: '0.7rem', marginTop: '4px' }}>
                         {product.variations.join(' • ')}
+                    </div>
+                )}
+                {product.dietary_tags && product.dietary_tags.length > 0 && (
+                    <div style={{ display: 'flex', gap: '4px', marginTop: '6px' }}>
+                        {product.dietary_tags.map(tag => (
+                            <span key={tag} style={{
+                                fontSize: '0.6rem',
+                                fontWeight: 'bold',
+                                padding: '1px 4px',
+                                borderRadius: '3px',
+                                background: 'var(--bg-tertiary)',
+                                border: '1px solid var(--border-color)',
+                                color: 'var(--text-muted)'
+                            }}>{tag}</span>
+                        ))}
                     </div>
                 )}
             </div>

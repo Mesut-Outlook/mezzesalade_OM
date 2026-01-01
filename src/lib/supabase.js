@@ -351,7 +351,9 @@ export async function addProduct(product) {
             category: product.category,
             description: product.description || null,
             image: product.image || null,
+            extra_images: product.extra_images || [],
             ingredients: product.ingredients || null,
+            dietary_tags: product.dietary_tags || [],
             variations: product.variations || [],
             variation_prices: product.variationPrices || {},
             is_active: true
@@ -407,6 +409,8 @@ export async function migrateProducts(products) {
         category: p.category,
         description: p.description || null,
         image: p.image || null,
+        extra_images: p.extra_images || [],
+        dietary_tags: p.dietary_tags || [],
         variations: p.variations || [],
         variation_prices: p.variationPrices || p.variation_prices || {},
         is_active: true
