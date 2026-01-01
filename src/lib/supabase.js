@@ -374,6 +374,9 @@ export async function updateProduct(id, updates) {
         transformedUpdates.variation_prices = updates.variationPrices;
         delete transformedUpdates.variationPrices;
     }
+    if (updates.dietary_tags) {
+        transformedUpdates.dietary_tags = updates.dietary_tags;
+    }
 
     const { data, error } = await supabase
         .from('products')
