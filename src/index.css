@@ -1392,3 +1392,32 @@ a {
   justify-content: center;
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
 }
+
+/* Mobile Optimizations for Dashboard */
+@media (max-width: 600px) {
+  .welcome-section {
+    gap: 8px;
+    margin-bottom: var(--spacing-md);
+  }
+
+  .dashboard-logo {
+    height: 55px !important;
+  }
+
+  .user-info {
+    gap: 10px;
+  }
+
+  .user-info h2 {
+    font-size: 0.95rem !important;
+  }
+
+  .user-info p {
+    font-size: 0.65rem !important;
+  }
+
+  .language-switches button {
+    padding: 3px 6px !important;
+    font-size: 0.6rem !important;
+  }
+}

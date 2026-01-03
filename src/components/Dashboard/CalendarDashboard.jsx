@@ -1,12 +1,5 @@
-import { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { formatDate } from '../../hooks/useLocalStorage';
-
-const DAYS_TR = ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'];
-const MONTHS_TR = [
-    'Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran',
-    'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'
-];
+import { useLanguage } from '../../context/LanguageContext';
 
 const categoryColors = {
     'Mezeler': '#e94560',
@@ -55,9 +48,9 @@ function isSameDay(date1, date2) {
         date1.getDate() === date2.getDate();
 }
 
-function formatDisplayDate(dateStr) {
+function formatDisplayDate(dateStr, lang) {
     const date = new Date(dateStr);
-    return date.toLocaleDateString('tr-TR', {
+    return date.toLocaleDateString(lang === 'tr' ? 'tr-TR' : (lang === 'en' ? 'en-US' : 'nl-NL'), {
         weekday: 'long',
         day: 'numeric',
         month: 'long'
@@ -66,11 +59,15 @@ function formatDisplayDate(dateStr) {
 
 export default function CalendarDashboard({ orders, customers }) {
     const navigate = useNavigate();
+    const { lang, t } = useLanguage();
     const today = new Date();
     const [currentMonth, setCurrentMonth] = useState(today.getMonth());
     const [currentYear, setCurrentYear] = useState(today.getFullYear());
     const [selectedDate, setSelectedDate] = useState(null);
     const [showSummaryModal, setShowSummaryModal] = useState(false);
+
+    const MONTHS = t('months');
+    const DAYS = t('days_short');
 
     const calendarDays = useMemo(() =>
         getCalendarDays(currentYear, currentMonth),
@@ -203,16 +200,16 @@ export default function CalendarDashboard({ orders, customers }) {
                 <button
                     className="btn btn-primary"
                     style={{ flex: 1 }}
-                    onClick={() => navigate('/ai-parser')}
+                    onClick={() => navigate('/admin/ai-parser')}
                 >
-                    🤖 WhatsApp'tan Al
+                    🤖 {t('whatsapp_import')}
                 </button>
                 <button
                     className="btn btn-secondary"
                     style={{ flex: 1 }}
-                    onClick={() => navigate('/new-order')}
+                    onClick={() => navigate('/admin/new-order')}
                 >
-                    📝 Manuel Sipariş
+                    📝 {t('manual_order')}
                 </button>
             </div>
 
@@ -224,7 +221,7 @@ export default function CalendarDashboard({ orders, customers }) {
                     >
                         ◀
                     </button>
-                    <h2>{MONTHS_TR[currentMonth]} {currentYear}</h2>
+                    <h2>{MONTHS[currentMonth]} {currentYear}</h2>
                     <button
                         className="btn btn-icon btn-secondary"
                         onClick={goToNextMonth}
@@ -234,7 +231,7 @@ export default function CalendarDashboard({ orders, customers }) {
                 </div>
 
                 <div className="calendar-grid">
-                    {DAYS_TR.map(day => (
+                    {DAYS.map(day => (
                         <div key={day} className="calendar-day-header">
                             {day}
                         </div>
@@ -273,23 +270,23 @@ export default function CalendarDashboard({ orders, customers }) {
             {selectedDate && (
                 <div className="card mt-lg">
                     <div className="flex justify-between items-center mb-md">
-                        <h3>📅 {formatDisplayDate(selectedDate)}</h3>
+                        <h3>📅 {formatDisplayDate(selectedDate, lang)}</h3>
                         {selectedDateOrders.length > 0 && (
                             <button
                                 className="btn btn-primary"
                                 onClick={() => setShowSummaryModal(true)}
                             >
-                                📊 Özet
+                                📊 {t('daily_summary')}
                             </button>
                         )}
                     </div>
 
                     {selectedDateOrders.length === 0 ? (
-                        <p className="text-muted">Bu tarihte sipariş yok</p>
+                        <p className="text-muted">{t('no_order_date')}</p>
                     ) : (
                         <div>
                             <div className="text-muted mb-md">
-                                {selectedDateOrders.length} sipariş • {totalItems} ürün
+                                {selectedDateOrders.length} {t('all_orders').toLowerCase()} • {totalItems} {t('items')}
                             </div>
 
                             {/* Order List */}
@@ -313,7 +310,7 @@ export default function CalendarDashboard({ orders, customers }) {
                                         </div>
                                         <div className="text-right">
                                             <div className="font-bold text-success">€{totalPrice.toFixed(2)}</div>
-                                            <span className={`badge badge-${order.status}`}>{order.status}</span>
+                                            <span className={`badge badge-${order.status}`}>{t(`status_${order.status}`)}</span>
                                         </div>
                                     </div>
                                 );
@@ -395,10 +392,10 @@ export default function CalendarDashboard({ orders, customers }) {
                             className="btn btn-secondary btn-block mt-md"
                             onClick={() => {
                                 setShowSummaryModal(false);
-                                navigate(`/daily-summary?date=${selectedDate.toISOString().split('T')[0]}`);
+                                navigate(`/admin/daily-summary?date=${selectedDate.toISOString().split('T')[0]}`);
                             }}
                         >
-                            🖨️ Yazdırılabilir Özet
+                            🖨️ {t('printable_summary')}
                         </button>
                     </div>
                 </div>
@@ -408,21 +405,21 @@ export default function CalendarDashboard({ orders, customers }) {
             {!selectedDate && (
                 <>
                     <div className="card mt-lg">
-                        <h3>Bugün</h3>
+                        <h3>{t('today')}</h3>
                         {(() => {
                             const todayStats = getDayStats(today);
                             if (!todayStats) {
-                                return <p className="text-muted mt-md">Bugün için sipariş yok</p>;
+                                return <p className="text-muted mt-md">{t('no_order_today')}</p>;
                             }
                             return (
                                 <div className="flex gap-lg mt-md">
                                     <div className="text-center">
                                         <div className="text-2xl font-bold">{todayStats.customers}</div>
-                                        <div className="text-muted">Müşteri</div>
+                                        <div className="text-muted">{t('customer')}</div>
                                     </div>
                                     <div className="text-center">
                                         <div className="text-2xl font-bold">{todayStats.items}</div>
-                                        <div className="text-muted">Ürün</div>
+                                        <div className="text-muted">{t('items')}</div>
                                     </div>
                                 </div>
                             );
@@ -432,12 +429,12 @@ export default function CalendarDashboard({ orders, customers }) {
                     {/* Recent Orders Preview */}
                     <div className="card mt-md">
                         <div className="flex justify-between items-center mb-md">
-                            <h3>Son Siparişler</h3>
+                            <h3>{t('recent_orders')}</h3>
                             <button
                                 className="btn btn-secondary"
-                                onClick={() => navigate('/orders')}
+                                onClick={() => navigate('/admin/orders')}
                             >
-                                Tümü →
+                                {t('all')} →
                             </button>
                         </div>
 

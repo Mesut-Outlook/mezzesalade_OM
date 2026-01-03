@@ -2,11 +2,14 @@ import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TrendingUp, TrendingDown, Calendar, ChevronRight, Package, ArrowLeft } from 'lucide-react';
 import { formatCurrency, formatDate } from '../../hooks/useLocalStorage';
+import { useLanguage } from '../../context/LanguageContext';
 
 export default function RevenueReport({ orders = [], customers = [], getCustomer }) {
     const navigate = useNavigate();
+    const { lang, t } = useLanguage();
+    const locale = lang === 'tr' ? 'tr-TR' : lang === 'en' ? 'en-GB' : 'nl-NL';
 
-    // Calculate daily revenues and pending orders
+    // ...
     const { dailyRevenues, pendingOrders, todayTotal, yesterdayTotal, trend } = useMemo(() => {
         const today = new Date().toISOString().split('T')[0];
         const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
@@ -46,18 +49,14 @@ export default function RevenueReport({ orders = [], customers = [], getCustomer
         return { dailyRevenues, pendingOrders, todayTotal, yesterdayTotal, trend };
     }, [orders]);
 
-    // Get day name from date
+    // Get day name from date (localized)
     const getDayName = (dateStr) => {
-        const days = ['Pazar', 'Pazartesi', 'Sali', 'Carsamba', 'Persembe', 'Cuma', 'Cumartesi'];
-        const date = new Date(dateStr);
-        return days[date.getDay()];
+        return new Date(dateStr).toLocaleDateString(locale, { weekday: 'long' });
     };
 
-    // Format date as "23 Aralik 2024"
+    // Format date localized
     const formatDateLong = (dateStr) => {
-        const months = ['Ocak', 'Subat', 'Mart', 'Nisan', 'Mayis', 'Haziran', 'Temmuz', 'Agustos', 'Eylul', 'Ekim', 'Kasim', 'Aralik'];
-        const date = new Date(dateStr);
-        return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
+        return new Date(dateStr).toLocaleDateString(locale, { day: 'numeric', month: 'long', year: 'numeric' });
     };
 
     // Is today or future
@@ -71,18 +70,18 @@ export default function RevenueReport({ orders = [], customers = [], getCustomer
                 <button className="back-button" onClick={() => navigate('/')}>
                     <ArrowLeft size={20} />
                 </button>
-                <h1 className="page-title">Ciro Raporu</h1>
+                <h1 className="page-title">{t('revenue_report_title')}</h1>
             </div>
 
             {/* Today's Revenue Card */}
             <div className="summary-card" style={{ marginBottom: '24px' }}>
                 <div>
-                    <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>Bugunku Toplam Ciro</p>
+                    <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>{t('today_total_revenue')}</p>
                     <div className="summary-value">{formatCurrency(todayTotal)}</div>
                     <div className={`trend-indicator ${trend >= 0 ? 'trend-up' : 'trend-down'}`}>
                         {trend >= 0 ? <TrendingUp size={16} /> : <TrendingDown size={16} />}
                         <span>{Math.abs(trend).toFixed(1)}%</span>
-                        <span style={{ opacity: 0.7, fontWeight: 400 }}>Dune gore</span>
+                        <span style={{ opacity: 0.7, fontWeight: 400 }}>{t('compared_to_yesterday')}</span>
                     </div>
                 </div>
             </div>
@@ -90,7 +89,7 @@ export default function RevenueReport({ orders = [], customers = [], getCustomer
             {/* Pending Orders Section */}
             <div className="section-header" style={{ marginBottom: '12px' }}>
                 <h3 style={{ margin: 0, fontSize: '1.1rem', fontWeight: '700' }}>
-                    Bekleyen Siparisler ({pendingOrders.length})
+                    {t('pending_orders_count')} ({pendingOrders.length})
                 </h3>
             </div>
 
@@ -98,7 +97,7 @@ export default function RevenueReport({ orders = [], customers = [], getCustomer
                 {pendingOrders.length === 0 ? (
                     <div className="card text-center p-lg text-muted">
                         <Package size={48} style={{ opacity: 0.3, marginBottom: '12px' }} />
-                        <p>Bekleyen siparis bulunmuyor</p>
+                        <p>{t('no_pending_orders')}</p>
                     </div>
                 ) : (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -120,10 +119,10 @@ export default function RevenueReport({ orders = [], customers = [], getCustomer
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
                                         <div>
                                             <span style={{ fontWeight: '700', fontSize: '1rem', display: 'block' }}>
-                                                {customer?.name || 'Bilinmeyen'}
+                                                {customer?.name || t('unknown')}
                                             </span>
                                             <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                                                {order.items.length} urun
+                                                {order.items.length} {t('items_count')}
                                             </span>
                                         </div>
                                         <div style={{ textAlign: 'right' }}>
@@ -140,7 +139,7 @@ export default function RevenueReport({ orders = [], customers = [], getCustomer
                                             </span>
                                         </div>
                                         <span className={`badge badge-${order.status}`} style={{ fontSize: '0.75rem' }}>
-                                            {order.status === 'new' ? 'Yeni' : 'Hazirlaniyor'}
+                                            {t(`status_${order.status}`)}
                                         </span>
                                     </div>
                                 </div>
@@ -153,14 +152,14 @@ export default function RevenueReport({ orders = [], customers = [], getCustomer
             {/* Daily Revenues Section */}
             <div className="section-header" style={{ marginBottom: '12px' }}>
                 <h3 style={{ margin: 0, fontSize: '1.1rem', fontWeight: '700' }}>
-                    Gunluk Cirolar
+                    {t('daily_revenues_title')}
                 </h3>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 {dailyRevenues.length === 0 ? (
                     <div className="card text-center p-lg text-muted">
-                        <p>Henuz siparis bulunmuyor</p>
+                        <p>{t('no_orders_found')}</p>
                     </div>
                 ) : (
                     dailyRevenues.map(({ date, total, count }) => (
@@ -187,13 +186,13 @@ export default function RevenueReport({ orders = [], customers = [], getCustomer
                                     color: isToday(date) ? 'white' : 'var(--text-primary)'
                                 }}>
                                     {getDayName(date)}
-                                    {isToday(date) && <span style={{ marginLeft: '8px', fontSize: '0.75rem', opacity: 0.8 }}>(Bugun)</span>}
+                                    {isToday(date) && <span style={{ marginLeft: '8px', fontSize: '0.75rem', opacity: 0.8 }}>({t('today_label')})</span>}
                                 </span>
                                 <span style={{
                                     fontSize: '0.8rem',
                                     color: isToday(date) ? 'rgba(255,255,255,0.8)' : 'var(--text-muted)'
                                 }}>
-                                    {formatDateLong(date)} • {count} siparis
+                                    {formatDateLong(date)} • {count} {t('orders_count')}
                                 </span>
                             </div>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>

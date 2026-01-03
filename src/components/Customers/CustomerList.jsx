@@ -1,8 +1,9 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '../../context/LanguageContext';
 
 export default function CustomerList({ customers, orders, addCustomer, updateCustomer, deleteCustomer }) {
     const navigate = useNavigate();
+    const { t } = useLanguage();
     const [searchQuery, setSearchQuery] = useState('');
     const [showModal, setShowModal] = useState(false);
     const [editingCustomer, setEditingCustomer] = useState(null);
@@ -54,7 +55,7 @@ export default function CustomerList({ customers, orders, addCustomer, updateCus
     // Save customer
     const handleSave = async () => {
         if (!formData.name || !formData.phone) {
-            alert('İsim ve telefon zorunludur!');
+            alert(t('validation_name_phone'));
             return;
         }
 
@@ -74,7 +75,7 @@ export default function CustomerList({ customers, orders, addCustomer, updateCus
 
     // Delete customer
     const handleDelete = (customerId) => {
-        if (confirm('Bu müşteriyi silmek istediğinizden emin misiniz?')) {
+        if (confirm(t('delete_customer_confirm'))) {
             deleteCustomer(customerId);
         }
     };
@@ -82,9 +83,9 @@ export default function CustomerList({ customers, orders, addCustomer, updateCus
     return (
         <div>
             <header className="header">
-                <h1>👥 Müşteriler</h1>
+                <h1>{t('customers_title')}</h1>
                 <button className="btn btn-primary" onClick={handleNew}>
-                    + Yeni
+                    {t('new_btn')}
                 </button>
             </header>
 
@@ -94,7 +95,7 @@ export default function CustomerList({ customers, orders, addCustomer, updateCus
                 <input
                     type="text"
                     className="search-input"
-                    placeholder="Müşteri ara..."
+                    placeholder={t('search_customers_placeholder')}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                 />
@@ -104,9 +105,9 @@ export default function CustomerList({ customers, orders, addCustomer, updateCus
             {filteredCustomers.length === 0 ? (
                 <div className="empty-state">
                     <div className="icon">👥</div>
-                    <p>Müşteri bulunamadı</p>
+                    <p>{t('no_customers_found')}</p>
                     <button className="btn btn-primary mt-md" onClick={handleNew}>
-                        + İlk Müşteriyi Ekle
+                        {t('add_first_customer')}
                     </button>
                 </div>
             ) : (
@@ -133,7 +134,7 @@ export default function CustomerList({ customers, orders, addCustomer, updateCus
                                         )}
                                     </div>
                                     <div className="text-right">
-                                        <div className="text-muted">{orderCount} sipariş</div>
+                                        <div className="text-muted">{orderCount} {t('orders_count_label')}</div>
                                         <div className="font-bold text-success">€{totalSpent.toFixed(2)}</div>
                                     </div>
                                 </div>
@@ -154,7 +155,7 @@ export default function CustomerList({ customers, orders, addCustomer, updateCus
                                         className="btn btn-secondary flex-1"
                                         onClick={() => handleEdit(customer)}
                                     >
-                                        ✏️ Düzenle
+                                        ✏️ {t('edit')}
                                     </button>
                                     <button
                                         className="btn btn-secondary"
@@ -175,48 +176,48 @@ export default function CustomerList({ customers, orders, addCustomer, updateCus
                 <div className="modal-overlay" onClick={() => setShowModal(false)}>
                     <div className="modal" onClick={e => e.stopPropagation()}>
                         <div className="modal-header">
-                            <h2>{editingCustomer ? 'Müşteri Düzenle' : 'Yeni Müşteri'}</h2>
+                            <h2>{editingCustomer ? t('edit_customer_title') : t('new_customer_title')}</h2>
                             <button className="modal-close" onClick={() => setShowModal(false)}>×</button>
                         </div>
 
                         <div className="form-group">
-                            <label className="form-label">İsim *</label>
+                            <label className="form-label">{t('name_label')} *</label>
                             <input
                                 type="text"
                                 className="form-input"
-                                placeholder="Müşteri adı"
+                                placeholder={t('name_placeholder')}
                                 value={formData.name}
                                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                             />
                         </div>
 
                         <div className="form-group">
-                            <label className="form-label">Telefon *</label>
+                            <label className="form-label">{t('phone_label')} *</label>
                             <input
                                 type="tel"
                                 className="form-input"
-                                placeholder="+31 6 12345678"
+                                placeholder="+31 6 ..."
                                 value={formData.phone}
                                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                             />
                         </div>
 
                         <div className="form-group">
-                            <label className="form-label">Email</label>
+                            <label className="form-label">{t('email_label')}</label>
                             <input
                                 type="email"
                                 className="form-input"
-                                placeholder="ornek@email.com"
+                                placeholder={t('email_placeholder')}
                                 value={formData.email}
                                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                             />
                         </div>
 
                         <div className="form-group">
-                            <label className="form-label">Adres</label>
+                            <label className="form-label">{t('address_label')}</label>
                             <textarea
                                 className="form-textarea"
-                                placeholder="Teslimat adresi"
+                                placeholder={t('address_placeholder')}
                                 value={formData.address}
                                 onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                                 style={{ minHeight: 80 }}
@@ -224,10 +225,10 @@ export default function CustomerList({ customers, orders, addCustomer, updateCus
                         </div>
 
                         <div className="form-group">
-                            <label className="form-label">Not</label>
+                            <label className="form-label">{t('note_label')}</label>
                             <textarea
                                 className="form-textarea"
-                                placeholder="Müşteri hakkında notlar"
+                                placeholder={t('notes_placeholder')}
                                 value={formData.notes}
                                 onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                                 style={{ minHeight: 60 }}
@@ -235,7 +236,7 @@ export default function CustomerList({ customers, orders, addCustomer, updateCus
                         </div>
 
                         <button className="btn btn-primary btn-block" onClick={handleSave} disabled={saving}>
-                            {saving ? '⏳ Kaydediliyor...' : (editingCustomer ? 'Güncelle' : 'Kaydet')}
+                            {saving ? t('saving_btn') : (editingCustomer ? t('update_btn') : t('save'))}
                         </button>
                     </div>
                 </div>

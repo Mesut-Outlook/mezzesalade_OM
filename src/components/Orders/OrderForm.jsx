@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useLanguage } from '../../context/LanguageContext';
 import { getAllProducts, searchProducts, getProductsByCategory } from '../../hooks/useProductMatcher';
 
 export default function OrderForm({ customers, products = [], orders = [], addCustomer, addOrder, updateOrder }) {
     const navigate = useNavigate();
+    const { t } = useLanguage();
     const allProducts = getAllProducts(products);
     const productsByCategory = getProductsByCategory(products);
 
@@ -177,13 +179,13 @@ export default function OrderForm({ customers, products = [], orders = [], addCu
                 <button className="btn btn-icon btn-secondary" onClick={() => navigate(-1)}>
                     ←
                 </button>
-                <h1>{isEditMode ? '✏️ Siparişi Düzenle' : '📝 Yeni Sipariş'}</h1>
+                <h1>{isEditMode ? t('edit_order_title') : t('new_order_title')}</h1>
                 <div style={{ width: 40 }} />
             </header>
 
             {/* Date Selection */}
             <div className="form-group">
-                <label className="form-label">Sipariş Tarihi</label>
+                <label className="form-label">{t('order_date')}</label>
                 <input
                     type="date"
                     className="form-input"
@@ -194,7 +196,7 @@ export default function OrderForm({ customers, products = [], orders = [], addCu
 
             {/* Customer Selection */}
             <div className="card mb-md">
-                <h3 className="mb-md">👤 Müşteri</h3>
+                <h3 className="mb-md">👤 {t('customers')}</h3>
 
                 {selectedCustomer ? (
                     <div>
@@ -207,14 +209,14 @@ export default function OrderForm({ customers, products = [], orders = [], addCu
                                 className="btn btn-secondary"
                                 onClick={() => setSelectedCustomer(null)}
                             >
-                                Değiştir
+                                {t('change_btn')}
                             </button>
                         </div>
                         <div className="form-group mb-0">
-                            <label className="form-label">📍 Teslimat Adresi</label>
+                            <label className="form-label">{t('delivery_address_label')}</label>
                             <textarea
                                 className="form-textarea"
-                                placeholder="Teslimat adresi..."
+                                placeholder={t('address_placeholder')}
                                 value={selectedCustomer.address || ''}
                                 onChange={(e) => {
                                     const newAddress = e.target.value;
@@ -236,7 +238,7 @@ export default function OrderForm({ customers, products = [], orders = [], addCu
                             }}
                             value=""
                         >
-                            <option value="">Müşteri seçin...</option>
+                            <option value="">{t('select_customer_placeholder')}</option>
                             {customers.map(customer => (
                                 <option key={customer.id} value={customer.id}>
                                     {customer.name} - {customer.phone}
@@ -247,7 +249,7 @@ export default function OrderForm({ customers, products = [], orders = [], addCu
                             className="btn btn-secondary btn-block"
                             onClick={() => setShowCustomerModal(true)}
                         >
-                            + Yeni Müşteri Ekle
+                            + {t('add_new_customer_btn')}
                         </button>
                     </div>
                 )}
@@ -256,17 +258,17 @@ export default function OrderForm({ customers, products = [], orders = [], addCu
             {/* Order Items */}
             <div className="card mb-md">
                 <div className="flex justify-between items-center mb-md">
-                    <h3>📦 Ürünler</h3>
+                    <h3>📦 {t('products')}</h3>
                     <button
                         className="btn btn-primary"
                         onClick={() => setShowProductModal(true)}
                     >
-                        + Ürün Ekle
+                        + {t('add_product_btn')}
                     </button>
                 </div>
 
                 {orderItems.length === 0 ? (
-                    <p className="text-muted text-center">Henüz ürün eklenmedi</p>
+                    <p className="text-muted text-center">{t('no_items_in_order')}</p>
                 ) : (
                     <div>
                         {orderItems.map((item, index) => (
@@ -336,7 +338,7 @@ export default function OrderForm({ customers, products = [], orders = [], addCu
             {/* Shipping & Notes Row */}
             <div className="grid grid-2 gap-md">
                 <div className="form-group">
-                    <label className="form-label">🚚 Kargo Ücreti</label>
+                    <label className="form-label">🚚 {t('delivery_fee')}</label>
                     <div style={{ position: 'relative' }}>
                         <span style={{ position: 'absolute', left: 12, top: 12, color: 'var(--text-muted)' }}>€</span>
                         <input
@@ -354,10 +356,10 @@ export default function OrderForm({ customers, products = [], orders = [], addCu
 
             {/* Order Notes */}
             <div className="form-group">
-                <label className="form-label">📝 Sipariş Notu</label>
+                <label className="form-label">📝 {t('notes')}</label>
                 <textarea
                     className="form-textarea"
-                    placeholder="Özel istekler, notlar..."
+                    placeholder={t('notes_placeholder')}
                     value={orderNotes}
                     onChange={(e) => setOrderNotes(e.target.value)}
                 />
@@ -367,17 +369,17 @@ export default function OrderForm({ customers, products = [], orders = [], addCu
             <div className="card" style={{ position: 'sticky', bottom: 100, zIndex: 90 }}>
                 <div className="flex flex-col gap-xs mb-md">
                     <div className="flex justify-between items-center text-muted">
-                        <span>Ara Toplam:</span>
+                        <span>{t('subtotal')}:</span>
                         <span>€{subtotal.toFixed(2)}</span>
                     </div>
                     {shippingFee > 0 && (
                         <div className="flex justify-between items-center text-muted">
-                            <span>Kargo:</span>
+                            <span>{t('delivery_fee')}:</span>
                             <span>€{parseFloat(shippingFee).toFixed(2)}</span>
                         </div>
                     )}
                     <div className="flex justify-between items-center pt-sm border-top" style={{ borderTop: '1px solid var(--border-color)' }}>
-                        <span className="text-lg">Toplam:</span>
+                        <span className="text-lg">{t('total')}:</span>
                         <span className="text-2xl font-bold text-success">€{total.toFixed(2)}</span>
                     </div>
                 </div>
@@ -386,7 +388,7 @@ export default function OrderForm({ customers, products = [], orders = [], addCu
                     onClick={handleSubmit}
                     disabled={!selectedCustomer || orderItems.length === 0 || submitting}
                 >
-                    {submitting ? '⏳ Kaydediliyor...' : (isEditMode ? '✓ Değişiklikleri Kaydet' : '✓ Siparişi Kaydet')}
+                    {submitting ? t('saving_btn') : (isEditMode ? t('update_order') : t('save_order'))}
                 </button>
             </div>
 
@@ -395,23 +397,23 @@ export default function OrderForm({ customers, products = [], orders = [], addCu
                 <div className="modal-overlay" onClick={() => setShowCustomerModal(false)}>
                     <div className="modal" onClick={e => e.stopPropagation()}>
                         <div className="modal-header">
-                            <h2>Yeni Müşteri</h2>
+                            <h2>{t('new_customer_title')}</h2>
                             <button className="modal-close" onClick={() => setShowCustomerModal(false)}>×</button>
                         </div>
 
                         <div className="form-group">
-                            <label className="form-label">İsim *</label>
+                            <label className="form-label">{t('name_label')} *</label>
                             <input
                                 type="text"
                                 className="form-input"
-                                placeholder="Müşteri adı"
+                                placeholder={t('name_placeholder')}
                                 value={newCustomer.name}
                                 onChange={(e) => setNewCustomer({ ...newCustomer, name: e.target.value })}
                             />
                         </div>
 
                         <div className="form-group">
-                            <label className="form-label">Telefon *</label>
+                            <label className="form-label">{t('phone_label')} *</label>
                             <input
                                 type="tel"
                                 className="form-input"
@@ -422,10 +424,10 @@ export default function OrderForm({ customers, products = [], orders = [], addCu
                         </div>
 
                         <div className="form-group">
-                            <label className="form-label">Adres</label>
+                            <label className="form-label">{t('address')}</label>
                             <textarea
                                 className="form-textarea"
-                                placeholder="Teslimat adresi"
+                                placeholder={t('address')}
                                 value={newCustomer.address}
                                 onChange={(e) => setNewCustomer({ ...newCustomer, address: e.target.value })}
                                 style={{ minHeight: 80 }}
@@ -433,10 +435,10 @@ export default function OrderForm({ customers, products = [], orders = [], addCu
                         </div>
 
                         <div className="form-group">
-                            <label className="form-label">Not</label>
+                            <label className="form-label">{t('note_label')}</label>
                             <textarea
                                 className="form-textarea"
-                                placeholder="Müşteri hakkında notlar"
+                                placeholder={t('note_label')}
                                 value={newCustomer.notes}
                                 onChange={(e) => setNewCustomer({ ...newCustomer, notes: e.target.value })}
                                 style={{ minHeight: 60 }}
@@ -444,7 +446,7 @@ export default function OrderForm({ customers, products = [], orders = [], addCu
                         </div>
 
                         <button className="btn btn-primary btn-block" onClick={handleSaveCustomer}>
-                            Müşteriyi Kaydet
+                            {t('save')}
                         </button>
                     </div>
                 </div>
@@ -455,7 +457,7 @@ export default function OrderForm({ customers, products = [], orders = [], addCu
                 <div className="modal-overlay" onClick={() => setShowProductModal(false)}>
                     <div className="modal" onClick={e => e.stopPropagation()} style={{ maxHeight: '85vh' }}>
                         <div className="modal-header">
-                            <h2>Ürün Ekle</h2>
+                            <h2>{t('add_product_btn')}</h2>
                             <button className="modal-close" onClick={() => setShowProductModal(false)}>×</button>
                         </div>
 
@@ -465,7 +467,7 @@ export default function OrderForm({ customers, products = [], orders = [], addCu
                             <input
                                 type="text"
                                 className="search-input"
-                                placeholder="Ürün ara..."
+                                placeholder={t('search_product_placeholder')}
                                 value={searchQuery}
                                 onChange={(e) => handleSearch(e.target.value)}
                                 autoFocus
@@ -475,7 +477,7 @@ export default function OrderForm({ customers, products = [], orders = [], addCu
                         {/* Search Results */}
                         {searchResults.length > 0 && (
                             <div className="mb-md">
-                                <h4 className="mb-sm text-muted">Arama Sonuçları</h4>
+                                <h4 className="mb-sm text-muted">{t('search_results_title')}</h4>
                                 {searchResults.map(product => (
                                     <ProductItem
                                         key={product.id}
@@ -489,7 +491,7 @@ export default function OrderForm({ customers, products = [], orders = [], addCu
                         {/* Categories */}
                         {!searchQuery && (
                             <div>
-                                <h4 className="mb-sm text-muted">Kategoriler</h4>
+                                <h4 className="mb-sm text-muted">{t('categories_title')}</h4>
                                 <div className="flex gap-sm" style={{ flexWrap: 'wrap', marginBottom: 16 }}>
                                     {Object.keys(productsByCategory).map(category => (
                                         <button

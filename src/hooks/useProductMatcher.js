@@ -40,7 +40,7 @@ function createFuse(searchableProducts) {
             { name: 'normalizedName', weight: 0.7 },
             { name: 'searchTerms', weight: 0.3 }
         ],
-        threshold: 0.4,
+        threshold: 0.6, // Increased from 0.4 for more leniency
         distance: 100,
         includeScore: true,
         minMatchCharLength: 2
@@ -98,7 +98,8 @@ function matchProduct(productName, searchableProducts, fuse) {
         return {
             product: exactMatch,
             confidence: 1.0,
-            matchType: 'exact'
+            matchType: 'exact',
+            variation: null
         };
     }
 
@@ -111,11 +112,25 @@ function matchProduct(productName, searchableProducts, fuse) {
 
     const bestMatch = results[0];
     const confidence = 1 - bestMatch.score;
+    const product = bestMatch.item;
+
+    // Detect variation from input
+    let detectedVariation = null;
+    if (product.variations && product.variations.length > 0) {
+        for (const v of product.variations) {
+            const normalizedV = normalizeTurkish(v);
+            if (normalizedInput.includes(normalizedV)) {
+                detectedVariation = v;
+                break;
+            }
+        }
+    }
 
     return {
-        product: bestMatch.item,
+        product,
         confidence,
         matchType: 'fuzzy',
+        variation: detectedVariation,
         alternatives: results.slice(1, 4).map(r => ({
             product: r.item,
             confidence: 1 - r.score
@@ -197,11 +212,22 @@ function isAddressLine(text) {
 }
 
 function isLikelyName(text, productMatch) {
-    if (productMatch && productMatch.confidence > 0.6) return false;
+    // If it's a very high confidence product match, it's NOT a name
+    if (productMatch && productMatch.confidence > 0.8) return false;
+
     const words = text.trim().split(/\s+/);
-    if (words.length > 3 || words.length === 0) return false;
+    // If it's too long, it might be a description or note, not a simple name
+    if (words.length > 4 || words.length === 0) return false;
+
+    // If it has numbers, it's likely a product line "2 mercimek"
     if (/\d/.test(text)) return false;
-    return true;
+
+    // If confidence is extremely low and matches person-name patterns, skip it
+    if (!productMatch || productMatch.confidence < 0.3) {
+        return true;
+    }
+
+    return false;
 }
 
 // Main function to parse WhatsApp message text
@@ -224,6 +250,7 @@ export function parseOrderText(text, productList = []) {
 
         // Skip lines that look like metadata to focus on products
         if (isPhoneNumber(trimmedLine) || parseDate(trimmedLine) || isAddressLine(trimmedLine)) {
+            console.log('Skipping metadata line:', trimmedLine);
             continue;
         }
 
@@ -231,14 +258,17 @@ export function parseOrderText(text, productList = []) {
         if (parsed) {
             const productMatch = matchProduct(parsed.productName, searchable, fuse);
 
-            // If it's not a strong product match, it might be a name or noise
-            if (!productMatch || productMatch.confidence < 0.5) {
-                if (isLikelyName(trimmedLine, productMatch)) {
-                    continue;
-                }
+            console.log(`Matching line "${trimmedLine}":`, productMatch ? `${productMatch.product.name} (${productMatch.confidence.toFixed(2)})` : 'NO MATCH');
+
+            // Skip only if it really looks like a person's name and has a poor product match
+            if (isLikelyName(trimmedLine, productMatch)) {
+                console.log('Skipping likely name/noise:', trimmedLine);
+                continue;
             }
 
-            productLines.push({ line: trimmedLine, parsed, productMatch });
+            if (productMatch) {
+                productLines.push({ line: trimmedLine, parsed, productMatch });
+            }
         }
     }
 
@@ -247,10 +277,12 @@ export function parseOrderText(text, productList = []) {
             original: parsed.original,
             quantity: parsed.quantity,
             searchedName: parsed.productName,
+            variation: productMatch.variation, // Explicitly include variation
             match: productMatch ? {
                 product: productMatch.product,
                 confidence: productMatch.confidence,
                 matchType: productMatch.matchType,
+                variation: productMatch.variation,
                 alternatives: productMatch.alternatives || []
             } : null
         });

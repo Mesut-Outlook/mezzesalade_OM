@@ -18,13 +18,22 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
     // Diet Filters state
     const [dietFilter, setDietFilter] = useState(null); // 'V', 'VG', 'GF', 'N'
 
-    // Filter products by diet
-    const filteredProducts = products.filter(p => {
-        if (!dietFilter) return true;
-        return (p.dietary_tags || []).includes(dietFilter);
-    });
+    // Unified filtering and categorization
+    const { filteredProducts, productsByCategory, availableCategories } = useMemo(() => {
+        const filtered = products.filter(p => {
+            if (!dietFilter) return true;
+            return (p.dietary_tags || []).includes(dietFilter);
+        });
 
-    const productsByCategory = getProductsByCategory(filteredProducts);
+        const byCategory = getProductsByCategory(filtered);
+        const categories = Object.keys(byCategory);
+
+        return {
+            filteredProducts: filtered,
+            productsByCategory: byCategory,
+            availableCategories: categories
+        };
+    }, [products, dietFilter]);
 
     // UI state
     const [activeTab, setActiveTab] = useState('manual'); // 'manual' or 'ai'
@@ -60,26 +69,31 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
     const [searchResults, setSearchResults] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
 
-    // Auto-select first category when products load
+    // Auto-select first category or adjust when filters change
     useEffect(() => {
-        if (!selectedCategory && Object.keys(productsByCategory).length > 0) {
-            setSelectedCategory(Object.keys(productsByCategory)[0]);
+        if (availableCategories.length > 0) {
+            if (!selectedCategory || !availableCategories.includes(selectedCategory)) {
+                setSelectedCategory(availableCategories[0]);
+            }
+        } else {
+            setSelectedCategory(null);
         }
-    }, [productsByCategory, selectedCategory]);
+    }, [availableCategories, selectedCategory]);
 
     // Calculate totals
     const subtotal = orderItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     const shippingFee = deliveryMethod === 'home' ? 10 : 0;
     const total = subtotal + shippingFee;
 
-    // Handle Manual Search
+    // Handle Manual Search (synced with diet filter)
     useEffect(() => {
         if (searchQuery.length >= 2) {
-            setSearchResults(searchProducts(searchQuery, products));
+            const results = searchProducts(searchQuery, filteredProducts);
+            setSearchResults(results);
         } else {
             setSearchResults([]);
         }
-    }, [searchQuery, products]);
+    }, [searchQuery, filteredProducts]);
 
     // Toast Timer
     useEffect(() => {
@@ -213,26 +227,43 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
     // AI Parsing
     const handleAiParse = () => {
         if (!aiText.trim()) return;
+        console.log('AI Parsing text:', aiText);
+        console.log('Available products count:', products.length);
+
         const result = parseOrderText(aiText, products);
+        console.log('Parse result:', result);
 
         const newItems = result.products
             .filter(r => r.match)
-            .map(r => ({
-                productId: r.match.product.id,
-                name: r.match.product.name,
-                price: r.match.product.variationPrices?.[r.variation] || r.match.product.price,
-                quantity: r.quantity,
-                variation: r.variation || null,
-                category: r.match.product.category
-            }));
+            .map(r => {
+                const product = r.match.product;
+                const variation = r.variation || null;
+                const price = (variation && product.variationPrices?.[variation])
+                    ? parseFloat(product.variationPrices[variation])
+                    : parseFloat(product.price);
+
+                return {
+                    productId: product.id,
+                    name: product.name,
+                    price: price,
+                    quantity: r.quantity,
+                    variation: variation,
+                    category: product.category
+                };
+            });
+
+        console.log('Mapped new items:', newItems);
 
         if (newItems.length > 0) {
             setOrderItems(prev => [...prev, ...newItems]);
             setActiveTab('manual');
             setAiText('');
             showToast(t('added_to_cart'));
+        } else {
+            alert(t('ai_no_match') || 'Eşleşen ürün bulunamadı. Lütfen ürün adlarını kontrol edin.');
         }
     };
+    Riverside
 
     const openSummary = (e) => {
         e.preventDefault();
@@ -471,8 +502,10 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
                 <h1>{t('online_order')}</h1>
                 {isIdentified && (
                     <div className="user-welcome">
-                        <span>👋 {t('your_info')}: <strong>{customerInfo.name}</strong></span>
-                        <button className="logout-link" onClick={handleLogout}>{t('logout')}</button>
+                        <div className="welcome-line">👋 {t('welcome_user')} <strong>{customerInfo.name}</strong></div>
+                        <div className="logout-line-wrap">
+                            <button className="logout-link" onClick={handleLogout}>{t('logout')}</button>
+                        </div>
                     </div>
                 )}
             </header>
@@ -535,10 +568,10 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
                             <span className="diet-filter-label">{t('filter_by_diet')}:</span>
                             <div className="diet-chips">
                                 {[
-                                    { id: 'V', label: 'V' },
-                                    { id: 'VG', label: 'VG' },
-                                    { id: 'GF', label: 'GF' },
-                                    { id: 'N', label: 'N' }
+                                    { id: 'V', label: 'V', fullName: 'Vegan' },
+                                    { id: 'VG', label: 'VG', fullName: 'Vejetaryen' },
+                                    { id: 'GF', label: 'GF', fullName: 'Glütensiz' },
+                                    { id: 'N', label: 'N', fullName: 'Kuruyemiş' }
                                 ].map(chip => (
                                     <button
                                         key={chip.id}
@@ -546,7 +579,8 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
                                         onClick={() => setDietFilter(dietFilter === chip.id ? null : chip.id)}
                                         title={t(`diet_${chip.id.toLowerCase()}`)}
                                     >
-                                        {chip.id}
+                                        <span className="chip-id">{chip.id}</span>
+                                        <span className="chip-name">{chip.fullName}</span>
                                     </button>
                                 ))}
                             </div>
@@ -567,7 +601,7 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
                         ) : (
                             <>
                                 <div className="category-scroll">
-                                    {Object.keys(productsByCategory).map(cat => (
+                                    {availableCategories.map(cat => (
                                         <button
                                             key={cat}
                                             className={`cat-tab ${selectedCategory === cat ? 'active' : ''}`}
@@ -815,13 +849,6 @@ function ProductCard({ product, onAdd, onImageClick, getThumbnail }) {
                 <div>
                     <div className="p-header-row">
                         <div className="p-name">{product.name}</div>
-                        <div className="p-diet-tags">
-                            {(product.dietary_tags || []).map(tag => (
-                                <span key={tag} className={`p-diet-tag p-diet-tag-${tag}`}>
-                                    {t(`diet_${tag.toLowerCase()}`)}
-                                </span>
-                            ))}
-                        </div>
                     </div>
                     <p className="p-desc">{product.description}</p>
                 </div>
@@ -843,6 +870,13 @@ function ProductCard({ product, onAdd, onImageClick, getThumbnail }) {
 
                 <div className="p-footer">
                     <span className="p-price">€{price.toFixed(2)}</span>
+                    <div className="p-diet-tags">
+                        {(product.dietary_tags || []).map(tag => (
+                            <span key={tag} className={`p-diet-tag p-diet-tag-${tag}`} title={t(`diet_${tag.toLowerCase()}`)}>
+                                {tag}
+                            </span>
+                        ))}
+                    </div>
                     <button className="p-add-btn" onClick={() => onAdd(product, selectedVariation)}>
                         +
                     </button>

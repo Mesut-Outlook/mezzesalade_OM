@@ -2,27 +2,12 @@ import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { formatDate, formatCurrency } from '../../hooks/useLocalStorage';
 import { Calendar, Filter, Search, ChevronDown } from 'lucide-react';
+import { useLanguage } from '../../context/LanguageContext';
 
-const STATUS_LABELS = {
-    new: 'Yeni',
-    preparing: 'Hazırlanıyor',
-    ready: 'Hazır',
-    delivered: 'Teslim Edildi'
-};
-
-const DATE_FILTERS = {
-    all: 'Tüm Zamanlar',
-    today: 'Bugün',
-    yesterday: 'Dün',
-    thisWeek: 'Bu Hafta',
-    lastWeek: 'Geçen Hafta',
-    thisMonth: 'Bu Ay',
-    lastMonth: 'Geçen Ay',
-    last3Months: 'Son 3 Ay',
-    thisYear: 'Bu Yıl',
-    lastYear: 'Geçen Yıl',
-    custom: 'Özel Tarih Aralığı'
-};
+const DATE_FILTER_KEYS = [
+    'all', 'today', 'yesterday', 'this_week', 'last_week',
+    'this_month', 'last_month', 'last_3_months', 'this_year', 'last_year', 'custom'
+];
 
 function getDateRange(filter) {
     const now = new Date();
@@ -36,36 +21,36 @@ function getDateRange(filter) {
             const yesterday = new Date(today.getTime() - 86400000);
             return { start: yesterday, end: today };
 
-        case 'thisWeek':
+        case 'this_week':
             const weekStart = new Date(today);
             weekStart.setDate(today.getDate() - today.getDay() + 1); // Monday
             return { start: weekStart, end: new Date(now.getTime() + 86400000) };
 
-        case 'lastWeek':
+        case 'last_week':
             const lastWeekStart = new Date(today);
             lastWeekStart.setDate(today.getDate() - today.getDay() - 6);
             const lastWeekEnd = new Date(lastWeekStart);
             lastWeekEnd.setDate(lastWeekStart.getDate() + 7);
             return { start: lastWeekStart, end: lastWeekEnd };
 
-        case 'thisMonth':
+        case 'this_month':
             const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
             return { start: monthStart, end: new Date(now.getTime() + 86400000) };
 
-        case 'lastMonth':
+        case 'last_month':
             const lastMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1);
             const lastMonthEnd = new Date(now.getFullYear(), now.getMonth(), 1);
             return { start: lastMonthStart, end: lastMonthEnd };
 
-        case 'last3Months':
+        case 'last_3_months':
             const threeMonthsAgo = new Date(now.getFullYear(), now.getMonth() - 3, 1);
             return { start: threeMonthsAgo, end: new Date(now.getTime() + 86400000) };
 
-        case 'thisYear':
+        case 'this_year':
             const yearStart = new Date(now.getFullYear(), 0, 1);
             return { start: yearStart, end: new Date(now.getTime() + 86400000) };
 
-        case 'lastYear':
+        case 'last_year':
             const lastYearStart = new Date(now.getFullYear() - 1, 0, 1);
             const lastYearEnd = new Date(now.getFullYear(), 0, 1);
             return { start: lastYearStart, end: lastYearEnd };
@@ -77,6 +62,7 @@ function getDateRange(filter) {
 
 export default function AllOrders({ orders, customers, getCustomer }) {
     const navigate = useNavigate();
+    const { t } = useLanguage();
     const [statusFilter, setStatusFilter] = useState('all');
     const [dateFilter, setDateFilter] = useState('all');
     const [searchQuery, setSearchQuery] = useState('');
@@ -166,7 +152,7 @@ export default function AllOrders({ orders, customers, getCustomer }) {
                 <button className="btn btn-icon btn-secondary" onClick={() => navigate(-1)}>
                     ←
                 </button>
-                <h1>📋 Tüm Siparişler</h1>
+                <h1>📋 {t('all_orders')}</h1>
                 <div style={{ width: 40 }} />
             </header>
 
@@ -175,15 +161,15 @@ export default function AllOrders({ orders, customers, getCustomer }) {
                 <div className="flex justify-between items-center">
                     <div>
                         <div className="text-2xl font-bold">{stats.count}</div>
-                        <div className="text-muted">Sipariş</div>
+                        <div className="text-muted">{t('order')}</div>
                     </div>
                     <div>
                         <div className="text-2xl font-bold">{stats.items}</div>
-                        <div className="text-muted">Ürün</div>
+                        <div className="text-muted">{t('item')}</div>
                     </div>
                     <div>
                         <div className="text-2xl font-bold text-success">{formatCurrency(stats.revenue)}</div>
-                        <div className="text-muted">Toplam Ciro</div>
+                        <div className="text-muted">{t('total_revenue')}</div>
                     </div>
                 </div>
             </div>
@@ -194,7 +180,7 @@ export default function AllOrders({ orders, customers, getCustomer }) {
                 <input
                     type="text"
                     className="search-input"
-                    placeholder="Müşteri veya sipariş ara..."
+                    placeholder={t('search_placeholder')}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                 />
@@ -205,13 +191,13 @@ export default function AllOrders({ orders, customers, getCustomer }) {
                 <div className="flex justify-between items-center mb-sm">
                     <label className="form-label" style={{ margin: 0 }}>
                         <Calendar size={16} className="inline mr-xs" />
-                        Tarih Filtresi
+                        {t('date_filter')}
                     </label>
                     <button
                         className="btn btn-secondary btn-sm"
                         onClick={() => setShowDatePicker(!showDatePicker)}
                     >
-                        {DATE_FILTERS[dateFilter]} <ChevronDown size={14} />
+                        {t(`date_${dateFilter}`)} <ChevronDown size={14} />
                     </button>
                 </div>
 
@@ -221,7 +207,7 @@ export default function AllOrders({ orders, customers, getCustomer }) {
                         gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))',
                         gap: '8px'
                     }}>
-                        {Object.entries(DATE_FILTERS).map(([key, label]) => (
+                        {DATE_FILTER_KEYS.map((key) => (
                             <button
                                 key={key}
                                 className={`btn ${dateFilter === key ? 'btn-primary' : 'btn-secondary'}`}
@@ -231,7 +217,7 @@ export default function AllOrders({ orders, customers, getCustomer }) {
                                 }}
                                 style={{ fontSize: '0.8rem', padding: '8px' }}
                             >
-                                {label}
+                                {t(`date_${key}`)}
                             </button>
                         ))}
                     </div>
@@ -240,7 +226,7 @@ export default function AllOrders({ orders, customers, getCustomer }) {
                 {dateFilter === 'custom' && (
                     <div className="flex gap-sm mt-md">
                         <div className="form-group" style={{ flex: 1, margin: 0 }}>
-                            <label className="form-label" style={{ fontSize: '0.75rem' }}>Başlangıç</label>
+                            <label className="form-label" style={{ fontSize: '0.75rem' }}>{t('start_date')}</label>
                             <input
                                 type="date"
                                 className="form-input"
@@ -249,7 +235,7 @@ export default function AllOrders({ orders, customers, getCustomer }) {
                             />
                         </div>
                         <div className="form-group" style={{ flex: 1, margin: 0 }}>
-                            <label className="form-label" style={{ fontSize: '0.75rem' }}>Bitiş</label>
+                            <label className="form-label" style={{ fontSize: '0.75rem' }}>{t('end_date')}</label>
                             <input
                                 type="date"
                                 className="form-input"
@@ -267,9 +253,9 @@ export default function AllOrders({ orders, customers, getCustomer }) {
                     className={`btn ${statusFilter === 'all' ? 'btn-primary' : 'btn-secondary'}`}
                     onClick={() => setStatusFilter('all')}
                 >
-                    Tümü ({orders.length})
+                    {t('all')} ({orders.length})
                 </button>
-                {Object.entries(STATUS_LABELS).map(([status, label]) => {
+                {['new', 'preparing', 'ready', 'delivered'].map((status) => {
                     const count = orders.filter(o => o.status === status).length;
                     return (
                         <button
@@ -277,7 +263,7 @@ export default function AllOrders({ orders, customers, getCustomer }) {
                             className={`btn ${statusFilter === status ? 'btn-primary' : 'btn-secondary'}`}
                             onClick={() => setStatusFilter(status)}
                         >
-                            {label} ({count})
+                            {t(`status_${status}`)} ({count})
                         </button>
                     );
                 })}
@@ -287,7 +273,7 @@ export default function AllOrders({ orders, customers, getCustomer }) {
             {filteredOrders.length === 0 ? (
                 <div className="empty-state">
                     <div className="icon">📋</div>
-                    <p>Sipariş bulunamadı</p>
+                    <p>{t('no_orders_found')}</p>
                     {(searchQuery || dateFilter !== 'all' || statusFilter !== 'all') && (
                         <button
                             className="btn btn-secondary mt-md"
@@ -297,7 +283,7 @@ export default function AllOrders({ orders, customers, getCustomer }) {
                                 setStatusFilter('all');
                             }}
                         >
-                            Filtreleri Temizle
+                            {t('clear_filters')}
                         </button>
                     )}
                 </div>
@@ -319,15 +305,15 @@ export default function AllOrders({ orders, customers, getCustomer }) {
                                 >
                                     <div className="flex justify-between items-center">
                                         <div>
-                                            <div className="font-bold text-lg">{customer?.name || 'Bilinmeyen'}</div>
+                                            <div className="font-bold text-lg">{customer?.name || t('unknown')}</div>
                                             <div className="text-muted">
-                                                {totalItems} ürün • #{order.id.slice(-6).toUpperCase()}
+                                                {totalItems} {t('item').toLowerCase()} • #{order.id.slice(-6).toUpperCase()}
                                             </div>
                                         </div>
                                         <div className="text-right">
                                             <div className="font-bold text-success text-lg">{formatCurrency(totalPrice)}</div>
                                             <span className={`badge badge-${order.status}`}>
-                                                {STATUS_LABELS[order.status]}
+                                                {t(`status_${order.status}`)}
                                             </span>
                                         </div>
                                     </div>
@@ -337,7 +323,7 @@ export default function AllOrders({ orders, customers, getCustomer }) {
                                         {order.items.slice(0, 3).map(item =>
                                             `${item.quantity}x ${item.name}`
                                         ).join(', ')}
-                                        {order.items.length > 3 && ` +${order.items.length - 3} daha...`}
+                                        {order.items.length > 3 && ` +${order.items.length - 3} ${t('more')}`}
                                     </div>
                                 </div>
                             );
