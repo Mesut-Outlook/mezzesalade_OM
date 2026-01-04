@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
 
@@ -20,13 +21,13 @@ export default function CustomerList({ customers, orders, addCustomer, updateCus
 
     // Get order count for a customer
     const getOrderCount = (customerId) => {
-        return orders.filter(o => o.customerId === customerId).length;
+        return orders.filter(o => String(o.customerId) === String(customerId)).length;
     };
 
     // Get total spent by customer
     const getTotalSpent = (customerId) => {
         return orders
-            .filter(o => o.customerId === customerId)
+            .filter(o => String(o.customerId) === String(customerId))
             .reduce((sum, order) => {
                 return sum + order.items.reduce((s, item) => s + (item.price * item.quantity), 0);
             }, 0);
