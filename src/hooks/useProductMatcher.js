@@ -223,7 +223,8 @@ function isLikelyName(text, productMatch) {
     if (/\d/.test(text)) return false;
 
     // If confidence is extremely low and matches person-name patterns, skip it
-    if (!productMatch || productMatch.confidence < 0.3) {
+    // Reduced from 0.3 to 0.2 to be more lenient with short product names
+    if (!productMatch || productMatch.confidence < 0.2) {
         return true;
     }
 

@@ -35,7 +35,7 @@ export function generateWhatsAppMessage(order, customer, items) {
 
     if (order.shipping && order.shipping > 0) {
         message += `💵 Ara Toplam: ${formatCurrency(total)}\n`;
-        message += `🚚 Kargo: ${formatCurrency(order.shipping)}\n`;
+        message += `🚚 Teslimat Ücreti: ${formatCurrency(order.shipping)}\n`;
         message += `\n*TOPLAM: ${formatCurrency(total + order.shipping)}*\n`;
     } else {
         message += `💰 *TOPLAM: ${formatCurrency(total)}*\n`;

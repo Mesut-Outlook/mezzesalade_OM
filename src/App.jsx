@@ -101,7 +101,7 @@ function AppContent() {
         const result = await updateOrderDb(orderId, updates);
         // Optimistically update local state
         setOrders(prev => prev.map(order =>
-            order.id === orderId ? { ...order, ...updates, ...result } : order
+            String(order.id) === String(orderId) ? { ...order, ...updates, ...result } : order
         ));
         setSyncing(false);
         return result;
@@ -111,7 +111,7 @@ function AppContent() {
     const deleteOrder = async (orderId) => {
         setSyncing(true);
         await deleteOrderDb(orderId);
-        setOrders(prev => prev.filter(order => order.id !== orderId));
+        setOrders(prev => prev.filter(order => String(order.id) !== String(orderId)));
         setSyncing(false);
     };
 
@@ -131,7 +131,7 @@ function AppContent() {
         setSyncing(true);
         await updateCustomerDb(customerId, updates);
         setCustomers(prev => prev.map(customer =>
-            customer.id === customerId ? { ...customer, ...updates } : customer
+            String(customer.id) === String(customerId) ? { ...customer, ...updates } : customer
         ));
         setSyncing(false);
     };
@@ -140,7 +140,7 @@ function AppContent() {
     const deleteCustomer = async (customerId) => {
         setSyncing(true);
         await deleteCustomerDb(customerId);
-        setCustomers(prev => prev.filter(customer => customer.id !== customerId));
+        setCustomers(prev => prev.filter(customer => String(customer.id) !== String(customerId)));
         setSyncing(false);
     };
 
@@ -160,7 +160,7 @@ function AppContent() {
         setSyncing(true);
         const result = await updateProductDb(productId, updates);
         setProducts(prev => prev.map(p =>
-            p.id === productId ? { ...p, ...updates, ...result } : p
+            String(p.id) === String(productId) ? { ...p, ...updates, ...result } : p
         ));
         setSyncing(false);
         return result;
@@ -172,7 +172,7 @@ function AppContent() {
         const success = await deactivateProductDb(productId);
         if (success) {
             setProducts(prev => prev.map(p =>
-                p.id === productId ? { ...p, is_active: false } : p
+                String(p.id) === String(productId) ? { ...p, is_active: false } : p
             ));
         }
         setSyncing(false);
@@ -181,12 +181,12 @@ function AppContent() {
 
     // Get customer by ID
     const getCustomer = (customerId) => {
-        return customers.find(c => c.id === customerId);
+        return customers.find(c => String(c.id) === String(customerId));
     };
 
     // Get order by ID
     const getOrder = (orderId) => {
-        return orders.find(o => o.id === orderId);
+        return orders.find(o => String(o.id) === String(orderId));
     };
 
     if (loading) {

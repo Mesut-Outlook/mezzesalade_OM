@@ -66,7 +66,7 @@ export default function OrderDetail({ orders, customers, getOrder, getCustomer, 
                 <div className="flex gap-sm">
                     <button
                         className="btn btn-icon btn-secondary"
-                        onClick={() => navigate(`/edit-order/${order.id}`)}
+                        onClick={() => navigate(`/admin/edit-order/${order.id}`)}
                     >
                         ✏️
                     </button>
@@ -150,7 +150,7 @@ export default function OrderDetail({ orders, customers, getOrder, getCustomer, 
                     </div>
                     {shipping > 0 && (
                         <div className="flex justify-between items-center text-muted">
-                            <span>Kargo</span>
+                            <span>{t('delivery_fee')}</span>
                             <span>€{shipping.toFixed(2)}</span>
                         </div>
                     )}

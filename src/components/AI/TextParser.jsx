@@ -12,6 +12,7 @@ export default function TextParser({ customers, products = [], addCustomer, addO
     const [showCustomerModal, setShowCustomerModal] = useState(false);
     const [newCustomer, setNewCustomer] = useState({ name: '', phone: '', email: '', address: '', notes: '' });
     const [submitting, setSubmitting] = useState(false);
+    const [deliveryFee, setDeliveryFee] = useState(0);
 
     // Extracted metadata from AI parsing
     const [extractedInfo, setExtractedInfo] = useState(null);
@@ -89,7 +90,7 @@ export default function TextParser({ customers, products = [], addCustomer, addO
     const total = validResults.reduce((sum, r) => {
         const price = r.match.product.variationPrices?.[r.variation] || r.match.product.price;
         return sum + (price * r.quantity);
-    }, 0);
+    }, 0) + (parseFloat(deliveryFee) || 0);
 
     // Save new customer
     const handleSaveCustomer = async () => {
@@ -134,6 +135,7 @@ export default function TextParser({ customers, products = [], addCustomer, addO
             items,
             notes: orderNotes,
             date: orderDate,
+            shipping: parseFloat(deliveryFee) || 0,
             status: 'new',
             total
         };
@@ -142,7 +144,7 @@ export default function TextParser({ customers, products = [], addCustomer, addO
         setSubmitting(false);
 
         if (newOrder) {
-            navigate(`/order/${newOrder.id}`);
+            navigate(`/admin/order/${newOrder.id}`);
         }
     };
 
@@ -375,6 +377,22 @@ Lahana Sarma`}
                                     onChange={(e) => setOrderNotes(e.target.value)}
                                     style={{ minHeight: 80 }}
                                 />
+                            </div>
+
+                            <div className="form-group">
+                                <label className="form-label">🚚 Teslimat Ücreti</label>
+                                <div style={{ position: 'relative' }}>
+                                    <span style={{ position: 'absolute', left: 12, top: 12, color: 'var(--text-muted)' }}>€</span>
+                                    <input
+                                        type="number"
+                                        className="form-input"
+                                        style={{ paddingLeft: 30 }}
+                                        value={deliveryFee}
+                                        onChange={(e) => setDeliveryFee(e.target.value)}
+                                        step="0.01"
+                                        placeholder="0.00"
+                                    />
+                                </div>
                             </div>
 
                             {/* Total and Submit */}

@@ -300,7 +300,7 @@ export default function AllOrders({ orders, customers, getCustomer }) {
                                 <div
                                     key={order.id}
                                     className="card mb-sm"
-                                    onClick={() => navigate(`/order/${order.id}`)}
+                                    onClick={() => navigate(`/admin/order/${order.id}`)}
                                     style={{ cursor: 'pointer' }}
                                 >
                                     <div className="flex justify-between items-center">

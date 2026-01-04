@@ -298,7 +298,7 @@ export default function CalendarDashboard({ orders, customers }) {
                                     <div
                                         key={order.id}
                                         className="order-item"
-                                        onClick={() => navigate(`/order/${order.id}`)}
+                                        onClick={() => navigate(`/admin/order/${order.id}`)}
                                         style={{ cursor: 'pointer' }}
                                     >
                                         <div>
@@ -451,7 +451,7 @@ export default function CalendarDashboard({ orders, customers }) {
                                         <div
                                             key={order.id}
                                             className="order-item"
-                                            onClick={() => navigate(`/order/${order.id}`)}
+                                            onClick={() => navigate(`/admin/order/${order.id}`)}
                                             style={{ cursor: 'pointer' }}
                                         >
                                             <div>

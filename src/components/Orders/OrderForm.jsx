@@ -32,13 +32,13 @@ export default function OrderForm({ customers, products = [], orders = [], addCu
 
     useEffect(() => {
         if (isEditMode && orders.length > 0 && customers.length > 0) {
-            const orderToEdit = orders.find(o => o.id === id);
+            const orderToEdit = orders.find(o => String(o.id) === String(id));
             if (orderToEdit) {
                 setOrderItems(orderToEdit.items || []);
                 setOrderNotes(orderToEdit.notes || '');
                 setOrderDate(orderToEdit.date);
                 setShippingFee(orderToEdit.shipping || 0);
-                const customer = customers.find(c => c.id === orderToEdit.customerId);
+                const customer = customers.find(c => String(c.id) === String(orderToEdit.customerId));
                 if (customer) setSelectedCustomer(customer);
             }
         }
@@ -152,7 +152,10 @@ export default function OrderForm({ customers, products = [], orders = [], addCu
 
         const order = {
             customerId: selectedCustomer.id,
-            items: orderItems,
+            items: orderItems.map(item => ({
+                ...item,
+                productId: item.productId || item.id // Ensure productId is set
+            })),
             notes: orderNotes,
             date: orderDate,
             shipping: parseFloat(shippingFee) || 0,
@@ -169,7 +172,7 @@ export default function OrderForm({ customers, products = [], orders = [], addCu
         setSubmitting(false);
 
         if (result) {
-            navigate(`/order/${isEditMode ? id : result.id}`);
+            navigate(`/admin/order/${isEditMode ? id : result.id}`);
         }
     };
 

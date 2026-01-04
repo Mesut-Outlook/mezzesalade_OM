@@ -106,7 +106,7 @@ export default function RevenueReport({ orders = [], customers = [], getCustomer
                             return (
                                 <div
                                     key={order.id}
-                                    onClick={() => navigate(`/order/${order.id}`)}
+                                    onClick={() => navigate(`/admin/order/${order.id}`)}
                                     style={{
                                         background: 'var(--bg-secondary)',
                                         borderRadius: 'var(--radius-lg)',
@@ -165,7 +165,7 @@ export default function RevenueReport({ orders = [], customers = [], getCustomer
                     dailyRevenues.map(({ date, total, count }) => (
                         <div
                             key={date}
-                            onClick={() => navigate(`/calendar?date=${date}`)}
+                            onClick={() => navigate(`/admin/calendar?date=${date}`)}
                             style={{
                                 background: isToday(date) ? 'linear-gradient(135deg, var(--accent-primary), #ff6b35)' : 'var(--bg-secondary)',
                                 borderRadius: 'var(--radius-md)',
