@@ -263,7 +263,6 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
             alert(t('ai_no_match') || 'Eşleşen ürün bulunamadı. Lütfen ürün adlarını kontrol edin.');
         }
     };
-    Riverside
 
     const openSummary = (e) => {
         e.preventDefault();
