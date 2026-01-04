@@ -26,6 +26,15 @@ export default function OrderForm({ customers, products = [], orders = [], addCu
     const [searchResults, setSearchResults] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
 
+    // Customer search
+    const [customerSearchQuery, setCustomerSearchQuery] = useState('');
+    const [showCustomerDropdown, setShowCustomerDropdown] = useState(false);
+
+    const filteredCustomers = customers.filter(c =>
+        c.name.toLowerCase().includes(customerSearchQuery.toLowerCase()) ||
+        c.phone.includes(customerSearchQuery)
+    );
+
     // Editing mode logic
     const { id } = useParams();
     const isEditMode = !!id;
@@ -232,22 +241,60 @@ export default function OrderForm({ customers, products = [], orders = [], addCu
                         </div>
                     </div>
                 ) : (
-                    <div className="flex gap-sm flex-col">
-                        <select
-                            className="form-select"
-                            onChange={(e) => {
-                                const customer = customers.find(c => c.id === e.target.value);
-                                setSelectedCustomer(customer);
-                            }}
-                            value=""
-                        >
-                            <option value="">{t('select_customer_placeholder')}</option>
-                            {customers.map(customer => (
-                                <option key={customer.id} value={customer.id}>
-                                    {customer.name} - {customer.phone}
-                                </option>
-                            ))}
-                        </select>
+                    <div className="flex gap-sm flex-col" style={{ position: 'relative' }}>
+                        <div className="search-container mb-0">
+                            <span className="search-icon">🔍</span>
+                            <input
+                                type="text"
+                                className="search-input"
+                                placeholder={t('search_customers_placeholder') || 'Müşteri ara (isim veya telefon)...'}
+                                value={customerSearchQuery}
+                                onChange={(e) => {
+                                    setCustomerSearchQuery(e.target.value);
+                                    setShowCustomerDropdown(true);
+                                }}
+                                onFocus={() => setShowCustomerDropdown(true)}
+                            />
+                        </div>
+
+                        {showCustomerDropdown && customerSearchQuery.length > 0 && (
+                            <div className="card shadow-lg" style={{
+                                position: 'absolute',
+                                top: '100%',
+                                left: 0,
+                                right: 0,
+                                zIndex: 100,
+                                maxHeight: '300px',
+                                overflowY: 'auto',
+                                marginTop: '4px',
+                                padding: '8px'
+                            }}>
+                                {filteredCustomers.length > 0 ? (
+                                    filteredCustomers.map(customer => (
+                                        <div
+                                            key={customer.id}
+                                            className="product-card"
+                                            style={{ margin: '4px 0', cursor: 'pointer', padding: '12px' }}
+                                            onClick={() => {
+                                                setSelectedCustomer(customer);
+                                                setCustomerSearchQuery('');
+                                                setShowCustomerDropdown(false);
+                                            }}
+                                        >
+                                            <div className="info">
+                                                <div className="name">{customer.name}</div>
+                                                <div className="text-muted" style={{ fontSize: '0.8rem' }}>{customer.phone}</div>
+                                            </div>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <div className="text-muted text-center p-md">
+                                        Müşteri bulunamadı
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
                         <button
                             className="btn btn-secondary btn-block"
                             onClick={() => setShowCustomerModal(true)}
