@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { formatDate, formatCurrency } from '../../hooks/useLocalStorage';
 import { generateWhatsAppMessage, openWhatsApp } from '../../utils/whatsapp';
+import { useLanguage } from '../../context/LanguageContext';
 
 const STATUS_OPTIONS = [
     { value: 'new', label: 'Yeni', color: 'var(--accent-primary)' },
@@ -13,6 +14,7 @@ const STATUS_OPTIONS = [
 export default function OrderDetail({ orders, customers, getOrder, getCustomer, updateOrder, deleteOrder }) {
     const { id } = useParams();
     const navigate = useNavigate();
+    const { t } = useLanguage();
     const order = getOrder(id);
     const customer = order ? getCustomer(order.customerId) : null;
 
