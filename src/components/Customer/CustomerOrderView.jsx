@@ -673,6 +673,11 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
                             🛍️ {t('pickup')}
                         </button>
                     </div>
+                    {deliveryMethod === 'home' && (
+                        <p className="text-muted mt-xs mb-md" style={{ fontSize: '0.75rem' }}>
+                            📍 {t('delivery_fee_note')}
+                        </p>
+                    )}
 
                     {deliveryMethod === 'pickup' && (
                         <div className="pickup-card mb-lg">
