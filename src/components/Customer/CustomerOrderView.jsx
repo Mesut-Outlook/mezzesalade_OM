@@ -9,6 +9,7 @@ import {
 import { fetchCustomerByPhone, fetchOrdersByCustomerId } from '../../lib/supabase';
 import { useLanguage } from '../../context/LanguageContext';
 import { getThumbnail } from '../../utils/imageUtils';
+import { sendOrderNotification } from '../../utils/emailService';
 import './CustomerOrder.css';
 
 export default function CustomerOrderView({ products = [], addOrder, addCustomer, updateOrder }) {
@@ -325,6 +326,12 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
             }
 
             if (result) {
+                // Send email notification for new orders
+                if (!editingOrder) {
+                    sendOrderNotification(orderData, customerInfo)
+                        .then(res => console.log('Email notification result:', res))
+                        .catch(err => console.error('Email notification error:', err));
+                }
                 setOrderSuccess(true);
                 window.scrollTo(0, 0);
                 if (isIdentified) fetchHistory(customerInfo.id);
