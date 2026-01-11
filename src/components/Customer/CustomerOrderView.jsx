@@ -82,7 +82,13 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
 
     // Calculate totals
     const subtotal = orderItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    const shippingFee = deliveryMethod === 'home' ? 10 : 0;
+    // Delivery fee: Amsterdam içi 8€, dışı 10€
+    // Amsterdam posta kodları: 10xx ve 11xx (örn: 1012 AB, 1066 WK, 1105 AZ)
+    const addressLower = customerInfo.address?.toLowerCase() || '';
+    const hasAmsterdamText = addressLower.includes('amsterdam');
+    const hasAmsterdamPostalCode = /\b10\d{2}\b|\b11\d{2}\b/.test(customerInfo.address || '');
+    const isAmsterdamAddress = hasAmsterdamText || hasAmsterdamPostalCode;
+    const shippingFee = deliveryMethod === 'home' ? (isAmsterdamAddress ? 8 : 10) : 0;
     const total = subtotal + shippingFee;
 
     // Handle Manual Search (synced with diet filter)
@@ -657,7 +663,7 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
                             className={`delivery-btn ${deliveryMethod === 'home' ? 'active' : ''}`}
                             onClick={() => setDeliveryMethod('home')}
                         >
-                            🏠 {t('home_delivery')} (+€10)
+                            🏠 {t('home_delivery')} (Amsterdam: €8 / {t('outside')}: €10)
                         </button>
                         <button
                             type="button"
