@@ -45,6 +45,21 @@ function AppContent() {
     // Public route check
     const isPublicRoute = location.pathname === '/' || location.pathname === '/siparis';
 
+    // Dynamic metadata update
+    useEffect(() => {
+        const isSiparis = location.pathname === '/' || location.pathname === '/siparis';
+        const title = isSiparis ? 'Mezzesalade Sipariş' : 'Mezzesalade Yönetim';
+        document.title = title;
+
+        let meta = document.querySelector('meta[name="apple-mobile-web-app-title"]');
+        if (!meta) {
+            meta = document.createElement('meta');
+            meta.name = 'apple-mobile-web-app-title';
+            document.head.appendChild(meta);
+        }
+        meta.setAttribute('content', title);
+    }, [location.pathname]);
+
     // Load data from Supabase
     const loadData = useCallback(async () => {
         setSyncing(true);
