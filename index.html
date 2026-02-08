@@ -12,10 +12,12 @@
     (function () {
       function updateMetadata() {
         const path = window.location.pathname;
+        const isAdmin = path.startsWith('/admin');
         const isSiparis = path === '/' || path === '/siparis';
         const title = isSiparis ? 'Mezzesalade Sipariş' : 'Mezzesalade Yönetim';
         document.title = title;
 
+        // Update apple-mobile-web-app-title
         let meta = document.querySelector('meta[name="apple-mobile-web-app-title"]');
         if (!meta) {
           meta = document.createElement('meta');
@@ -23,6 +25,16 @@
           document.head.appendChild(meta);
         }
         meta.content = title;
+
+        // Dynamically set manifest based on current page
+        const manifestPath = isAdmin ? '/manifest-admin.json' : '/manifest-customer.json';
+        let manifestLink = document.querySelector('link[rel="manifest"]');
+        if (!manifestLink) {
+          manifestLink = document.createElement('link');
+          manifestLink.rel = 'manifest';
+          document.head.appendChild(manifestLink);
+        }
+        manifestLink.href = manifestPath;
       }
       updateMetadata();
       // Also run on load just in case
