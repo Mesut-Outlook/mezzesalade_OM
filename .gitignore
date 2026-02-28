@@ -25,7 +25,8 @@ npm-debug.log*
 *.tsbuildinfo
 .vercel
 
-user  = admin   
-password = admin123!
-admin_telefon = +31634316902
-admin_email = mezzesalade@gmail.com
+# Local env files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local

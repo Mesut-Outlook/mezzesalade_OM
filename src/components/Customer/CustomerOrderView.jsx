@@ -10,6 +10,7 @@ import { fetchCustomerByPhone, fetchOrdersByCustomerId } from '../../lib/supabas
 import { useLanguage } from '../../context/LanguageContext';
 import { getThumbnail } from '../../utils/imageUtils';
 import { sendOrderNotification } from '../../utils/emailService';
+import { generateWhatsAppMessage, generateWhatsAppUrl } from '../../utils/whatsapp';
 import './CustomerOrder.css';
 
 export default function CustomerOrderView({ products = [], addOrder, addCustomer, updateOrder }) {
@@ -44,6 +45,7 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
     const [toast, setToast] = useState(null);
     const [lightboxImage, setLightboxImage] = useState(null);
     const [showSummary, setShowSummary] = useState(false);
+    const [lastOrder, setLastOrder] = useState(null);
     const cartRef = useRef(null);
 
 
@@ -332,9 +334,16 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
                         .then(res => console.log('Email notification result:', res))
                         .catch(err => console.error('Email notification error:', err));
                 }
+                if (isIdentified) fetchHistory(customerInfo.id);
+
+                // Store order for WhatsApp message
+                setLastOrder({
+                    ...orderData,
+                    id: result.id || 'NEW'
+                });
+
                 setOrderSuccess(true);
                 window.scrollTo(0, 0);
-                if (isIdentified) fetchHistory(customerInfo.id);
             }
         } catch (error) {
             console.error('Order error:', error);
@@ -359,7 +368,27 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
                             <p><strong>{t('address')}:</strong> {customerInfo.address}</p>
                         )}
                     </div>
-                    <button className="btn btn-primary" onClick={() => setOrderSuccess(false)}>
+                    <div className="whatsapp-section mt-lg mb-lg">
+                        <p className="whatsapp-note mb-md">
+                            {lang === 'tr' ? 'Siparişi tamamlamak ve yöneticiye iletmek için WhatsApp butonuna tıklayınız:' :
+                                lang === 'nl' ? 'Klik op de WhatsApp-knop om de bestelling af te ronden:' :
+                                    'Click the WhatsApp button to complete your order:'}
+                        </p>
+                        <a
+                            href={lastOrder ? generateWhatsAppUrl('0634316902', generateWhatsAppMessage(lastOrder, customerInfo, lastOrder.items)) : '#'}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn btn-whatsapp btn-block btn-lg"
+                        >
+                            <span className="whatsapp-icon">💬</span>
+                            <span>{lang === 'tr' ? 'WhatsApp ile Gönder' : lang === 'nl' ? 'Verstuur via WhatsApp' : 'Send via WhatsApp'}</span>
+                        </a>
+                    </div>
+
+                    <button className="btn btn-secondary btn-block" onClick={() => {
+                        setOrderSuccess(false);
+                        setLastOrder(null);
+                    }}>
                         {t('new_order_btn')}
                     </button>
                 </div>

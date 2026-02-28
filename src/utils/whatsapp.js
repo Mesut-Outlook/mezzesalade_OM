@@ -52,21 +52,37 @@ export function generateWhatsAppMessage(order, customer, items) {
 
 // Generate WhatsApp URL
 export function generateWhatsAppUrl(phoneNumber, message) {
-    // Clean phone number
-    let cleanPhone = phoneNumber.replace(/\D/g, '');
+    let rawPhone = (phoneNumber || '').trim();
 
-    // Add country code if not present
-    if (!cleanPhone.startsWith('31') && !cleanPhone.startsWith('90')) {
-        // Default to Netherlands
-        if (cleanPhone.startsWith('0')) {
-            cleanPhone = '31' + cleanPhone.slice(1);
-        } else {
+    // Check for explicit country codes
+    const hasPlus = rawPhone.startsWith('+');
+    const hasZeroZero = rawPhone.startsWith('00');
+
+    // Clean phone number (keep only digits)
+    let cleanPhone = rawPhone.replace(/\D/g, '');
+
+    if (hasPlus) {
+        // Has a '+' so it includes the country code. Just use the digits.
+    } else if (hasZeroZero) {
+        // Has '00'. Strip the leading zeros.
+        cleanPhone = cleanPhone.replace(/^00/, '');
+    } else if (cleanPhone.startsWith('0')) {
+        // Likely a local number (e.g., 06...). Replace the leading '0' with '31'
+        cleanPhone = '31' + cleanPhone.slice(1);
+    } else if (cleanPhone.length > 0) {
+        // No leading 0, no +, no 00. Assume Dutch local without prefix (e.g., 6...).
+        // Note: if it's already a clean international number like '336...' without + or 00, 
+        // it's tricky, but standard is to assume Dutch if no prefix.
+        if (!cleanPhone.startsWith('31') && !cleanPhone.startsWith('90')) {
             cleanPhone = '31' + cleanPhone;
         }
     }
 
-    const encodedMessage = encodeURIComponent(message);
-    return `https://wa.me/${cleanPhone}?text=${encodedMessage}`;
+    let url = `https://wa.me/${cleanPhone}`;
+    if (message) {
+        url += `?text=${encodeURIComponent(message)}`;
+    }
+    return url;
 }
 
 // Open WhatsApp with message
