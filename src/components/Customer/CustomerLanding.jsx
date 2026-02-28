@@ -17,18 +17,6 @@ export default function CustomerLanding() {
 
                 <div className="landing-options">
                     <div
-                        className="landing-card join-card"
-                        onClick={() => navigate('/toplu-siparis')}
-                    >
-                        <div className="card-icon">👥</div>
-                        <h2>{t('join_existing_title')}</h2>
-                        <p>{t('join_existing_desc')}</p>
-                        <div className="card-action">
-                            <span>{t('see_all')} →</span>
-                        </div>
-                    </div>
-
-                    <div
                         className="landing-card create-card"
                         onClick={() => navigate('/ozel-siparis')}
                     >
@@ -37,6 +25,18 @@ export default function CustomerLanding() {
                         <p>{t('create_new_desc')}</p>
                         <div className="card-action">
                             <span>{t('confirm_order')} →</span>
+                        </div>
+                    </div>
+
+                    <div
+                        className="landing-card join-card"
+                        onClick={() => navigate('/toplu-siparis')}
+                    >
+                        <div className="card-icon">👥</div>
+                        <h2>{t('join_existing_title')}</h2>
+                        <p>{t('join_existing_desc')}</p>
+                        <div className="card-action">
+                            <span>{t('see_all')} →</span>
                         </div>
                     </div>
                 </div>
