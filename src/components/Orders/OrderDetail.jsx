@@ -18,6 +18,10 @@ export default function OrderDetail({ orders, customers, getOrder, getCustomer, 
     const order = getOrder(id);
     const customer = order ? getCustomer(order.customerId) : null;
 
+    // Extract time from notes if present
+    const timeMatch = order && order.notes ? order.notes.match(/^\[(\d{2}:\d{2})\]/) : null;
+    const deliveryTime = timeMatch ? timeMatch[1] : null;
+
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
     if (!order) {
@@ -118,8 +122,8 @@ export default function OrderDetail({ orders, customers, getOrder, getCustomer, 
             {/* Order Date */}
             <div className="card mb-md">
                 <div className="flex justify-between items-center">
-                    <span className="text-muted">Sipariş Tarihi</span>
-                    <span className="font-bold">{formatDate(order.date)}</span>
+                    <span className="text-muted">{t('order_date_label')}</span>
+                    <span className="font-bold">{formatDate(order.date)} {deliveryTime && `@ ${deliveryTime}`}</span>
                 </div>
             </div>
 
@@ -166,8 +170,8 @@ export default function OrderDetail({ orders, customers, getOrder, getCustomer, 
             {/* Notes */}
             {order.notes && (
                 <div className="card mb-md">
-                    <h3 className="mb-sm">📝 Not</h3>
-                    <p>{order.notes}</p>
+                    <h3 className="mb-sm">📝 {t('notes')}</h3>
+                    <p>{order.notes.replace(/^\[\d{2}:\d{2}\]\s*/, '')}</p>
                 </div>
             )}
 

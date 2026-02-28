@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { formatDate, formatCurrency } from '../../hooks/useLocalStorage';
+import { useLanguage } from '../../context/LanguageContext';
 
 const STATUS_LABELS = {
     new: 'Yeni',
@@ -11,6 +12,7 @@ const STATUS_LABELS = {
 
 export default function OrderList({ orders, customers, getCustomer }) {
     const navigate = useNavigate();
+    const { t } = useLanguage();
     const [statusFilter, setStatusFilter] = useState('all');
     const [searchQuery, setSearchQuery] = useState('');
 
@@ -48,12 +50,12 @@ export default function OrderList({ orders, customers, getCustomer }) {
     return (
         <div>
             <header className="header">
-                <h1>📋 Siparişler</h1>
+                <h1>📋 {t('all_orders')}</h1>
                 <button
                     className="btn btn-primary"
                     onClick={() => navigate('/new-order')}
                 >
-                    + Yeni
+                    + {t('new_btn')}
                 </button>
             </header>
 
@@ -115,9 +117,12 @@ export default function OrderList({ orders, customers, getCustomer }) {
                                 >
                                     <div className="flex justify-between items-center">
                                         <div>
-                                            <div className="font-bold text-lg">{customer?.name || 'Bilinmeyen'}</div>
+                                            <div className="font-bold text-lg">{customer?.name || t('unknown')}</div>
                                             <div className="text-muted">
-                                                {totalItems} ürün • #{order.id.slice(-6).toUpperCase()}
+                                                {totalItems} {t('items')} • #{order.id.slice(-6).toUpperCase()}
+                                                {order.notes && order.notes.match(/^\[(\d{2}:\d{2})\]/) && (
+                                                    <span className="ml-xs">⏰ {order.notes.match(/^\[(\d{2}:\d{2})\]/)[1]}</span>
+                                                )}
                                             </div>
                                         </div>
                                         <div className="text-right">

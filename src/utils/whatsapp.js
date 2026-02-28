@@ -5,9 +5,13 @@ export function generateWhatsAppMessage(order, customer, items) {
     const orderDate = formatDate(order.date);
     const orderNumber = `#${order.id.slice(-6).toUpperCase()}`;
 
+    // Extract time from notes if present
+    const timeMatch = (order.notes || '').match(/^\[(\d{2}:\d{2})\]/);
+    const deliveryTime = timeMatch ? timeMatch[1] : null;
+
     let message = `🍽️ *MEZZESALADE SİPARİŞ*\n\n`;
     message += `📋 Sipariş No: ${orderNumber}\n`;
-    message += `📅 Tarih: ${orderDate}\n`;
+    message += `📅 Tarih: ${orderDate}${deliveryTime ? ` @ ${deliveryTime}` : ''}\n`;
     message += `👤 Müşteri: ${customer.name}\n`;
     message += `📞 Tel: ${customer.phone}\n`;
 

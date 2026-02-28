@@ -16,6 +16,7 @@ export default function OrderForm({ customers, products = [], orders = [], addCu
     const [orderItems, setOrderItems] = useState([]);
     const [orderNotes, setOrderNotes] = useState('');
     const [orderDate, setOrderDate] = useState(new Date().toISOString().split('T')[0]);
+    const [deliveryTime, setDeliveryTime] = useState('');
     const [shippingFee, setShippingFee] = useState(0);
 
     // New customer form
@@ -44,8 +45,17 @@ export default function OrderForm({ customers, products = [], orders = [], addCu
             const orderToEdit = orders.find(o => String(o.id) === String(id));
             if (orderToEdit) {
                 setOrderItems(orderToEdit.items || []);
-                setOrderNotes(orderToEdit.notes || '');
                 setOrderDate(orderToEdit.date);
+
+                // Extract time from notes if present: "[HH:MM] ..."
+                const timeMatch = (orderToEdit.notes || '').match(/^\[(\d{2}:\d{2})\]\s*(.*)/);
+                if (timeMatch) {
+                    setDeliveryTime(timeMatch[1]);
+                    setOrderNotes(timeMatch[2]);
+                } else {
+                    setDeliveryTime('');
+                    setOrderNotes(orderToEdit.notes || '');
+                }
                 setShippingFee(orderToEdit.shipping || 0);
                 const customer = customers.find(c => String(c.id) === String(orderToEdit.customerId));
                 if (customer) setSelectedCustomer(customer);
@@ -165,7 +175,7 @@ export default function OrderForm({ customers, products = [], orders = [], addCu
                 ...item,
                 productId: item.productId || item.id // Ensure productId is set
             })),
-            notes: orderNotes,
+            notes: (deliveryTime ? `[${deliveryTime}] ` : '') + orderNotes,
             date: orderDate,
             shipping: parseFloat(shippingFee) || 0,
             status: isEditMode ? undefined : 'new',
@@ -196,14 +206,25 @@ export default function OrderForm({ customers, products = [], orders = [], addCu
             </header>
 
             {/* Date Selection */}
-            <div className="form-group">
-                <label className="form-label">{t('order_date')}</label>
-                <input
-                    type="date"
-                    className="form-input"
-                    value={orderDate}
-                    onChange={(e) => setOrderDate(e.target.value)}
-                />
+            <div className="grid grid-2 gap-sm">
+                <div className="form-group">
+                    <label className="form-label">{t('order_date_label')}</label>
+                    <input
+                        type="date"
+                        className="form-input"
+                        value={orderDate}
+                        onChange={(e) => setOrderDate(e.target.value)}
+                    />
+                </div>
+                <div className="form-group">
+                    <label className="form-label">{t('delivery_time')} ({t('optional')})</label>
+                    <input
+                        type="time"
+                        className="form-input"
+                        value={deliveryTime}
+                        onChange={(e) => setDeliveryTime(e.target.value)}
+                    />
+                </div>
             </div>
 
             {/* Customer Selection */}

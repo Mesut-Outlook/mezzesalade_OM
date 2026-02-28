@@ -187,8 +187,8 @@ export default function CalendarDashboard({ orders, customers }) {
     };
 
     const getCustomerName = (customerId) => {
-        const customer = customers.find(c => c.id === customerId);
-        return customer?.name || 'Bilinmeyen';
+        const customer = customers.find(c => String(c.id) === String(customerId));
+        return customer?.name || t('unknown');
     };
 
     const getTotalPrice = (order) => {
@@ -306,8 +306,13 @@ export default function CalendarDashboard({ orders, customers }) {
                                         <div>
                                             <div className="font-bold">{getCustomerName(order.customerId)}</div>
                                             <div className="text-muted text-sm">
-                                                {totalOrderItems} ürün
-                                                {order.notes && <span> • {order.notes}</span>}
+                                                {totalOrderItems} {t('items')}
+                                                {order.notes && order.notes.match(/^\[(\d{2}:\d{2})\]/) && (
+                                                    <span className="ml-xs">⏰ {order.notes.match(/^\[(\d{2}:\d{2})\]/)[1]}</span>
+                                                )}
+                                                {order.notes && (
+                                                    <span> • {order.notes.replace(/^\[\d{2}:\d{2}\]\s*/, '')}</span>
+                                                )}
                                             </div>
                                         </div>
                                         <div className="text-right">
@@ -457,14 +462,18 @@ export default function CalendarDashboard({ orders, customers }) {
                                             style={{ cursor: 'pointer' }}
                                         >
                                             <div>
-                                                <div className="font-bold">{customer?.name || 'Bilinmeyen'}</div>
+                                                <div className="font-bold">{customer?.name || t('unknown')}</div>
                                                 <div className="text-muted text-sm">
-                                                    {formatDate(order.date)} • {totalItems} ürün
+                                                    {formatDate(order.date)}
+                                                    {order.notes && order.notes.match(/^\[(\d{2}:\d{2})\]/) && (
+                                                        <span className="ml-xs">⏰ {order.notes.match(/^\[(\d{2}:\d{2})\]/)[1]}</span>
+                                                    )}
+                                                    <span> • {totalItems} {t('items')}</span>
                                                 </div>
                                             </div>
                                             <div className="text-right">
                                                 <div className="font-bold text-success">€{totalPrice.toFixed(2)}</div>
-                                                <span className={`badge badge-${order.status}`}>{order.status}</span>
+                                                <span className={`badge badge-${order.status}`}>{t(`status_${order.status}`)}</span>
                                             </div>
                                         </div>
                                     );

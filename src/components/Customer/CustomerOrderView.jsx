@@ -63,6 +63,7 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
     const [customerInfo, setCustomerInfo] = useState({ id: null, name: '', phone: '', address: '' });
     const [orderNotes, setOrderNotes] = useState('');
     const [orderDate, setOrderDate] = useState(new Date().toISOString().split('T')[0]);
+    const [deliveryTime, setDeliveryTime] = useState('');
 
     // AI state
     const [aiText, setAiText] = useState('');
@@ -175,7 +176,15 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
         setOrderDate(order.date);
 
         const cleanNotes = order.notes ? order.notes.replace(' (Delivery)', '').replace(' (Pickup)', '') : '';
-        setOrderNotes(cleanNotes);
+        // Check if time is prepended: "[HH:MM] ..."
+        const timeMatch = cleanNotes.match(/^\[(\d{2}:\d{2})\]\s*(.*)/);
+        if (timeMatch) {
+            setDeliveryTime(timeMatch[1]);
+            setOrderNotes(timeMatch[2]);
+        } else {
+            setDeliveryTime('');
+            setOrderNotes(cleanNotes);
+        }
 
         window.scrollTo(0, 0);
         setActiveTab('manual');
@@ -186,6 +195,7 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
         setOrderItems([]);
         setOrderNotes('');
         setOrderDate(new Date().toISOString().split('T')[0]);
+        setDeliveryTime('');
     };
 
     // Add product to order
@@ -308,10 +318,12 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
 
             if (!currentCustomerId) throw new Error('Customer error');
 
+            const finalNotes = (deliveryTime ? `[${deliveryTime}] ` : '') + orderNotes + (deliveryMethod === 'home' ? ' (Delivery)' : ' (Pickup)');
+
             const orderData = {
                 customerId: currentCustomerId,
                 items: orderItems,
-                notes: orderNotes + (deliveryMethod === 'home' ? ' (Delivery)' : ' (Pickup)'),
+                notes: finalNotes,
                 date: orderDate,
                 shipping: shippingFee,
                 status: editingOrder ? editingOrder.status : 'new',
@@ -497,7 +509,7 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
                             </div>
                             <div className="summary-details mt-md pt-md border-top">
                                 <p>👤 <strong>{customerInfo.name}</strong></p>
-                                <p>📅 <strong>{orderDate}</strong></p>
+                                <p>📅 <strong>{orderDate} {deliveryTime && `@ ${deliveryTime}`}</strong></p>
                                 <p>🚚 <strong>{deliveryMethod === 'home' ? t('home_delivery') : t('pickup')}</strong></p>
                                 {deliveryMethod === 'home' && <p>📍 {customerInfo.address}</p>}
                             </div>
@@ -769,19 +781,30 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
                         />
                     </div>
 
-                    <div className="form-group">
-                        <label>{t('order_date')} *</label>
-                        <input
-                            type="date"
-                            required
-                            className="form-input"
-                            value={orderDate}
-                            onChange={(e) => setOrderDate(e.target.value)}
-                        />
-                        <p className="text-muted mt-xs" style={{ fontSize: '0.75rem' }}>
-                            {t('date_confirmation_note')}
-                        </p>
+                    <div className="grid grid-2 gap-md">
+                        <div className="form-group">
+                            <label>{t('order_date')} *</label>
+                            <input
+                                type="date"
+                                required
+                                className="form-input"
+                                value={orderDate}
+                                onChange={(e) => setOrderDate(e.target.value)}
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label>{t('delivery_time')} ({t('optional')})</label>
+                            <input
+                                type="time"
+                                className="form-input"
+                                value={deliveryTime}
+                                onChange={(e) => setDeliveryTime(e.target.value)}
+                            />
+                        </div>
                     </div>
+                    <p className="text-muted mt-xs mb-md" style={{ fontSize: '0.75rem' }}>
+                        {t('date_confirmation_note')}
+                    </p>
 
                     <div className="form-group">
                         <label>{t('notes')}</label>
