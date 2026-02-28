@@ -24,34 +24,6 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
     // Diet Filters state
     const [dietFilter, setDietFilter] = useState(null); // 'V', 'VG', 'GF', 'N'
 
-    // Categories filter
-    // Filter products if joining a group
-    const displayProducts = useMemo(() => {
-        if (!isJoining || !restrictedItems) return products;
-
-        // Show only products that match the names in restrictedItems
-        const restrictedNames = restrictedItems.map(item => item.name);
-        return products.filter(p => restrictedNames.includes(p.name));
-    }, [products, isJoining, restrictedItems]);
-
-    // Check if date has existing orders (for warning)
-    const isDateTaken = !isJoining && existingOrderDates.includes(orderDate);
-
-    const { filteredProducts, productsByCategory, availableCategories } = useMemo(() => {
-        const filtered = displayProducts.filter(p => {
-            if (!dietFilter) return true;
-            return (p.dietary_tags || []).includes(dietFilter);
-        });
-
-        const byCategory = getProductsByCategory(filtered);
-        const categories = Object.keys(byCategory);
-
-        return {
-            filteredProducts: filtered,
-            productsByCategory: byCategory,
-            availableCategories: categories
-        };
-    }, [displayProducts, dietFilter]);
 
     // UI state
     const [activeTab, setActiveTab] = useState('manual'); // 'manual' or 'ai'
@@ -80,6 +52,36 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
     const [orderNotes, setOrderNotes] = useState('');
     const [orderDate, setOrderDate] = useState(preselectedDate || new Date().toISOString().split('T')[0]);
     const [deliveryTime, setDeliveryTime] = useState('');
+
+    // Derived state (needs state variables for calculation)
+    // Filter products if joining a group
+    const displayProducts = useMemo(() => {
+        if (!isJoining || !restrictedItems) return products;
+
+        // Show only products that match the names in restrictedItems
+        const restrictedNames = restrictedItems.map(item => item.name);
+        return products.filter(p => restrictedNames.includes(p.name));
+    }, [products, isJoining, restrictedItems]);
+
+    // Check if date has existing orders (for warning)
+    const isDateTaken = !isJoining && existingOrderDates.includes(orderDate);
+
+    // Categories filter (using displayProducts which might be restricted)
+    const { filteredProducts, productsByCategory, availableCategories } = useMemo(() => {
+        const filtered = displayProducts.filter(p => {
+            if (!dietFilter) return true;
+            return (p.dietary_tags || []).includes(dietFilter);
+        });
+
+        const byCategory = getProductsByCategory(filtered);
+        const categories = Object.keys(byCategory);
+
+        return {
+            filteredProducts: filtered,
+            productsByCategory: byCategory,
+            availableCategories: categories
+        };
+    }, [displayProducts, dietFilter]);
 
     // AI state
     const [aiText, setAiText] = useState('');
