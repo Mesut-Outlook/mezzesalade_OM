@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
     parseOrderText,
     searchProducts,
@@ -13,16 +13,32 @@ import { sendOrderNotification } from '../../utils/emailService';
 import { generateWhatsAppMessage, generateWhatsAppUrl } from '../../utils/whatsapp';
 import './CustomerOrder.css';
 
-export default function CustomerOrderView({ products = [], addOrder, addCustomer, updateOrder }) {
+export default function CustomerOrderView({ products = [], addOrder, addCustomer, updateOrder, existingOrderDates = [] }) {
     const navigate = useNavigate();
+    const location = useLocation();
     const { lang, setLang, t } = useLanguage();
+
+    // Check for incoming state (from JoinOrderSelection)
+    const { preselectedDate, restrictedItems, isJoining } = location.state || {};
 
     // Diet Filters state
     const [dietFilter, setDietFilter] = useState(null); // 'V', 'VG', 'GF', 'N'
 
-    // Unified filtering and categorization
+    // Categories filter
+    // Filter products if joining a group
+    const displayProducts = useMemo(() => {
+        if (!isJoining || !restrictedItems) return products;
+
+        // Show only products that match the names in restrictedItems
+        const restrictedNames = restrictedItems.map(item => item.name);
+        return products.filter(p => restrictedNames.includes(p.name));
+    }, [products, isJoining, restrictedItems]);
+
+    // Check if date has existing orders (for warning)
+    const isDateTaken = !isJoining && existingOrderDates.includes(orderDate);
+
     const { filteredProducts, productsByCategory, availableCategories } = useMemo(() => {
-        const filtered = products.filter(p => {
+        const filtered = displayProducts.filter(p => {
             if (!dietFilter) return true;
             return (p.dietary_tags || []).includes(dietFilter);
         });
@@ -35,7 +51,7 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
             productsByCategory: byCategory,
             availableCategories: categories
         };
-    }, [products, dietFilter]);
+    }, [displayProducts, dietFilter]);
 
     // UI state
     const [activeTab, setActiveTab] = useState('manual'); // 'manual' or 'ai'
@@ -62,7 +78,7 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
     const [deliveryMethod, setDeliveryMethod] = useState('pickup'); // 'home' or 'pickup'
     const [customerInfo, setCustomerInfo] = useState({ id: null, name: '', phone: '', address: '' });
     const [orderNotes, setOrderNotes] = useState('');
-    const [orderDate, setOrderDate] = useState(new Date().toISOString().split('T')[0]);
+    const [orderDate, setOrderDate] = useState(preselectedDate || new Date().toISOString().split('T')[0]);
     const [deliveryTime, setDeliveryTime] = useState('');
 
     // AI state
@@ -512,6 +528,12 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
                                 <p>📅 <strong>{orderDate} {deliveryTime && `@ ${deliveryTime}`}</strong></p>
                                 <p>🚚 <strong>{deliveryMethod === 'home' ? t('home_delivery') : t('pickup')}</strong></p>
                                 {deliveryMethod === 'home' && <p>📍 {customerInfo.address}</p>}
+                                {isDateTaken && (
+                                    <div className="alert alert-warning mt-md" style={{ textAlign: 'left', fontSize: '0.85rem' }}>
+                                        <strong>{t('date_warning_title')}</strong><br />
+                                        {t('date_warning_message')}
+                                    </div>
+                                )}
                             </div>
                         </div>
                         <div className="modal-actions mt-lg">
@@ -683,7 +705,12 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
                 {/* Shopping Cart */}
                 {orderItems.length > 0 && (
                     <div className="cart-section card mt-lg" ref={cartRef}>
-                        <h3>🛒 {t('cart')}</h3>
+                        <div className="cart-header-row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--spacing-md)' }}>
+                            <h3 style={{ margin: 0 }}>🛒 {t('cart')}</h3>
+                            {isJoining && (
+                                <span className="badge badge-info">{t('join_existing_title')}</span>
+                            )}
+                        </div>
                         <div className="cart-items">
                             {orderItems.map((item, idx) => (
                                 <div key={idx} className="cart-item">
@@ -787,9 +814,10 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
                             <input
                                 type="date"
                                 required
-                                className="form-input"
+                                className={`form-input ${isDateTaken ? 'border-warning' : ''}`}
                                 value={orderDate}
                                 onChange={(e) => setOrderDate(e.target.value)}
+                                disabled={isJoining}
                             />
                         </div>
                         <div className="form-group">
@@ -802,6 +830,21 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
                             />
                         </div>
                     </div>
+                    {isDateTaken && (
+                        <div className="alert alert-warning mb-md" style={{ fontSize: '0.85rem' }}>
+                            {t('date_warning_message')}
+                            <br />
+                            <a
+                                href={`https://wa.me/31634316902?text=${encodeURIComponent(`${orderDate} tarihindeki siparisiniz hakkinda bilgi almak istiyorum.`)}`}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="btn btn-sm btn-whatsapp mt-xs"
+                                style={{ display: 'inline-block' }}
+                            >
+                                {t('contact_admin_btn')}
+                            </a>
+                        </div>
+                    )}
                     <p className="text-muted mt-xs mb-md" style={{ fontSize: '0.75rem' }}>
                         {t('date_confirmation_note')}
                     </p>

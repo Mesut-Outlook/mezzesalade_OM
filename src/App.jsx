@@ -31,7 +31,10 @@ import ProductCatalog from './components/Products/ProductCatalog';
 import HomeDashboard from './components/Dashboard/HomeDashboard';
 import LoginPage from './components/Auth/LoginPage';
 import CustomerOrderView from './components/Customer/CustomerOrderView';
+import CustomerLanding from './components/Customer/CustomerLanding';
+import JoinOrderSelection from './components/Customer/JoinOrderSelection';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { fetchPublicOrders } from './lib/supabase';
 
 function AppContent() {
     const location = useLocation();
@@ -39,11 +42,12 @@ function AppContent() {
     const [orders, setOrders] = useState([]);
     const [customers, setCustomers] = useState([]);
     const [products, setProducts] = useState([]);
+    const [publicOrderDates, setPublicOrderDates] = useState([]); // List of dates that have orders
     const [loading, setLoading] = useState(true);
     const [syncing, setSyncing] = useState(false);
 
     // Public route check
-    const isPublicRoute = location.pathname === '/' || location.pathname === '/siparis';
+    const isPublicRoute = ['/', '/siparis', '/toplu-siparis', '/ozel-siparis'].includes(location.pathname);
 
     // Dynamic metadata update
     useEffect(() => {
@@ -64,14 +68,16 @@ function AppContent() {
     const loadData = useCallback(async () => {
         setSyncing(true);
         try {
-            const [ordersData, customersData, productsData] = await Promise.all([
+            const [ordersData, customersData, productsData, publicData] = await Promise.all([
                 isAuthenticated ? fetchOrders() : Promise.resolve([]),
                 isAuthenticated ? fetchCustomers() : Promise.resolve([]),
-                fetchProducts()
+                fetchProducts(),
+                fetchPublicOrders()
             ]);
             setOrders(ordersData);
             setCustomers(customersData);
             setProducts(productsData);
+            setPublicOrderDates(publicData.map(d => d.date));
         } catch (error) {
             console.error('Error loading data:', error);
         } finally {
@@ -222,18 +228,21 @@ function AppContent() {
         );
     }
 
-    // Special handling for Customer Order Page (Public)
+    // Special handling for Customer Pages (Public)
     if (isPublicRoute) {
         return (
             <Routes>
+                <Route path="/" element={<CustomerLanding />} />
+                <Route path="/toplu-siparis" element={<JoinOrderSelection />} />
                 <Route
-                    path="/"
+                    path="/ozel-siparis"
                     element={
                         <CustomerOrderView
                             products={products}
                             addOrder={addOrderDb}
                             addCustomer={addCustomerDb}
                             updateOrder={updateOrder}
+                            existingOrderDates={publicOrderDates}
                         />
                     }
                 />

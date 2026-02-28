@@ -153,6 +153,55 @@ export async function fetchOrders() {
     }));
 }
 
+export async function fetchPublicOrders() {
+    const today = new Date().toISOString().split('T')[0];
+
+    const { data, error } = await supabase
+        .from('orders')
+        .select(`
+            date,
+            order_items (
+                name,
+                price,
+                quantity,
+                variation,
+                category
+            )
+        `)
+        .gte('date', today)
+        .order('date', { ascending: true });
+
+    if (error) {
+        console.error('Error fetching public orders:', error);
+        return [];
+    }
+
+    // Process/Anonymize and group by date
+    const groupedByDate = {};
+    (data || []).forEach(order => {
+        if (!groupedByDate[order.date]) {
+            groupedByDate[order.date] = {
+                date: order.date,
+                items: {}
+            };
+        }
+
+        order.order_items.forEach(item => {
+            const key = `${item.name}${item.variation ? ` (${item.variation})` : ''}`;
+            if (!groupedByDate[order.date].items[key]) {
+                groupedByDate[order.date].items[key] = {
+                    name: item.name,
+                    variation: item.variation,
+                    price: parseFloat(item.price),
+                    category: item.category
+                };
+            }
+        });
+    });
+
+    return Object.values(groupedByDate);
+}
+
 export async function addOrder(order) {
     console.log('📝 Creating order:', order);
 
