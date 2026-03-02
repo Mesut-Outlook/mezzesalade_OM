@@ -10,7 +10,7 @@ export default function CustomerLanding() {
         <div className="landing-page">
             <div className="landing-container">
                 <header className="landing-header">
-                    <div className="landing-logo"><img src="/images/logo.png" alt="Mezzesalade" style={{ width: '150px', height: '150px', objectFit: 'contain' }} /></div>
+                    <div className="landing-logo"><img src="/images/logo.png" alt="Mezzesalade" style={{ width: '225px', height: '225px', objectFit: 'contain' }} /></div>
                     <h1>{t('welcome_title')}</h1>
                     <p>{t('welcome_subtitle')}</p>
                 </header>
