@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 
+// Last updated: 2026-03-02
 const translations = {
     tr: {
         online_order: 'Online Sipariş',
