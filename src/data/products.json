@@ -34,6 +34,9 @@
         "price": 20,
         "category": "Mezeler",
         "description": "",
+        "dietary_tags": [
+            "VG"
+        ],
         "image": "https://mezzesalade.nl/wp-content/uploads/2023/10/Mucver.jpeg"
     },
     {
@@ -42,7 +45,10 @@
         "price": 18,
         "category": "Börek Poğaça",
         "description": "Thin phyllo dough filled with fresh white cheese",
-        "image": "https://mezzesalade.nl/wp-content/uploads/2021/09/Sigara-Boregi.png"
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/09/Sigara-Boregi.png",
+        "dietary_tags": [
+            "VG"
+        ]
     },
     {
         "id": 71,
@@ -50,7 +56,12 @@
         "price": 18,
         "category": "Zeytinyağlı Yemekler",
         "description": "Green Bean, tomato, onion, olive oil",
-        "image": "https://mezzesalade.nl/wp-content/uploads/2021/09/Yesil-Fasulye-Green-Bean-with-olive-oil.jpg"
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/09/Yesil-Fasulye-Green-Bean-with-olive-oil.jpg",
+        "dietary_tags": [
+            "V",
+            "VG",
+            "GF"
+        ]
     },
     {
         "id": 73,
@@ -58,6 +69,9 @@
         "price": 18,
         "category": "Mezeler",
         "description": "Yogurt, white cheese, olive oil",
+        "dietary_tags": [
+            "VG"
+        ],
         "image": "https://mezzesalade.nl/wp-content/uploads/2021/09/Haydari-scaled.jpeg"
     },
     {
@@ -66,6 +80,9 @@
         "price": 17,
         "category": "Mezeler",
         "description": "Broad Bean, onion, dill",
+        "dietary_tags": [
+            "VG"
+        ],
         "image": "https://mezzesalade.nl/wp-content/uploads/2021/11/Screenshot-2021-11-22-at-22.35.06.png"
     },
     {
@@ -74,7 +91,10 @@
         "price": 20,
         "category": "Mezeler",
         "description": "Chicken, walnut, bread crumbs, garlic",
-        "image": "https://mezzesalade.nl/wp-content/uploads/2023/01/Cerkez-Tavugu-e1696679782548.jpeg"
+        "image": "https://mezzesalade.nl/wp-content/uploads/2023/01/Cerkez-Tavugu-e1696679782548.jpeg",
+        "dietary_tags": [
+            "N"
+        ]
     },
     {
         "id": 77,
@@ -82,7 +102,12 @@
         "price": 17,
         "category": "Salatalar",
         "description": "Potato, onion, corn, parsley, olive oil",
-        "image": "https://mezzesalade.nl/wp-content/uploads/2021/09/Patates-Salatasi-Potato-Salad.jpeg"
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/09/Patates-Salatasi-Potato-Salad.jpeg",
+        "dietary_tags": [
+            "V",
+            "VG",
+            "GF"
+        ]
     },
     {
         "id": 78,
@@ -90,7 +115,12 @@
         "price": 17,
         "category": "Zeytinyağlı Yemekler",
         "description": "",
-        "image": "https://mezzesalade.nl/wp-content/uploads/2021/09/Kereviz-Celery-with-olive-oil.png"
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/09/Kereviz-Celery-with-olive-oil.png",
+        "dietary_tags": [
+            "V",
+            "VG",
+            "GF"
+        ]
     },
     {
         "id": 83,
@@ -142,7 +172,11 @@
         "price": 15,
         "category": "Çorbalar",
         "description": "Classic Turkish lentil soup",
-        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-07-at-19.38.23.png"
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-07-at-19.38.23.png",
+        "dietary_tags": [
+            "V",
+            "VG"
+        ]
     },
     {
         "id": 117,
@@ -155,6 +189,9 @@
             "Small",
             "Medium",
             "Large"
+        ],
+        "dietary_tags": [
+            "VG"
         ]
     },
     {
@@ -171,6 +208,9 @@
         "price": 18,
         "category": "Mezeler",
         "description": "Fried vegetables: potato, aubergine, pepper, tomato",
+        "dietary_tags": [
+            "VG"
+        ],
         "image": "https://mezzesalade.nl/wp-content/uploads/2021/09/Karisik-Kizartma-scaled.jpeg"
     },
     {
@@ -195,7 +235,11 @@
         "price": 15,
         "category": "Pilavlar",
         "description": "",
-        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-05-at-23.06.35.png"
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-05-at-23.06.35.png",
+        "dietary_tags": [
+            "N",
+            "V"
+        ]
     },
     {
         "id": 149,
@@ -203,7 +247,12 @@
         "price": 17,
         "category": "Zeytinyağlı Yemekler",
         "description": "",
-        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-05-at-22.48.50.png"
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-05-at-22.48.50.png",
+        "dietary_tags": [
+            "V",
+            "VG",
+            "GF"
+        ]
     },
     {
         "id": 160,
@@ -219,6 +268,9 @@
         "price": 18,
         "category": "Mezeler",
         "description": "Bulgur, tomato, green onion, parsley",
+        "dietary_tags": [
+            "VG"
+        ],
         "image": "https://mezzesalade.nl/wp-content/uploads/2021/09/Kisir.jpg",
         "variations": [
             "Small",
@@ -232,7 +284,11 @@
         "price": 19,
         "category": "Mezeler",
         "description": "Bulgur, corn semolina, flour, tomato, garlic sauce",
-        "image": "https://mezzesalade.nl/wp-content/uploads/2021/09/Sarimsakli-Kofte-scaled.jpeg"
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/09/Sarimsakli-Kofte-scaled.jpeg",
+        "dietary_tags": [
+            "V",
+            "VG"
+        ]
     },
     {
         "id": 210,
@@ -280,7 +336,10 @@
         "price": 15,
         "category": "Çorbalar",
         "description": "Lentils, bulgur, and spices",
-        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-07-at-19.24.46.png"
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-07-at-19.24.46.png",
+        "dietary_tags": [
+            "VG"
+        ]
     },
     {
         "id": 235,
@@ -288,7 +347,12 @@
         "price": 17,
         "category": "Zeytinyağlı Yemekler",
         "description": "",
-        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-05-at-22.46.26.png"
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-05-at-22.46.26.png",
+        "dietary_tags": [
+            "V",
+            "VG",
+            "GF"
+        ]
     },
     {
         "id": 236,
@@ -296,7 +360,10 @@
         "price": 18,
         "category": "Börek Poğaça",
         "description": "Spinach börek",
-        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-05-at-22.45.56-e1696766609935.png"
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-05-at-22.45.56-e1696766609935.png",
+        "dietary_tags": [
+            "VG"
+        ]
     },
     {
         "id": 268,
@@ -304,7 +371,12 @@
         "price": 17,
         "category": "Zeytinyağlı Yemekler",
         "description": "",
-        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-06-at-00.01.30.png"
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-06-at-00.01.30.png",
+        "dietary_tags": [
+            "V",
+            "VG",
+            "GF"
+        ]
     },
     {
         "id": 270,
@@ -312,7 +384,12 @@
         "price": 18,
         "category": "Zeytinyağlı Yemekler",
         "description": "",
-        "image": "https://mezzesalade.nl/wp-content/uploads/2021/11/Screenshot-2021-11-26-at-00.20.47.png"
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/11/Screenshot-2021-11-26-at-00.20.47.png",
+        "dietary_tags": [
+            "V",
+            "VG",
+            "GF"
+        ]
     },
     {
         "id": 271,
@@ -328,7 +405,10 @@
         "price": 15,
         "category": "Çorbalar",
         "description": "Fermented flour and yogurt soup",
-        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/40FBB12B-B389-47D7-971C-2BDCA001F8FE_1_105_c-e1636270537330.jpeg"
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/40FBB12B-B389-47D7-971C-2BDCA001F8FE_1_105_c-e1636270537330.jpeg",
+        "dietary_tags": [
+            "VG"
+        ]
     },
     {
         "id": 274,
@@ -344,7 +424,12 @@
         "price": 18,
         "category": "Mezeler",
         "description": "Chickpea, tahini, spices",
-        "image": "https://mezzesalade.nl/wp-content/uploads/2021/09/Screenshot-2021-09-21-at-23.04.34.png"
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/09/Screenshot-2021-09-21-at-23.04.34.png",
+        "dietary_tags": [
+            "V",
+            "VG",
+            "GF"
+        ]
     },
     {
         "id": 283,
@@ -352,7 +437,12 @@
         "price": 17,
         "category": "Zeytinyağlı Yemekler",
         "description": "",
-        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/A0B4D004-5B53-40F9-A272-5A9588265DA4_1_105_c.jpeg"
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/A0B4D004-5B53-40F9-A272-5A9588265DA4_1_105_c.jpeg",
+        "dietary_tags": [
+            "V",
+            "VG",
+            "GF"
+        ]
     },
     {
         "id": 290,
@@ -360,7 +450,12 @@
         "price": 17,
         "category": "Zeytinyağlı Yemekler",
         "description": "Spinach, onion, olive oil",
-        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/c9378a76-85e7-4130-9138-b8c2c5e10589.jpg"
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/c9378a76-85e7-4130-9138-b8c2c5e10589.jpg",
+        "dietary_tags": [
+            "V",
+            "VG",
+            "GF"
+        ]
     },
     {
         "id": 297,
@@ -392,7 +487,10 @@
         "price": 15,
         "category": "Pilavlar",
         "description": "",
-        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-07-at-19.34.26.png"
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-07-at-19.34.26.png",
+        "dietary_tags": [
+            "VG"
+        ]
     },
     {
         "id": 318,
@@ -400,7 +498,10 @@
         "price": 17,
         "category": "Mezeler",
         "description": "",
-        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-12-20-at-10.49.40.png"
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-12-20-at-10.49.40.png",
+        "dietary_tags": [
+            "VG"
+        ]
     },
     {
         "id": 319,
@@ -408,7 +509,11 @@
         "price": 15,
         "category": "Salatalar",
         "description": "",
-        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-10-at-12.24.36.png"
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-10-at-12.24.36.png",
+        "dietary_tags": [
+            "VG",
+            "GF"
+        ]
     },
     {
         "id": 321,
@@ -416,7 +521,10 @@
         "price": 17,
         "category": "Mezeler",
         "description": "",
-        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/Marul-Tarator.jpeg"
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/Marul-Tarator.jpeg",
+        "dietary_tags": [
+            "VG"
+        ]
     },
     {
         "id": 322,
@@ -437,7 +545,12 @@
         "price": 17,
         "category": "Salatalar",
         "description": "",
-        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-18-at-11.13.14-e1634548514595.png"
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-18-at-11.13.14-e1634548514595.png",
+        "dietary_tags": [
+            "V",
+            "VG",
+            "GF"
+        ]
     },
     {
         "id": 325,
@@ -445,7 +558,10 @@
         "price": 18,
         "category": "Mezeler",
         "description": "",
-        "image": "https://mezzesalade.nl/wp-content/uploads/2023/01/Saksuka.jpeg"
+        "image": "https://mezzesalade.nl/wp-content/uploads/2023/01/Saksuka.jpeg",
+        "dietary_tags": [
+            "VG"
+        ]
     },
     {
         "id": 326,
@@ -453,7 +569,11 @@
         "price": 17,
         "category": "Salatalar",
         "description": "",
-        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/966986D5-F259-4584-BCDD-D1D53E156965_1_105_c.jpeg"
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/10/966986D5-F259-4584-BCDD-D1D53E156965_1_105_c.jpeg",
+        "dietary_tags": [
+            "V",
+            "N"
+        ]
     },
     {
         "id": 351,
@@ -461,7 +581,10 @@
         "price": 18,
         "category": "Mezeler",
         "description": "",
-        "image": "https://mezzesalade.nl/wp-content/uploads/2021/09/Fasulye-Bean-Piyaz.png"
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/09/Fasulye-Bean-Piyaz.png",
+        "dietary_tags": [
+            "VG"
+        ]
     },
     {
         "id": 352,
@@ -469,7 +592,12 @@
         "price": 17,
         "category": "Salatalar",
         "description": "",
-        "image": "https://mezzesalade.nl/wp-content/uploads/2021/09/Yesil-Mercimek-Salatasi-Green-Lentil-Salad.png"
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/09/Yesil-Mercimek-Salatasi-Green-Lentil-Salad.png",
+        "dietary_tags": [
+            "V",
+            "VG",
+            "GF"
+        ]
     },
     {
         "id": 353,
@@ -477,7 +605,12 @@
         "price": 18,
         "category": "Mezeler",
         "description": "Borlotti bean, carrot, parsley, olive oil",
-        "image": "https://mezzesalade.nl/wp-content/uploads/2021/09/Barbunya-Pilaki.png"
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/09/Barbunya-Pilaki.png",
+        "dietary_tags": [
+            "V",
+            "VG",
+            "GF"
+        ]
     },
     {
         "id": 407,
@@ -517,7 +650,10 @@
         "price": 17,
         "category": "Zeytinyağlı Yemekler",
         "description": "",
-        "image": "https://mezzesalade.nl/wp-content/uploads/2021/11/00C50305-7CD2-4759-9D2E-CEF67DC26191_1_105_c.jpeg"
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/11/00C50305-7CD2-4759-9D2E-CEF67DC26191_1_105_c.jpeg",
+        "dietary_tags": [
+            "VG"
+        ]
     },
     {
         "id": 447,
@@ -525,7 +661,11 @@
         "price": 17,
         "category": "Salatalar",
         "description": "",
-        "image": "https://mezzesalade.nl/wp-content/uploads/2021/11/Screenshot-2021-11-22-at-22.28.10.png"
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/11/Screenshot-2021-11-22-at-22.28.10.png",
+        "dietary_tags": [
+            "V",
+            "VG"
+        ]
     },
     {
         "id": 451,
@@ -533,7 +673,10 @@
         "price": 18,
         "category": "Pilavlar",
         "description": "",
-        "image": "https://mezzesalade.nl/wp-content/uploads/2021/11/Screenshot-2021-11-24-at-19.35.39-e1637882485611.png"
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/11/Screenshot-2021-11-24-at-19.35.39-e1637882485611.png",
+        "dietary_tags": [
+            "VG"
+        ]
     },
     {
         "id": 467,
@@ -541,7 +684,10 @@
         "price": 34,
         "category": "Börek Poğaça",
         "description": "Cheese pastry, 30 pieces per kg",
-        "image": "https://mezzesalade.nl/wp-content/uploads/2023/01/Peynirli-Pogaca-1.jpeg"
+        "image": "https://mezzesalade.nl/wp-content/uploads/2023/01/Peynirli-Pogaca-1.jpeg",
+        "dietary_tags": [
+            "VG"
+        ]
     },
     {
         "id": 507,
@@ -549,7 +695,10 @@
         "price": 34,
         "category": "Börek Poğaça",
         "description": "Bearded cheese pastry, 30 pieces per kg",
-        "image": "https://mezzesalade.nl/wp-content/uploads/2021/09/Sakalli-Pogaca-scaled.jpeg"
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/09/Sakalli-Pogaca-scaled.jpeg",
+        "dietary_tags": [
+            "VG"
+        ]
     },
     {
         "id": 519,
@@ -557,7 +706,12 @@
         "price": 17,
         "category": "Salatalar",
         "description": "",
-        "image": "https://mezzesalade.nl/wp-content/uploads/2021/12/7a6228c3-7f46-4fd1-a59a-cca37c821875.jpg"
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/12/7a6228c3-7f46-4fd1-a59a-cca37c821875.jpg",
+        "dietary_tags": [
+            "V",
+            "VG",
+            "GF"
+        ]
     },
     {
         "id": 539,
@@ -565,7 +719,10 @@
         "price": 15,
         "category": "Pilavlar",
         "description": "",
-        "image": "https://mezzesalade.nl/wp-content/uploads/2021/12/140036289_849977359114015_3396104366951605284_n.jpg"
+        "image": "https://mezzesalade.nl/wp-content/uploads/2021/12/140036289_849977359114015_3396104366951605284_n.jpg",
+        "dietary_tags": [
+            "VG"
+        ]
     },
     {
         "id": 550,
@@ -589,7 +746,11 @@
         "price": 18,
         "category": "Mezeler",
         "description": "",
-        "image": "https://mezzesalade.nl/wp-content/uploads/2022/09/94539818-8c5e-4d2d-a2c2-ebf7b132ba96.jpg"
+        "image": "https://mezzesalade.nl/wp-content/uploads/2022/09/94539818-8c5e-4d2d-a2c2-ebf7b132ba96.jpg",
+        "dietary_tags": [
+            "V",
+            "VG"
+        ]
     },
     {
         "id": 627,
@@ -605,7 +766,10 @@
         "price": 17,
         "category": "Zeytinyağlı Yemekler",
         "description": "",
-        "image": "https://mezzesalade.nl/wp-content/uploads/2022/09/c8226e41-90e2-4e17-938b-fecfd4ddf647.jpg"
+        "image": "https://mezzesalade.nl/wp-content/uploads/2022/09/c8226e41-90e2-4e17-938b-fecfd4ddf647.jpg",
+        "dietary_tags": [
+            "VG"
+        ]
     },
     {
         "id": 633,
@@ -679,7 +843,10 @@
         "price": 15,
         "category": "Pilavlar",
         "description": "",
-        "image": "https://mezzesalade.nl/wp-content/uploads/2023/10/Screenshot-2023-10-07-at-14.30.36.png"
+        "image": "https://mezzesalade.nl/wp-content/uploads/2023/10/Screenshot-2023-10-07-at-14.30.36.png",
+        "dietary_tags": [
+            "VG"
+        ]
     },
     {
         "id": 755,
@@ -695,7 +862,10 @@
         "price": 18,
         "category": "Mezeler",
         "description": "",
-        "image": "https://mezzesalade.nl/wp-content/uploads/2023/01/Mutebbel-e1744575907919.jpg"
+        "image": "https://mezzesalade.nl/wp-content/uploads/2023/01/Mutebbel-e1744575907919.jpg",
+        "dietary_tags": [
+            "VG"
+        ]
     },
     {
         "id": 757,
@@ -703,7 +873,10 @@
         "price": 18,
         "category": "Mezeler",
         "description": "",
-        "image": "https://mezzesalade.nl/wp-content/uploads/2023/01/Kopoglu.jpeg"
+        "image": "https://mezzesalade.nl/wp-content/uploads/2023/01/Kopoglu.jpeg",
+        "dietary_tags": [
+            "VG"
+        ]
     },
     {
         "id": 758,
@@ -711,7 +884,10 @@
         "price": 15,
         "category": "Salatalar",
         "description": "",
-        "image": "https://mezzesalade.nl/wp-content/uploads/2023/01/Pancar-Salatasi.jpg"
+        "image": "https://mezzesalade.nl/wp-content/uploads/2023/01/Pancar-Salatasi.jpg",
+        "dietary_tags": [
+            "VG"
+        ]
     },
     {
         "id": 759,
@@ -719,7 +895,10 @@
         "price": 15,
         "category": "Salatalar",
         "description": "",
-        "image": "https://mezzesalade.nl/wp-content/uploads/2023/01/Screenshot-2023-02-05-at-14.47.28.png"
+        "image": "https://mezzesalade.nl/wp-content/uploads/2023/01/Screenshot-2023-02-05-at-14.47.28.png",
+        "dietary_tags": [
+            "VG"
+        ]
     },
     {
         "id": 760,
@@ -767,7 +946,11 @@
         "price": 15,
         "category": "Çorbalar",
         "description": "Cold yogurt soup with mint",
-        "image": "https://mezzesalade.nl/wp-content/uploads/2023/01/Soguk-Yogut-Corbasi.jpeg"
+        "image": "https://mezzesalade.nl/wp-content/uploads/2023/01/Soguk-Yogut-Corbasi.jpeg",
+        "dietary_tags": [
+            "VG",
+            "GF"
+        ]
     },
     {
         "id": 846,
@@ -795,6 +978,9 @@
         "variations": [
             "Acılı",
             "Acısız"
+        ],
+        "dietary_tags": [
+            "VG"
         ]
     },
     {
@@ -803,7 +989,10 @@
         "price": 18,
         "category": "Salatalar",
         "description": "",
-        "image": "https://mezzesalade.nl/wp-content/uploads/2023/01/WhatsApp-Image-2023-10-07-at-13.22.40.jpeg"
+        "image": "https://mezzesalade.nl/wp-content/uploads/2023/01/WhatsApp-Image-2023-10-07-at-13.22.40.jpeg",
+        "dietary_tags": [
+            "V"
+        ]
     },
     {
         "id": 853,
@@ -811,7 +1000,12 @@
         "price": 17,
         "category": "Zeytinyağlı Yemekler",
         "description": "",
-        "image": "https://mezzesalade.nl/wp-content/uploads/2023/01/WhatsApp-Image-2023-10-07-at-13.17.03.jpeg"
+        "image": "https://mezzesalade.nl/wp-content/uploads/2023/01/WhatsApp-Image-2023-10-07-at-13.17.03.jpeg",
+        "dietary_tags": [
+            "V",
+            "VG",
+            "GF"
+        ]
     },
     {
         "id": 855,
@@ -819,7 +1013,10 @@
         "price": 18,
         "category": "Mezeler",
         "description": "",
-        "image": "https://mezzesalade.nl/wp-content/uploads/2023/10/Screenshot-2023-10-07-at-14.39.29.png"
+        "image": "https://mezzesalade.nl/wp-content/uploads/2023/10/Screenshot-2023-10-07-at-14.39.29.png",
+        "dietary_tags": [
+            "V"
+        ]
     },
     {
         "id": 896,
@@ -827,7 +1024,10 @@
         "price": 18,
         "category": "Mezeler",
         "description": "",
-        "image": "https://mezzesalade.nl/wp-content/uploads/2025/04/YOGURTLU-PATLICAN.jpeg"
+        "image": "https://mezzesalade.nl/wp-content/uploads/2025/04/YOGURTLU-PATLICAN.jpeg",
+        "dietary_tags": [
+            "VG"
+        ]
     },
     {
         "id": 1018,

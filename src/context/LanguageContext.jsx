@@ -175,7 +175,7 @@ const translations = {
         // Landing Page
         welcome_title: 'Mezzesalade\'ye Hoşgeldiniz',
         welcome_subtitle: 'Lezzetli ev yemekleri ve mezelerimizle hizmetinizdeyiz.',
-        join_existing_title: 'Mevcut Bir Gruba Katıl',
+        join_existing_title: 'Günün Menüsüne Katıl',
         join_existing_desc: 'Belli günlerdeki mevcut siparişlere katılarak kendinize menü oluşturun.',
         create_new_title: 'Kişisel Sipariş Oluştur',
         create_new_desc: 'Herhangi bir gün için kendinize özel bir menü hazırlayın.',
@@ -185,7 +185,7 @@ const translations = {
         date_warning_message: 'Seçtiğiniz tarihte başka siparişler de bulunmaktadır. Uygunluk durumunu teyit etmek için lütfen admin ile iletişime geçin.',
         contact_admin_btn: 'Admin ile İletişime Geç',
         back_to_selection: 'Geri Dön',
-        join_btn: 'Bu Gruba Katıl',
+        join_btn: 'Bu Menüye Katıl',
     },
     en: {
         online_order: 'Online Order',
@@ -361,7 +361,7 @@ const translations = {
         // Landing Page
         welcome_title: 'Welcome to Mezzesalade',
         welcome_subtitle: 'Delicious home-cooked meals and mezzes at your service.',
-        join_existing_title: 'Join an Existing Group',
+        join_existing_title: 'Join the Daily Menu',
         join_existing_desc: 'Join existing orders on specific days and create your own menu.',
         create_new_title: 'Create Personal Order',
         create_new_desc: 'Prepare a special menu for yourself for any chosen day.',
@@ -371,7 +371,7 @@ const translations = {
         date_warning_message: 'There are other orders on your selected date. Please contact the admin to confirm availability.',
         contact_admin_btn: 'Contact Admin',
         back_to_selection: 'Go Back',
-        join_btn: 'Join This Group',
+        join_btn: 'Join This Menu',
     },
     nl: {
         online_order: 'Online Bestellen',
@@ -450,7 +450,7 @@ const translations = {
         // Landing Page
         welcome_title: 'Welkom bij Mezzesalade',
         welcome_subtitle: 'Heerlijke zelfgemaakte maaltijden en mezzes tot uw dienst.',
-        join_existing_title: 'Sluit je aan bij een groep',
+        join_existing_title: 'Doe mee met het dagmenu',
         join_existing_desc: 'Combineer je bestelling met bestaande orders op specifieke dagen.',
         create_new_title: 'Eigen bestelling maken',
         create_new_desc: 'Stel je eigen menu samen voor een dag naar keuze.',
@@ -460,7 +460,7 @@ const translations = {
         date_warning_message: 'Er zijn al andere bestellingen op de gekozen datum. Neem contact op met de beheerder om de beschikbaarheid te bevestigen.',
         contact_admin_btn: 'Contact opnemen met beheerder',
         back_to_selection: 'Terug',
-        join_btn: 'Deelnemen',
+        join_btn: 'Doe mee met dit menu',
     }
 };
 

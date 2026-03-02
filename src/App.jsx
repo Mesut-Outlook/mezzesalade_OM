@@ -28,6 +28,7 @@ import DailySummary from './components/Orders/DailySummary';
 import CustomerList from './components/Customers/CustomerList';
 import TextParser from './components/AI/TextParser';
 import ProductCatalog from './components/Products/ProductCatalog';
+import DietManager from './components/Products/DietManager';
 import HomeDashboard from './components/Dashboard/HomeDashboard';
 import LoginPage from './components/Auth/LoginPage';
 import CustomerOrderView from './components/Customer/CustomerOrderView';
@@ -421,6 +422,15 @@ function AppContent() {
                                     addProduct={addProduct}
                                     updateProduct={updateProduct}
                                     deactivateProduct={deactivateProduct}
+                                />
+                            }
+                        />
+                        <Route
+                            path="diet-manager"
+                            element={
+                                <DietManager
+                                    products={products}
+                                    updateProduct={updateProduct}
                                 />
                             }
                         />

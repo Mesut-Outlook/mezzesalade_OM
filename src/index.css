@@ -1421,3 +1421,468 @@ a {
     font-size: 0.6rem !important;
   }
 }
+
+/* ============================================
+   DIET MANAGER PAGE
+   ============================================ */
+
+.diet-manager {
+  max-width: 800px;
+  margin: 0 auto;
+  padding-bottom: 80px;
+}
+
+.diet-manager-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-md);
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+.diet-manager-title {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.diet-manager-icon {
+  font-size: 1.75rem;
+}
+
+.diet-manager-title h1 {
+  font-size: 1.35rem;
+  background: linear-gradient(135deg, #4caf50, #2e7d32);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.diet-manager-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.diet-change-badge {
+  background: rgba(255, 193, 7, 0.2);
+  color: #ffc107;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  animation: pulse-badge 2s infinite;
+}
+
+@keyframes pulse-badge {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.diet-save-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, #4caf50, #2e7d32);
+  color: white;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+}
+
+.diet-save-btn:hover:not(.disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+}
+
+.diet-save-btn:active:not(.disabled) {
+  transform: scale(0.95);
+}
+
+.diet-save-btn.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background: var(--bg-tertiary);
+  box-shadow: none;
+}
+
+/* Search bar */
+.diet-search-bar {
+  position: relative;
+  margin-bottom: var(--spacing-md);
+}
+
+.diet-search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.1rem;
+  pointer-events: none;
+}
+
+.diet-search-input {
+  width: 100%;
+  padding: 12px 40px 12px 44px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  font-family: inherit;
+  transition: var(--transition-fast);
+}
+
+.diet-search-input:focus {
+  outline: none;
+  border-color: #4caf50;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.15);
+}
+
+.diet-search-input::placeholder {
+  color: var(--text-muted);
+}
+
+.diet-search-clear {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--bg-tertiary);
+  border: none;
+  color: var(--text-muted);
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+}
+
+/* Stats */
+.diet-stats {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-lg);
+  overflow-x: auto;
+  padding-bottom: 4px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.diet-stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 14px;
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  min-width: 65px;
+  flex-shrink: 0;
+}
+
+.diet-stat-count {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.diet-stat-label {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.diet-stat-total .diet-stat-count {
+  color: var(--text-primary);
+}
+
+.diet-stat-V .diet-stat-count {
+  color: #4caf50;
+}
+
+.diet-stat-VG .diet-stat-count {
+  color: #2e7d32;
+}
+
+.diet-stat-GF .diet-stat-count {
+  color: #f59e0b;
+}
+
+.diet-stat-N .diet-stat-count {
+  color: #ef4444;
+}
+
+.diet-stat-V {
+  border-color: rgba(76, 175, 80, 0.3);
+}
+
+.diet-stat-VG {
+  border-color: rgba(46, 125, 50, 0.3);
+}
+
+.diet-stat-GF {
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+.diet-stat-N {
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+/* Category Cards */
+.diet-categories {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.diet-category-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.diet-category-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, rgba(255, 140, 0, 0.15), rgba(255, 107, 53, 0.1));
+  border: none;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+  transition: var(--transition-fast);
+}
+
+.diet-category-header:hover {
+  background: linear-gradient(135deg, rgba(255, 140, 0, 0.25), rgba(255, 107, 53, 0.15));
+}
+
+.diet-category-name {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.diet-category-count {
+  background: rgba(255, 140, 0, 0.2);
+  color: var(--accent-primary);
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.diet-category-chevron {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  transition: transform 0.3s ease;
+}
+
+.diet-category-chevron.collapsed {
+  transform: rotate(-90deg);
+}
+
+/* Product rows */
+.diet-product-list {
+  padding: 4px;
+}
+
+.diet-product-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  transition: var(--transition-fast);
+  gap: var(--spacing-sm);
+}
+
+.diet-product-row:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.diet-product-row.changed {
+  background: rgba(255, 193, 7, 0.05);
+  border-left: 3px solid #ffc107;
+}
+
+.diet-product-name {
+  flex: 1;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.diet-changed-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ffc107;
+  flex-shrink: 0;
+}
+
+/* Toggle Chips */
+.diet-tag-chips {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.diet-chip-toggle {
+  width: 36px;
+  height: 30px;
+  border-radius: var(--radius-sm);
+  border: 2px solid transparent;
+  background: var(--bg-tertiary);
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.4;
+  font-family: inherit;
+}
+
+.diet-chip-toggle:hover {
+  opacity: 0.7;
+  transform: scale(1.1);
+}
+
+.diet-chip-toggle:active {
+  transform: scale(0.9);
+}
+
+/* Active states */
+.diet-chip-V.active {
+  background: rgba(76, 175, 80, 0.2);
+  border-color: #4caf50;
+  color: #4caf50;
+  opacity: 1;
+}
+
+.diet-chip-VG.active {
+  background: rgba(46, 125, 50, 0.2);
+  border-color: #2e7d32;
+  color: #66bb6a;
+  opacity: 1;
+}
+
+.diet-chip-GF.active {
+  background: rgba(245, 158, 11, 0.2);
+  border-color: #f59e0b;
+  color: #f59e0b;
+  opacity: 1;
+}
+
+.diet-chip-N.active {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: #ef4444;
+  color: #ef4444;
+  opacity: 1;
+}
+
+/* Floating save button */
+.diet-floating-save {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  padding: 14px 28px;
+  border: none;
+  border-radius: var(--radius-xl);
+  background: linear-gradient(135deg, #4caf50, #2e7d32);
+  color: white;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 8px 30px rgba(76, 175, 80, 0.4);
+  z-index: 999;
+  transition: all 0.3s ease;
+  animation: float-save 2s ease-in-out infinite;
+  font-family: inherit;
+}
+
+@keyframes float-save {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.diet-floating-save:hover {
+  box-shadow: 0 12px 40px rgba(76, 175, 80, 0.5);
+}
+
+.diet-floating-save:active {
+  transform: scale(0.95) !important;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .diet-manager-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .diet-manager-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .diet-save-btn {
+    display: none;
+  }
+
+  .diet-chip-toggle {
+    width: 32px;
+    height: 28px;
+    font-size: 0.65rem;
+  }
+
+  .diet-product-name {
+    font-size: 0.8rem;
+  }
+
+  .diet-stat-item {
+    padding: 6px 10px;
+    min-width: 55px;
+  }
+
+  .diet-stat-count {
+    font-size: 1.1rem;
+  }
+}

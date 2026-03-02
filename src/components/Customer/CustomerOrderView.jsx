@@ -430,7 +430,7 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
         return (
             <div className="customer-container login-page">
                 <header className="customer-header">
-                    <img src="/images/logo.png" alt="Mezzesalade" className="customer-logo" />
+                    <img src="/images/logo.png" alt="Mezzesalade" className="customer-logo" onClick={() => navigate('/')} style={{ cursor: 'pointer' }} />
                     <h1>Mezzesalade</h1>
                 </header>
                 <div className="lang-switch-fixed">
@@ -552,7 +552,7 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
 
             <header className="customer-header">
                 <div className="header-top">
-                    <img src="/images/logo.png" alt="Mezzesalade" className="customer-logo" />
+                    <img src="/images/logo.png" alt="Mezzesalade" className="customer-logo" onClick={() => navigate('/')} style={{ cursor: 'pointer' }} />
                     <div className="lang-switch">
                         {['tr', 'en', 'nl'].map(l => (
                             <button

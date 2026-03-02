@@ -100,6 +100,13 @@ export default function ProductCatalog({ products: allProducts = [], addProduct,
                 <h1>📦 Ürün Kataloğu</h1>
                 <div className="flex gap-sm items-center">
                     <button
+                        className="btn btn-success"
+                        onClick={() => navigate('/admin/diet-manager')}
+                        style={{ fontSize: '0.85rem', padding: '8px 12px' }}
+                    >
+                        🥗 Diyet
+                    </button>
+                    <button
                         className="btn btn-primary"
                         onClick={() => {
                             setEditingProduct(null);
