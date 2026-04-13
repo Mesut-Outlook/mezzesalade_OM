@@ -1,18 +1,27 @@
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
+import { useMemo } from 'react';
 import './CustomerOrder.css';
 
 export default function CustomerLanding() {
     const navigate = useNavigate();
     const { t } = useLanguage();
 
+    const randomBgUrl = useMemo(() => {
+        const query = "salad,mezze,food";
+        return `https://loremflickr.com/1920/1080/${query}?random=${Math.floor(Math.random() * 1000)}`;
+    }, []);
+
     return (
-        <div className="landing-page">
-            <div className="landing-container">
+        <div className="landing-page" style={{ backgroundImage: `url(${randomBgUrl})` }}>
+            <div className="landing-overlay"></div>
+            <div className="landing-container" style={{ position: 'relative', zIndex: 10 }}>
                 <header className="landing-header">
-                    <div className="landing-logo"><img src="/images/logo.png" alt="Mezzesalade" style={{ width: '225px', height: '225px', objectFit: 'contain' }} /></div>
-                    <h1>{t('welcome_title')}</h1>
-                    <p>{t('welcome_subtitle')}</p>
+                    <div className="landing-logo">
+                        <img src="/images/logo.png" alt="Mezzesalade" style={{ width: '225px', height: '225px', objectFit: 'contain', filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.3))' }} />
+                    </div>
+                    <h1 style={{ color: '#fff', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>{t('welcome_title')}</h1>
+                    <p style={{ color: '#f0f0f0', textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>{t('welcome_subtitle')}</p>
                 </header>
 
                 <div className="landing-options">
@@ -24,7 +33,7 @@ export default function CustomerLanding() {
                         <h2>{t('create_new_title')}</h2>
                         <p>{t('create_new_desc')}</p>
                         <div className="card-action">
-                            <span>{t('confirm_order')} →</span>
+                            <span>{t('create_new_action')} →</span>
                         </div>
                     </div>
 
@@ -50,11 +59,20 @@ export default function CustomerLanding() {
                 __html: `
                 .landing-page {
                     min-height: 100vh;
-                    background: var(--bg-primary);
+                    background-size: cover;
+                    background-position: center;
+                    background-repeat: no-repeat;
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     padding: var(--spacing-lg);
+                    position: relative;
+                }
+                .landing-overlay {
+                    position: absolute;
+                    top: 0; left: 0; right: 0; bottom: 0;
+                    background: rgba(0, 0, 0, 0.6);
+                    z-index: 1;
                 }
                 .landing-container {
                     max-width: 900px;

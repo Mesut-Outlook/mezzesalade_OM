@@ -31,10 +31,11 @@ export default function OrderForm({ customers, products = [], orders = [], addCu
     const [customerSearchQuery, setCustomerSearchQuery] = useState('');
     const [showCustomerDropdown, setShowCustomerDropdown] = useState(false);
 
-    const filteredCustomers = customers.filter(c =>
-        c.name.toLowerCase().includes(customerSearchQuery.toLowerCase()) ||
-        c.phone.includes(customerSearchQuery)
-    );
+    const filteredCustomers = (customers || []).filter(c => {
+        const nameMatch = c?.name ? String(c.name).toLowerCase().includes(customerSearchQuery.toLowerCase()) : false;
+        const phoneMatch = c?.phone ? String(c.phone).includes(customerSearchQuery) : false;
+        return nameMatch || phoneMatch;
+    });
 
     // Editing mode logic
     const { id } = useParams();
@@ -102,10 +103,11 @@ export default function OrderForm({ customers, products = [], orders = [], addCu
             }]);
         }
 
-        setShowProductModal(false);
+        // Do not close the modal so user can continue adding products
+        // setShowProductModal(false);
         setSearchQuery('');
         setSearchResults([]);
-        setSelectedCategory(null);
+        // Keep selected category so they can continue browsing
     };
 
     // Update item quantity
@@ -228,7 +230,7 @@ export default function OrderForm({ customers, products = [], orders = [], addCu
             </div>
 
             {/* Customer Selection */}
-            <div className="card mb-md">
+            <div className="card mb-md" style={{ position: 'relative', zIndex: 50 }}>
                 <h3 className="mb-md">👤 {t('customers')}</h3>
 
                 {selectedCustomer ? (
@@ -526,7 +528,7 @@ export default function OrderForm({ customers, products = [], orders = [], addCu
             {/* Product Modal */}
             {showProductModal && (
                 <div className="modal-overlay" onClick={() => setShowProductModal(false)}>
-                    <div className="modal" onClick={e => e.stopPropagation()} style={{ maxHeight: '85vh' }}>
+                    <div className="modal" onClick={e => e.stopPropagation()} style={{ maxHeight: '85vh', paddingBottom: '80px' }}>
                         <div className="modal-header">
                             <h2>{t('add_product_btn')}</h2>
                             <button className="modal-close" onClick={() => setShowProductModal(false)}>×</button>
@@ -590,6 +592,13 @@ export default function OrderForm({ customers, products = [], orders = [], addCu
                                 )}
                             </div>
                         )}
+                        
+                        {/* Done Button */}
+                        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '16px', background: 'var(--card-bg)', borderTop: '1px solid var(--border-color)', borderBottomLeftRadius: 'var(--radius-lg)', borderBottomRightRadius: 'var(--radius-lg)' }}>
+                            <button className="btn btn-primary btn-block" onClick={() => setShowProductModal(false)}>
+                                Bitti / Kapat
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}

@@ -132,8 +132,8 @@ export default function AllOrders({ orders, customers, getCustomer }) {
 
     // Group by date
     const ordersByDate = useMemo(() => {
-        // Sort orders by date ascending (oldest first)
-        const sorted = [...filteredOrders].sort((a, b) => new Date(a.date) - new Date(b.date));
+        // Sort orders by date descending (newest first)
+        const sorted = [...filteredOrders].sort((a, b) => new Date(b.date) - new Date(a.date));
 
         const grouped = {};
         for (const order of sorted) {
