@@ -18,7 +18,7 @@ export default function CustomerLanding() {
             <div className="landing-container" style={{ position: 'relative', zIndex: 10 }}>
                 <header className="landing-header">
                     <div className="landing-logo">
-                        <img src="/images/logo.png" alt="Mezzesalade" style={{ width: '225px', height: '225px', objectFit: 'contain', filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.3))' }} />
+                        <img src="/images/logo.png" alt="Mezzesalade" style={{ width: '140px', height: '140px', objectFit: 'contain', filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.3))' }} />
                     </div>
                     <h1 style={{ color: '#fff', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>{t('welcome_title')}</h1>
                     <p style={{ color: '#f0f0f0', textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>{t('welcome_subtitle')}</p>
@@ -80,20 +80,20 @@ export default function CustomerLanding() {
                     text-align: center;
                 }
                 .landing-header {
-                    margin-bottom: var(--spacing-xl);
+                    margin-bottom: var(--spacing-lg);
                 }
                 .landing-logo {
                     font-size: 4rem;
-                    margin-bottom: var(--spacing-md);
+                    margin-bottom: var(--spacing-sm);
                 }
                 .landing-header h1 {
-                    font-size: 2.5rem;
-                    margin-bottom: var(--spacing-sm);
-                    color: var(--text-primary);
+                    font-size: 1.75rem;
+                    margin-bottom: var(--spacing-xs);
+                    color: #ffffff;
                 }
                 .landing-header p {
-                    font-size: 1.25rem;
-                    color: var(--text-muted);
+                    font-size: 1rem;
+                    color: rgba(255, 255, 255, 0.85);
                 }
                 .landing-options {
                     display: grid;
@@ -102,34 +102,39 @@ export default function CustomerLanding() {
                     margin-bottom: var(--spacing-xl);
                 }
                 .landing-card {
-                    background: var(--card-bg);
-                    padding: var(--spacing-xl);
+                    background: rgba(255, 255, 255, 0.12);
+                    backdrop-filter: blur(16px);
+                    -webkit-backdrop-filter: blur(16px);
+                    padding: var(--spacing-lg);
                     border-radius: var(--radius-lg);
-                    border: 1px solid var(--border-color);
+                    border: 1px solid rgba(255, 255, 255, 0.25);
                     cursor: pointer;
                     transition: all 0.3s ease;
                     display: flex;
                     flex-direction: column;
                     align-items: center;
-                    box-shadow: var(--shadow-md);
+                    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
                 }
                 .landing-card:hover {
-                    transform: translateY(-8px);
+                    transform: translateY(-6px);
+                    background: rgba(255, 255, 255, 0.18);
                     border-color: var(--accent-primary);
-                    box-shadow: var(--shadow-lg);
+                    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
                 }
                 .card-icon {
-                    font-size: 3rem;
-                    margin-bottom: var(--spacing-md);
+                    font-size: 2.25rem;
+                    margin-bottom: var(--spacing-sm);
                 }
                 .landing-card h2 {
-                    margin-bottom: var(--spacing-sm);
-                    color: var(--text-primary);
+                    margin-bottom: var(--spacing-xs);
+                    color: #ffffff;
+                    font-size: 1.1rem;
                 }
                 .landing-card p {
-                    color: var(--text-muted);
-                    margin-bottom: var(--spacing-lg);
+                    color: rgba(255, 255, 255, 0.8);
+                    margin-bottom: var(--spacing-md);
                     flex: 1;
+                    font-size: 0.875rem;
                 }
                 .card-action {
                     font-weight: bold;
@@ -144,6 +149,12 @@ export default function CustomerLanding() {
                         grid-template-columns: 1fr;
                     }
                     .landing-header h1 {
+                        font-size: 1.5rem;
+                    }
+                    .landing-card {
+                        padding: var(--spacing-md);
+                    }
+                    .card-icon {
                         font-size: 2rem;
                     }
                 }

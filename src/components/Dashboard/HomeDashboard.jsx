@@ -286,22 +286,6 @@ export default function HomeDashboard({ orders = [], customers = [], products = 
                 </div>
             </div>
 
-            {/* Grid Menu */}
-            <div className="dashboard-menu">
-                {menuItems.map((item) => (
-                    <button
-                        key={item.id}
-                        className="menu-item"
-                        onClick={() => navigate(item.path)}
-                    >
-                        <div className="menu-icon-circle" style={{ background: item.color }}>
-                            {item.icon}
-                        </div>
-                        <span className="menu-label">{item.title}</span>
-                    </button>
-                ))}
-            </div>
-
             {/* Pending Transactions */}
             <div className="section-header">
                 <h4 className="font-bold">{t('pending_orders')}</h4>
@@ -352,6 +336,25 @@ export default function HomeDashboard({ orders = [], customers = [], products = 
                         );
                     })
                 )}
+            </div>
+
+            {/* Grid Menu */}
+            <div className="section-header" style={{ marginTop: 'var(--spacing-xl)' }}>
+                <h4 className="font-bold">{t('menu') || 'Menü'}</h4>
+            </div>
+            <div className="dashboard-menu">
+                {menuItems.map((item) => (
+                    <button
+                        key={item.id}
+                        className="menu-item"
+                        onClick={() => navigate(item.path)}
+                    >
+                        <div className="menu-icon-circle" style={{ background: item.color }}>
+                            {item.icon}
+                        </div>
+                        <span className="menu-label">{item.title}</span>
+                    </button>
+                ))}
             </div>
         </div>
     );
