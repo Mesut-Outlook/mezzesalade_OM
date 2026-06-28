@@ -1,8 +1,45 @@
+// Simple in-memory rate limiter (per serverless instance)
+const rateLimitMap = new Map();
+const RATE_LIMIT_WINDOW_MS = 60 * 1000; // 1 minute
+const RATE_LIMIT_MAX = 5; // max 5 emails per minute per IP
+
+function isRateLimited(ip) {
+    const now = Date.now();
+    const entry = rateLimitMap.get(ip);
+    if (!entry || now - entry.windowStart > RATE_LIMIT_WINDOW_MS) {
+        rateLimitMap.set(ip, { windowStart: now, count: 1 });
+        return false;
+    }
+    entry.count++;
+    if (entry.count > RATE_LIMIT_MAX) return true;
+    return false;
+}
+
+function sanitizeHtml(str) {
+    if (typeof str !== 'string') return '';
+    return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+const ALLOWED_ORIGINS = [
+    'https://mezzesalade.nl',
+    'https://www.mezzesalade.nl',
+    'https://mezzesalade-om.vercel.app'
+];
+
 export default async function handler(req, res) {
-    // CORS headers
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    // CORS headers — restrict to known origins
+    const origin = req.headers.origin;
+    if (ALLOWED_ORIGINS.includes(origin)) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+    }
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('Vary', 'Origin');
 
     if (req.method === 'OPTIONS') {
         return res.status(200).end();
@@ -12,10 +49,30 @@ export default async function handler(req, res) {
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
+    // Rate limiting
+    const clientIp = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket?.remoteAddress || 'unknown';
+    if (isRateLimited(clientIp)) {
+        return res.status(429).json({ error: 'Too many requests. Please try again later.' });
+    }
+
     const { order, customer } = req.body;
 
     if (!order || !customer) {
         return res.status(400).json({ error: 'Missing order or customer data' });
+    }
+
+    // Input validation
+    if (!customer.name || typeof customer.name !== 'string' || customer.name.length > 200) {
+        return res.status(400).json({ error: 'Invalid customer name' });
+    }
+    if (!customer.phone || typeof customer.phone !== 'string' || customer.phone.length > 30) {
+        return res.status(400).json({ error: 'Invalid customer phone' });
+    }
+    if (!order.items || !Array.isArray(order.items) || order.items.length === 0 || order.items.length > 100) {
+        return res.status(400).json({ error: 'Invalid order items' });
+    }
+    if (typeof order.total !== 'number' || order.total < 0 || order.total > 100000) {
+        return res.status(400).json({ error: 'Invalid order total' });
     }
 
     const RESEND_API_KEY = process.env.RESEND_API_KEY;
@@ -74,9 +131,9 @@ export default async function handler(req, res) {
             <div class="section">
                 <div class="section-title">👤 Müşteri Bilgileri</div>
                 <div class="customer-info">
-                    <p><strong>İsim:</strong> ${customer.name}</p>
-                    <p><strong>Telefon:</strong> ${customer.phone}</p>
-                    ${customer.address ? `<p><strong>Adres:</strong> ${customer.address}</p>` : ''}
+                    <p><strong>İsim:</strong> ${sanitizeHtml(customer.name)}</p>
+                    <p><strong>Telefon:</strong> ${sanitizeHtml(customer.phone)}</p>
+                    ${customer.address ? `<p><strong>Adres:</strong> ${sanitizeHtml(customer.address)}</p>` : ''}
                 </div>
             </div>
             
@@ -85,8 +142,8 @@ export default async function handler(req, res) {
                 <div class="items-list">
                     ${order.items.map(item => `
                         <div class="item">
-                            <span>${item.quantity}x ${item.name}${item.variation ? ` (${item.variation})` : ''}</span>
-                            <span>€${(item.price * item.quantity).toFixed(2)}</span>
+                            <span>${parseInt(item.quantity) || 0}x ${sanitizeHtml(item.name)}${item.variation ? ` (${sanitizeHtml(item.variation)})` : ''}</span>
+                            <span>€${(parseFloat(item.price) * (parseInt(item.quantity) || 0)).toFixed(2)}</span>
                         </div>
                     `).join('')}
                 </div>
@@ -124,7 +181,7 @@ export default async function handler(req, res) {
             ${order.notes ? `
                 <div class="section">
                     <div class="section-title">📝 Notlar</div>
-                    <p style="margin: 0; color: #666;">${order.notes.replace(' (Delivery)', '').replace(' (Pickup)', '')}</p>
+                    <p style="margin: 0; color: #666;">${sanitizeHtml(String(order.notes).replace(' (Delivery)', '').replace(' (Pickup)', ''))}</p>
                 </div>
             ` : ''}
         </div>
@@ -146,7 +203,7 @@ export default async function handler(req, res) {
             body: JSON.stringify({
                 from: 'Mezzesalade <onboarding@resend.dev>',
                 to: ['mezzesalade@gmail.com', 'ozdemiralv@gmail.com'],
-                subject: `🥗 Yeni Sipariş: ${customer.name} - €${order.total.toFixed(2)}`,
+                subject: `🥗 Yeni Sipariş: ${sanitizeHtml(customer.name)} - €${order.total.toFixed(2)}`,
                 html: emailHtml
             })
         });
