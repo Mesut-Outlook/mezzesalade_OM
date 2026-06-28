@@ -1,7 +1,7 @@
 import Fuse from 'fuse.js';
 
 // Normalize Turkish characters for better matching
-function normalizeTurkish(text) {
+export function normalizeTurkish(text) {
     if (!text) return '';
     return text
         .toLowerCase()
@@ -47,7 +47,7 @@ function createFuse(searchableProducts) {
 }
 
 // Parse a line of text to extract quantity and product name
-function parseLine(line) {
+export function parseLine(line) {
     const cleanLine = line.trim();
     if (!cleanLine) return null;
 
@@ -138,7 +138,7 @@ function matchProduct(productName, searchableProducts, fuse) {
 }
 
 // Detect phone number pattern
-function isPhoneNumber(text) {
+export function isPhoneNumber(text) {
     const cleaned = text.replace(/[\s\-\(\)\.]/g, '');
     return /^(\+?31|0031|0)?6\d{8}$/.test(cleaned) ||
         /^(\+?90|0090|0)?5\d{9}$/.test(cleaned) ||
@@ -146,7 +146,7 @@ function isPhoneNumber(text) {
 }
 
 // Detect date patterns
-function parseDate(text) {
+export function parseDate(text) {
     const cleanText = text.toLowerCase().trim();
 
     const monthsTR = {
@@ -196,7 +196,7 @@ function parseDate(text) {
     return null;
 }
 
-function isAddressLine(text) {
+export function isAddressLine(text) {
     const addressKeywords = [
         'straat', 'weg', 'laan', 'plein', 'gracht', 'kade',
         'nieuw', 'oud', 'noord', 'zuid', 'oost', 'west',
