@@ -141,31 +141,41 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
         if (!loginPhone || loginPhone.length < 9) return;
 
         setIdentifying(true);
-        const customer = await fetchCustomerByPhone(loginPhone);
+        try {
+            const customer = await fetchCustomerByPhone(loginPhone);
 
-        if (customer) {
-            setCustomerInfo({
-                id: customer.id,
-                name: customer.name,
-                phone: customer.phone,
-                address: customer.address || ''
-            });
-            setIsIdentified(true);
-            setShowLogin(false);
+            if (customer) {
+                setCustomerInfo({
+                    id: customer.id,
+                    name: customer.name,
+                    phone: customer.phone,
+                    address: customer.address || ''
+                });
+                setIsIdentified(true);
+                setShowLogin(false);
 
-            // Fetch history
-            fetchHistory(customer.id);
-        } else {
-            // New customer, just proceed to form
-            setCustomerInfo(prev => ({ ...prev, phone: loginPhone }));
-            setShowLogin(false);
+                // Fetch history
+                fetchHistory(customer.id);
+            } else {
+                // New customer, just proceed to form
+                setCustomerInfo(prev => ({ ...prev, phone: loginPhone }));
+                setShowLogin(false);
+            }
+        } catch (error) {
+            console.error('Identification error:', error);
+            alert(error.message);
+        } finally {
+            setIdentifying(false);
         }
-        setIdentifying(false);
     };
 
     const fetchHistory = async (customerId) => {
-        const history = await fetchOrdersByCustomerId(customerId);
-        setCustomerHistory(history);
+        try {
+            const history = await fetchOrdersByCustomerId(customerId);
+            setCustomerHistory(history);
+        } catch (error) {
+            console.error('Failed to load order history:', error);
+        }
     };
 
     const handleLogout = () => {
@@ -331,10 +341,10 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
                     address: customerInfo.address,
                     notes: 'Yeni Müşteri (Online)'
                 });
-                if (customer) currentCustomerId = customer.id;
+                currentCustomerId = customer.id;
             }
 
-            if (!currentCustomerId) throw new Error('Customer error');
+            if (!currentCustomerId) throw new Error('Müşteri oluşturulamadı');
 
             const finalNotes = (deliveryTime ? `[${deliveryTime}] ` : '') + orderNotes + (deliveryMethod === 'home' ? ' (Delivery)' : ' (Pickup)');
 

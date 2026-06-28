@@ -108,11 +108,13 @@ export default function TextParser({ customers, products = [], addCustomer, addO
             return;
         }
 
-        const customer = await addCustomer(newCustomer);
-        if (customer) {
+        try {
+            const customer = await addCustomer(newCustomer);
             setSelectedCustomer(customer);
             setShowCustomerModal(false);
             setNewCustomer({ name: '', phone: '', email: '', address: '', notes: '' });
+        } catch (error) {
+            alert(error.message);
         }
     };
 
@@ -149,11 +151,15 @@ export default function TextParser({ customers, products = [], addCustomer, addO
             total
         };
 
-        const newOrder = await addOrder(order);
-        setSubmitting(false);
-
-        if (newOrder) {
-            navigate(`/admin/order/${newOrder.id}`);
+        try {
+            const newOrder = await addOrder(order);
+            if (newOrder) {
+                navigate(`/admin/order/${newOrder.id}`);
+            }
+        } catch (error) {
+            alert(error.message);
+        } finally {
+            setSubmitting(false);
         }
     };
 

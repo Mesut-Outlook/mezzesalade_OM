@@ -65,6 +65,8 @@ function AppContent() {
         meta.setAttribute('content', title);
     }, [location.pathname]);
 
+    const [loadError, setLoadError] = useState(null);
+
     // Load data from Supabase
     const loadData = useCallback(async () => {
         setSyncing(true);
@@ -79,8 +81,10 @@ function AppContent() {
             setCustomers(customersData);
             setProducts(productsData);
             setPublicOrderDates(publicData.map(d => d.date));
+            setLoadError(null);
         } catch (error) {
             console.error('Error loading data:', error);
+            setLoadError(error.message);
         } finally {
             setLoading(false);
             setSyncing(false);
@@ -108,97 +112,132 @@ function AppContent() {
     // Add a new order
     const addOrder = async (order) => {
         setSyncing(true);
-        const newOrder = await addOrderDb(order);
-        if (newOrder) {
-            // Immediately update local state
+        try {
+            const newOrder = await addOrderDb(order);
             setOrders(prev => [{ ...order, id: newOrder.id, createdAt: newOrder.createdAt }, ...prev]);
+            setSyncing(false);
+            return newOrder;
+        } catch (error) {
+            setSyncing(false);
+            throw error;
         }
-        setSyncing(false);
-        return newOrder;
     };
 
     // Update an order
     const updateOrder = async (orderId, updates) => {
         setSyncing(true);
-        const result = await updateOrderDb(orderId, updates);
-        // Optimistically update local state
-        setOrders(prev => prev.map(order =>
-            String(order.id) === String(orderId) ? { ...order, ...updates, ...result } : order
-        ));
-        setSyncing(false);
-        return result;
+        try {
+            const result = await updateOrderDb(orderId, updates);
+            setOrders(prev => prev.map(order =>
+                String(order.id) === String(orderId) ? { ...order, ...updates, ...result } : order
+            ));
+            setSyncing(false);
+            return result;
+        } catch (error) {
+            setSyncing(false);
+            throw error;
+        }
     };
 
     // Delete an order
     const deleteOrder = async (orderId) => {
         setSyncing(true);
-        await deleteOrderDb(orderId);
-        setOrders(prev => prev.filter(order => String(order.id) !== String(orderId)));
-        setSyncing(false);
+        try {
+            await deleteOrderDb(orderId);
+            setOrders(prev => prev.filter(order => String(order.id) !== String(orderId)));
+        } catch (error) {
+            alert(error.message);
+        } finally {
+            setSyncing(false);
+        }
     };
 
     // Add a new customer
     const addCustomer = async (customer) => {
         setSyncing(true);
-        const newCustomer = await addCustomerDb(customer);
-        if (newCustomer) {
+        try {
+            const newCustomer = await addCustomerDb(customer);
             setCustomers(prev => [newCustomer, ...prev]);
+            setSyncing(false);
+            return newCustomer;
+        } catch (error) {
+            setSyncing(false);
+            throw error;
         }
-        setSyncing(false);
-        return newCustomer;
     };
 
     // Update a customer
     const updateCustomer = async (customerId, updates) => {
         setSyncing(true);
-        await updateCustomerDb(customerId, updates);
-        setCustomers(prev => prev.map(customer =>
-            String(customer.id) === String(customerId) ? { ...customer, ...updates } : customer
-        ));
-        setSyncing(false);
+        try {
+            const result = await updateCustomerDb(customerId, updates);
+            setCustomers(prev => prev.map(customer =>
+                String(customer.id) === String(customerId) ? { ...customer, ...updates, ...result } : customer
+            ));
+        } catch (error) {
+            alert(error.message);
+        } finally {
+            setSyncing(false);
+        }
     };
 
     // Delete a customer
     const deleteCustomer = async (customerId) => {
         setSyncing(true);
-        await deleteCustomerDb(customerId);
-        setCustomers(prev => prev.filter(customer => String(customer.id) !== String(customerId)));
-        setSyncing(false);
+        try {
+            await deleteCustomerDb(customerId);
+            setCustomers(prev => prev.filter(customer => String(customer.id) !== String(customerId)));
+        } catch (error) {
+            alert(error.message);
+        } finally {
+            setSyncing(false);
+        }
     };
 
     // Add a new product
     const addProduct = async (product) => {
         setSyncing(true);
-        const newProduct = await addProductDb(product);
-        if (newProduct) {
+        try {
+            const newProduct = await addProductDb(product);
             setProducts(prev => [newProduct, ...prev]);
+            setSyncing(false);
+            return newProduct;
+        } catch (error) {
+            setSyncing(false);
+            throw error;
         }
-        setSyncing(false);
-        return newProduct;
     };
 
     // Update a product
     const updateProduct = async (productId, updates) => {
         setSyncing(true);
-        const result = await updateProductDb(productId, updates);
-        setProducts(prev => prev.map(p =>
-            String(p.id) === String(productId) ? { ...p, ...updates, ...result } : p
-        ));
-        setSyncing(false);
-        return result;
+        try {
+            const result = await updateProductDb(productId, updates);
+            setProducts(prev => prev.map(p =>
+                String(p.id) === String(productId) ? { ...p, ...updates, ...result } : p
+            ));
+            setSyncing(false);
+            return result;
+        } catch (error) {
+            setSyncing(false);
+            throw error;
+        }
     };
 
     // Deactivate a product
     const deactivateProduct = async (productId) => {
         setSyncing(true);
-        const success = await deactivateProductDb(productId);
-        if (success) {
+        try {
+            await deactivateProductDb(productId);
             setProducts(prev => prev.map(p =>
                 String(p.id) === String(productId) ? { ...p, is_active: false } : p
             ));
+            setSyncing(false);
+            return true;
+        } catch (error) {
+            setSyncing(false);
+            throw error;
         }
-        setSyncing(false);
-        return success;
     };
 
     // Get customer by ID
@@ -224,6 +263,29 @@ function AppContent() {
                 }}>
                     <div className="spinner" />
                     <p className="text-muted">Veriler yükleniyor...</p>
+                </div>
+            </div>
+        );
+    }
+
+    if (loadError) {
+        return (
+            <div className="app">
+                <div style={{
+                    minHeight: '100vh',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexDirection: 'column',
+                    gap: 16,
+                    padding: 24
+                }}>
+                    <div style={{ fontSize: '3rem' }}>⚠️</div>
+                    <h2>Veri yüklenirken hata oluştu</h2>
+                    <p className="text-muted" style={{ textAlign: 'center' }}>{loadError}</p>
+                    <button className="btn btn-primary" onClick={loadData}>
+                        Tekrar Dene
+                    </button>
                 </div>
             </div>
         );

@@ -47,8 +47,12 @@ export default function OrderDetail({ orders, customers, getOrder, getCustomer, 
     const total = subtotal + shipping;
     const totalItems = order.items.reduce((sum, item) => sum + item.quantity, 0);
 
-    const handleStatusChange = (newStatus) => {
-        updateOrder(order.id, { status: newStatus });
+    const handleStatusChange = async (newStatus) => {
+        try {
+            await updateOrder(order.id, { status: newStatus });
+        } catch (error) {
+            alert(error.message);
+        }
     };
 
     const handleWhatsApp = () => {
@@ -57,9 +61,13 @@ export default function OrderDetail({ orders, customers, getOrder, getCustomer, 
         openWhatsApp(customer.phone, message);
     };
 
-    const handleDelete = () => {
-        deleteOrder(order.id);
-        navigate('/orders');
+    const handleDelete = async () => {
+        try {
+            await deleteOrder(order.id);
+            navigate('/admin/orders');
+        } catch (error) {
+            alert(error.message);
+        }
     };
 
     return (

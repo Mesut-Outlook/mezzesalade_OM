@@ -15,7 +15,7 @@ export async function fetchCustomers() {
 
     if (error) {
         console.error('Error fetching customers:', error);
-        return [];
+        throw new Error(`Müşteriler yüklenemedi: ${error.message}`);
     }
     return data || [];
 }
@@ -35,7 +35,7 @@ export async function addCustomer(customer) {
 
     if (error) {
         console.error('Error adding customer:', error);
-        return null;
+        throw new Error(`Müşteri eklenemedi: ${error.message}`);
     }
     return data;
 }
@@ -50,7 +50,7 @@ export async function updateCustomer(id, updates) {
 
     if (error) {
         console.error('Error updating customer:', error);
-        return null;
+        throw new Error(`Müşteri güncellenemedi: ${error.message}`);
     }
     return data;
 }
@@ -63,7 +63,7 @@ export async function deleteCustomer(id) {
 
     if (error) {
         console.error('Error deleting customer:', error);
-        return false;
+        throw new Error(`Müşteri silinemedi: ${error.message}`);
     }
     return true;
 }
@@ -76,7 +76,11 @@ export async function fetchCustomerByPhone(phone) {
         .from('customers')
         .select('*');
 
-    if (error || !data) return null;
+    if (error) {
+        console.error('Error fetching customer by phone:', error);
+        throw new Error(`Müşteri aranamadı: ${error.message}`);
+    }
+    if (!data) return null;
 
     // Filter in JS for flexible matching
     return data.find(c => {
@@ -96,7 +100,10 @@ export async function fetchOrdersByCustomerId(customerId) {
         .eq('customer_id', customerId)
         .order('date', { ascending: false });
 
-    if (error) return [];
+    if (error) {
+        console.error('Error fetching orders by customer:', error);
+        throw new Error(`Müşteri siparişleri yüklenemedi: ${error.message}`);
+    }
 
     return data.map(order => ({
         id: order.id,
@@ -129,7 +136,7 @@ export async function fetchOrders() {
 
     if (error) {
         console.error('Error fetching orders:', error);
-        return [];
+        throw new Error(`Siparişler yüklenemedi: ${error.message}`);
     }
 
     // Transform data to match existing format
@@ -173,7 +180,7 @@ export async function fetchPublicOrders() {
 
     if (error) {
         console.error('Error fetching public orders:', error);
-        return [];
+        throw new Error(`Sipariş bilgileri yüklenemedi: ${error.message}`);
     }
 
     // Process/Anonymize and group by date
@@ -231,8 +238,7 @@ export async function addOrder(order) {
             hint: orderError.hint,
             code: orderError.code
         });
-        alert(`Sipariş kaydedilemedi: ${orderError.message}\n${orderError.hint || ''}`);
-        return null;
+        throw new Error(`Sipariş kaydedilemedi: ${orderError.message}${orderError.hint ? '\n' + orderError.hint : ''}`);
     }
 
     console.log('✅ Order created:', orderData);
@@ -263,8 +269,7 @@ export async function addOrder(order) {
 
         if (validItems.length === 0) {
             console.warn('⚠️ No valid items to insert');
-            alert('Hiçbir geçerli ürün bulunamadı. Lütfen ürünlerin veritabanında tanımlı olduğundan emin olun.');
-            return null;
+            throw new Error('Hiçbir geçerli ürün bulunamadı. Lütfen ürünlerin veritabanında tanımlı olduğundan emin olun.');
         }
 
         const orderItems = validItems.map(item => ({
@@ -288,12 +293,11 @@ export async function addOrder(order) {
 
         if (itemsError) {
             console.error('❌ Error adding order items:', itemsError);
-            alert(`Ürünler kaydedilemedi: ${itemsError.message}`);
-            // Don't return null here, order is already created
+            throw new Error(`Sipariş oluşturuldu ancak ürünler kaydedilemedi: ${itemsError.message}`);
         } else {
             console.log('✅ Order items added successfully');
             if (validItems.length < order.items.length) {
-                alert(`Sipariş oluşturuldu! Not: ${order.items.length - validItems.length} ürün veritabanında bulunamadığı için eklenmedi.`);
+                console.warn(`${order.items.length - validItems.length} ürün veritabanında bulunamadığı için eklenmedi.`);
             }
         }
     }
@@ -323,16 +327,21 @@ export async function updateOrder(id, updates) {
 
     if (error) {
         console.error('Error updating order:', error);
-        return null;
+        throw new Error(`Sipariş güncellenemedi: ${error.message}`);
     }
 
     // If items are provided, replace them
     if (updates.items) {
         // Delete existing items
-        await supabase
+        const { error: deleteError } = await supabase
             .from('order_items')
             .delete()
             .eq('order_id', id);
+
+        if (deleteError) {
+            console.error('Error deleting old order items:', deleteError);
+            throw new Error(`Sipariş kalemleri güncellenemedi: ${deleteError.message}`);
+        }
 
         // Insert new items
         const orderItems = updates.items.map(item => ({
@@ -351,6 +360,7 @@ export async function updateOrder(id, updates) {
 
         if (itemsError) {
             console.error('Error updating order items:', itemsError);
+            throw new Error(`Yeni sipariş kalemleri kaydedilemedi: ${itemsError.message}`);
         }
     }
 
@@ -366,7 +376,7 @@ export async function deleteOrder(id) {
 
     if (error) {
         console.error('Error deleting order:', error);
-        return false;
+        throw new Error(`Sipariş silinemedi: ${error.message}`);
     }
     return true;
 }
@@ -381,7 +391,7 @@ export async function fetchProducts() {
 
     if (error) {
         console.error('Error fetching products:', error);
-        return [];
+        throw new Error(`Ürünler yüklenemedi: ${error.message}`);
     }
 
     // Transform to match local format
@@ -412,7 +422,7 @@ export async function addProduct(product) {
 
     if (error) {
         console.error('Error adding product:', error);
-        return null;
+        throw new Error(`Ürün eklenemedi: ${error.message}`);
     }
     return { ...data, variationPrices: data.variation_prices };
 }
@@ -436,7 +446,7 @@ export async function updateProduct(id, updates) {
 
     if (error) {
         console.error('Error updating product:', error);
-        return null;
+        throw new Error(`Ürün güncellenemedi: ${error.message}`);
     }
     return { ...data, variationPrices: data.variation_prices };
 }
@@ -449,7 +459,7 @@ export async function deactivateProduct(id) {
 
     if (error) {
         console.error('Error deactivating product:', error);
-        return false;
+        throw new Error(`Ürün devre dışı bırakılamadı: ${error.message}`);
     }
     return true;
 }
@@ -475,7 +485,7 @@ export async function migrateProducts(products) {
 
     if (error) {
         console.error('Error migrating products:', error);
-        return null;
+        throw new Error(`Ürün aktarımı başarısız: ${error.message}`);
     }
     return data;
 }
@@ -491,7 +501,7 @@ export async function uploadProductImage(file) {
 
     if (uploadError) {
         console.error('Error uploading image:', uploadError);
-        return null;
+        throw new Error(`Görsel yüklenemedi: ${uploadError.message}`);
     }
 
     const { data } = supabase.storage
