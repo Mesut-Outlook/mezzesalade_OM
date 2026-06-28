@@ -148,11 +148,13 @@ export default function OrderForm({ customers, products = [], orders = [], addCu
             return;
         }
 
-        const customer = await addCustomer(newCustomer);
-        if (customer) {
+        try {
+            const customer = await addCustomer(newCustomer);
             setSelectedCustomer(customer);
             setShowCustomerModal(false);
             setNewCustomer({ name: '', phone: '', address: '', notes: '' });
+        } catch (error) {
+            alert(error.message);
         }
     };
 
@@ -185,16 +187,21 @@ export default function OrderForm({ customers, products = [], orders = [], addCu
             total
         };
 
-        let result;
-        if (isEditMode) {
-            result = await updateOrder(id, order);
-        } else {
-            result = await addOrder(order);
-        }
-        setSubmitting(false);
+        try {
+            let result;
+            if (isEditMode) {
+                result = await updateOrder(id, order);
+            } else {
+                result = await addOrder(order);
+            }
 
-        if (result) {
-            navigate(`/admin/order/${isEditMode ? id : result.id}`);
+            if (result) {
+                navigate(`/admin/order/${isEditMode ? id : result.id}`);
+            }
+        } catch (error) {
+            alert(error.message);
+        } finally {
+            setSubmitting(false);
         }
     };
 

@@ -158,8 +158,13 @@ export default function ProductCatalog({ products: allProducts = [], addProduct,
                         className="btn btn-primary"
                         onClick={async () => {
                             setMigrating(true);
-                            await migrateProducts(localProducts);
-                            setMigrating(false);
+                            try {
+                                await migrateProducts(localProducts);
+                            } catch (error) {
+                                alert(error.message);
+                            } finally {
+                                setMigrating(false);
+                            }
                         }}
                         disabled={migrating}
                     >
@@ -311,18 +316,27 @@ export default function ProductCatalog({ products: allProducts = [], addProduct,
                     onClose={() => setShowModal(false)}
                     onSave={async (data) => {
                         setSaving(true);
-                        if (editingProduct) {
-                            await updateProduct(editingProduct.id, data);
-                        } else {
-                            await addProduct(data);
+                        try {
+                            if (editingProduct) {
+                                await updateProduct(editingProduct.id, data);
+                            } else {
+                                await addProduct(data);
+                            }
+                            setShowModal(false);
+                        } catch (error) {
+                            alert(error.message);
+                        } finally {
+                            setSaving(false);
                         }
-                        setSaving(false);
-                        setShowModal(false);
                     }}
                     onDeactivate={async () => {
                         if (editingProduct && confirm('Bu ürünü pasif yapmak istediğinizden emin misiniz?')) {
-                            await deactivateProduct(editingProduct.id);
-                            setShowModal(false);
+                            try {
+                                await deactivateProduct(editingProduct.id);
+                                setShowModal(false);
+                            } catch (error) {
+                                alert(error.message);
+                            }
                         }
                     }}
                     saving={saving}

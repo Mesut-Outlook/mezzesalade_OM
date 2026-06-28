@@ -88,13 +88,14 @@ export default function ProductFormModal({ product, onClose, onSave, onDeactivat
         if (!file) return;
 
         setUploading(true);
-        const publicUrl = await uploadProductImage(file);
-        if (publicUrl) {
+        try {
+            const publicUrl = await uploadProductImage(file);
             setFormData({ ...formData, image: publicUrl });
-        } else {
-            alert('Görsel yüklenirken bir hata oluştu.');
+        } catch (error) {
+            alert(error.message);
+        } finally {
+            setUploading(false);
         }
-        setUploading(false);
     };
 
     const handleExtraImagesUpload = async (e) => {
@@ -103,16 +104,23 @@ export default function ProductFormModal({ product, onClose, onSave, onDeactivat
 
         setUploadingExtra(true);
         const newImages = [...formData.extra_images];
+        let failedCount = 0;
 
         for (const file of files) {
-            const publicUrl = await uploadProductImage(file);
-            if (publicUrl) {
+            try {
+                const publicUrl = await uploadProductImage(file);
                 newImages.push(publicUrl);
+            } catch (error) {
+                console.error(`Failed to upload ${file.name}:`, error);
+                failedCount++;
             }
         }
 
         setFormData({ ...formData, extra_images: newImages });
         setUploadingExtra(false);
+        if (failedCount > 0) {
+            alert(`${failedCount} görsel yüklenemedi. Başarıyla yüklenenler eklendi.`);
+        }
         // Reset input
         e.target.value = '';
     };

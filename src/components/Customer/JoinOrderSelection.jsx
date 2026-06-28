@@ -11,11 +11,19 @@ export default function JoinOrderSelection() {
     const [summaries, setSummaries] = useState([]);
     const [loading, setLoading] = useState(true);
 
+    const [loadError, setLoadError] = useState(null);
+
     useEffect(() => {
         async function loadSummaries() {
-            const data = await fetchPublicOrders();
-            setSummaries(data);
-            setLoading(false);
+            try {
+                const data = await fetchPublicOrders();
+                setSummaries(data);
+            } catch (error) {
+                console.error('Failed to load summaries:', error);
+                setLoadError(error.message);
+            } finally {
+                setLoading(false);
+            }
         }
         loadSummaries();
     }, []);
@@ -51,7 +59,18 @@ export default function JoinOrderSelection() {
             </header>
 
             <main className="container pt-md">
-                {summaries.length === 0 ? (
+                {loadError ? (
+                    <div className="empty-state">
+                        <div className="icon">⚠️</div>
+                        <p>{loadError}</p>
+                        <button
+                            className="btn btn-primary mt-md"
+                            onClick={() => window.location.reload()}
+                        >
+                            Tekrar Dene
+                        </button>
+                    </div>
+                ) : summaries.length === 0 ? (
                     <div className="empty-state">
                         <div className="icon">🗓️</div>
                         <p>{t('no_available_days')}</p>

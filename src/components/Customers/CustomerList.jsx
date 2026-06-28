@@ -62,22 +62,31 @@ export default function CustomerList({ customers, orders, addCustomer, updateCus
 
         setSaving(true);
 
-        if (editingCustomer) {
-            await updateCustomer(editingCustomer.id, formData);
-        } else {
-            await addCustomer(formData);
-        }
+        try {
+            if (editingCustomer) {
+                await updateCustomer(editingCustomer.id, formData);
+            } else {
+                await addCustomer(formData);
+            }
 
-        setSaving(false);
-        setShowModal(false);
-        setFormData({ name: '', phone: '', email: '', address: '', notes: '' });
-        setEditingCustomer(null);
+            setShowModal(false);
+            setFormData({ name: '', phone: '', email: '', address: '', notes: '' });
+            setEditingCustomer(null);
+        } catch (error) {
+            alert(error.message);
+        } finally {
+            setSaving(false);
+        }
     };
 
     // Delete customer
-    const handleDelete = (customerId) => {
+    const handleDelete = async (customerId) => {
         if (confirm(t('delete_customer_confirm'))) {
-            deleteCustomer(customerId);
+            try {
+                await deleteCustomer(customerId);
+            } catch (error) {
+                alert(error.message);
+            }
         }
     };
 
