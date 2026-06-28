@@ -3,6 +3,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
 import { getAllProducts, searchProducts, getProductsByCategory } from '../../hooks/useProductMatcher';
 import { getThumbnail } from '../../utils/imageUtils';
+import { extractDeliveryTime, formatDeliveryTimeIntoNotes, calculateSubtotal } from '../../utils/orderUtils';
+import CustomerSearchDropdown from '../shared/CustomerSearchDropdown';
+import CustomerFormModal from '../shared/CustomerFormModal';
 
 export default function OrderForm({ customers, products = [], orders = [], addCustomer, addOrder, updateOrder }) {
     const navigate = useNavigate();
@@ -20,23 +23,10 @@ export default function OrderForm({ customers, products = [], orders = [], addCu
     const [deliveryTime, setDeliveryTime] = useState('');
     const [shippingFee, setShippingFee] = useState(0);
 
-    // New customer form
-    const [newCustomer, setNewCustomer] = useState({ name: '', phone: '', address: '', notes: '' });
-
     // Product search
     const [searchQuery, setSearchQuery] = useState('');
     const [searchResults, setSearchResults] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
-
-    // Customer search
-    const [customerSearchQuery, setCustomerSearchQuery] = useState('');
-    const [showCustomerDropdown, setShowCustomerDropdown] = useState(false);
-
-    const filteredCustomers = (customers || []).filter(c => {
-        const nameMatch = c?.name ? String(c.name).toLowerCase().includes(customerSearchQuery.toLowerCase()) : false;
-        const phoneMatch = c?.phone ? String(c.phone).includes(customerSearchQuery) : false;
-        return nameMatch || phoneMatch;
-    });
 
     // Editing mode logic
     const { id } = useParams();
@@ -49,15 +39,9 @@ export default function OrderForm({ customers, products = [], orders = [], addCu
                 setOrderItems(orderToEdit.items || []);
                 setOrderDate(orderToEdit.date);
 
-                // Extract time from notes if present: "[HH:MM] ..."
-                const timeMatch = (orderToEdit.notes || '').match(/^\[(\d{2}:\d{2})\]\s*(.*)/);
-                if (timeMatch) {
-                    setDeliveryTime(timeMatch[1]);
-                    setOrderNotes(timeMatch[2]);
-                } else {
-                    setDeliveryTime('');
-                    setOrderNotes(orderToEdit.notes || '');
-                }
+                const { time, cleanNotes } = extractDeliveryTime(orderToEdit.notes);
+                setDeliveryTime(time || '');
+                setOrderNotes(cleanNotes);
                 setShippingFee(orderToEdit.shipping || 0);
                 const customer = customers.find(c => String(c.id) === String(orderToEdit.customerId));
                 if (customer) setSelectedCustomer(customer);
@@ -138,21 +122,15 @@ export default function OrderForm({ customers, products = [], orders = [], addCu
     };
 
     // Calculate total
-    const subtotal = orderItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const subtotal = calculateSubtotal(orderItems);
     const total = subtotal + (parseFloat(shippingFee) || 0);
 
-    // Save new customer
-    const handleSaveCustomer = async () => {
-        if (!newCustomer.name || !newCustomer.phone) {
-            alert('İsim ve telefon zorunludur!');
-            return;
-        }
-
-        const customer = await addCustomer(newCustomer);
+    // Save new customer (via modal)
+    const handleSaveCustomer = async (formData) => {
+        const customer = await addCustomer(formData);
         if (customer) {
             setSelectedCustomer(customer);
             setShowCustomerModal(false);
-            setNewCustomer({ name: '', phone: '', address: '', notes: '' });
         }
     };
 
@@ -178,7 +156,7 @@ export default function OrderForm({ customers, products = [], orders = [], addCu
                 ...item,
                 productId: item.productId || item.id // Ensure productId is set
             })),
-            notes: (deliveryTime ? `[${deliveryTime}] ` : '') + orderNotes,
+            notes: formatDeliveryTimeIntoNotes(deliveryTime, orderNotes),
             date: orderDate,
             shipping: parseFloat(shippingFee) || 0,
             status: isEditMode ? undefined : 'new',
@@ -234,99 +212,20 @@ export default function OrderForm({ customers, products = [], orders = [], addCu
             <div className="card mb-md" style={{ position: 'relative', zIndex: 50 }}>
                 <h3 className="mb-md">👤 {t('customers')}</h3>
 
-                {selectedCustomer ? (
-                    <div>
-                        <div className="flex justify-between items-center mb-md">
-                            <div>
-                                <div className="font-bold">{selectedCustomer.name}</div>
-                                <div className="text-muted">{selectedCustomer.phone}</div>
-                            </div>
-                            <button
-                                className="btn btn-secondary"
-                                onClick={() => setSelectedCustomer(null)}
-                            >
-                                {t('change_btn')}
-                            </button>
-                        </div>
-                        <div className="form-group mb-0">
-                            <label className="form-label">{t('delivery_address_label')}</label>
-                            <textarea
-                                className="form-textarea"
-                                placeholder={t('address_placeholder')}
-                                value={selectedCustomer.address || ''}
-                                onChange={(e) => {
-                                    const newAddress = e.target.value;
-                                    setSelectedCustomer({ ...selectedCustomer, address: newAddress });
-                                    // Also update this in the main customers list if possible, 
-                                    // but for now we'll just handle it during save.
-                                }}
-                                style={{ minHeight: 60 }}
-                            />
-                        </div>
-                    </div>
-                ) : (
-                    <div className="flex gap-sm flex-col" style={{ position: 'relative' }}>
-                        <div className="search-container mb-0">
-                            <span className="search-icon">🔍</span>
-                            <input
-                                type="text"
-                                className="search-input"
-                                placeholder={t('search_customers_placeholder') || 'Müşteri ara (isim veya telefon)...'}
-                                value={customerSearchQuery}
-                                onChange={(e) => {
-                                    setCustomerSearchQuery(e.target.value);
-                                    setShowCustomerDropdown(true);
-                                }}
-                                onFocus={() => setShowCustomerDropdown(true)}
-                            />
-                        </div>
-
-                        {showCustomerDropdown && customerSearchQuery.length > 0 && (
-                            <div className="card shadow-lg" style={{
-                                position: 'absolute',
-                                top: '100%',
-                                left: 0,
-                                right: 0,
-                                zIndex: 100,
-                                maxHeight: '300px',
-                                overflowY: 'auto',
-                                marginTop: '4px',
-                                padding: '8px'
-                            }}>
-                                {filteredCustomers.length > 0 ? (
-                                    filteredCustomers.map(customer => (
-                                        <div
-                                            key={customer.id}
-                                            className="product-card"
-                                            style={{ margin: '4px 0', cursor: 'pointer', padding: '12px' }}
-                                            onClick={() => {
-                                                setSelectedCustomer(customer);
-                                                setCustomerSearchQuery('');
-                                                setShowCustomerDropdown(false);
-                                            }}
-                                        >
-                                            <div className="info">
-                                                <div className="name">{customer.name}</div>
-                                                <div className="text-muted" style={{ fontSize: '0.8rem' }}>{customer.phone}</div>
-                                            </div>
-                                        </div>
-                                    ))
-                                ) : (
-                                    <div className="text-muted text-center p-md">
-                                        Müşteri bulunamadı
-                                    </div>
-                                )}
-                            </div>
-                        )}
-
-                        <button
-                            className="btn btn-secondary btn-block"
-                            onClick={() => setShowCustomerModal(true)}
-                        >
-                            + {t('add_new_customer_btn')}
-                        </button>
-                    </div>
-                )}
+                <CustomerSearchDropdown
+                    customers={customers}
+                    selectedCustomer={selectedCustomer}
+                    onSelectCustomer={setSelectedCustomer}
+                    onClearCustomer={() => setSelectedCustomer(null)}
+                    onAddNewClick={() => setShowCustomerModal(true)}
+                    addNewLabel={`+ ${t('add_new_customer_btn')}`}
+                    changeLabel={t('change_btn')}
+                    searchPlaceholder={t('search_customers_placeholder') || 'Müşteri ara (isim veya telefon)...'}
+                    showAddress={true}
+                    addressLabel={t('delivery_address_label')}
+                    addressPlaceholder={t('address_placeholder')}
+                    onAddressChange={(newAddress) => setSelectedCustomer({ ...selectedCustomer, address: newAddress })}
+                />
             </div>
 
             {/* Order Items */}
@@ -467,64 +366,23 @@ export default function OrderForm({ customers, products = [], orders = [], addCu
             </div>
 
             {/* Customer Modal */}
-            {showCustomerModal && (
-                <div className="modal-overlay" onClick={() => setShowCustomerModal(false)}>
-                    <div className="modal" onClick={e => e.stopPropagation()}>
-                        <div className="modal-header">
-                            <h2>{t('new_customer_title')}</h2>
-                            <button className="modal-close" onClick={() => setShowCustomerModal(false)}>×</button>
-                        </div>
-
-                        <div className="form-group">
-                            <label className="form-label">{t('name_label')} *</label>
-                            <input
-                                type="text"
-                                className="form-input"
-                                placeholder={t('name_placeholder')}
-                                value={newCustomer.name}
-                                onChange={(e) => setNewCustomer({ ...newCustomer, name: e.target.value })}
-                            />
-                        </div>
-
-                        <div className="form-group">
-                            <label className="form-label">{t('phone_label')} *</label>
-                            <input
-                                type="tel"
-                                className="form-input"
-                                placeholder="+31 6 12345678"
-                                value={newCustomer.phone}
-                                onChange={(e) => setNewCustomer({ ...newCustomer, phone: e.target.value })}
-                            />
-                        </div>
-
-                        <div className="form-group">
-                            <label className="form-label">{t('address')}</label>
-                            <textarea
-                                className="form-textarea"
-                                placeholder={t('address')}
-                                value={newCustomer.address}
-                                onChange={(e) => setNewCustomer({ ...newCustomer, address: e.target.value })}
-                                style={{ minHeight: 80 }}
-                            />
-                        </div>
-
-                        <div className="form-group">
-                            <label className="form-label">{t('note_label')}</label>
-                            <textarea
-                                className="form-textarea"
-                                placeholder={t('note_label')}
-                                value={newCustomer.notes}
-                                onChange={(e) => setNewCustomer({ ...newCustomer, notes: e.target.value })}
-                                style={{ minHeight: 60 }}
-                            />
-                        </div>
-
-                        <button className="btn btn-primary btn-block" onClick={handleSaveCustomer}>
-                            {t('save')}
-                        </button>
-                    </div>
-                </div>
-            )}
+            <CustomerFormModal
+                visible={showCustomerModal}
+                onClose={() => setShowCustomerModal(false)}
+                onSave={handleSaveCustomer}
+                title={t('new_customer_title')}
+                labels={{
+                    name: `${t('name_label')} *`,
+                    phone: `${t('phone_label')} *`,
+                    address: t('address'),
+                    notes: t('note_label'),
+                    save: t('save')
+                }}
+                placeholders={{
+                    name: t('name_placeholder'),
+                    address: t('address')
+                }}
+            />
 
             {/* Product Modal */}
             {showProductModal && (

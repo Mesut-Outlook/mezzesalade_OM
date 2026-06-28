@@ -3,6 +3,8 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import { getProductById } from '../../hooks/useProductMatcher';
 import { openDailySummaryWhatsApp, openCustomerMenuWhatsApp } from '../AI/SummaryGenerator';
 import { ShoppingCart, ClipboardList, ChevronLeft, ChevronRight, MessageCircle, Trash2 } from 'lucide-react';
+import { CATEGORY_COLORS } from '../../utils/constants';
+import { aggregateProductSummary, groupByCategory as groupByCategoryUtil } from '../../utils/orderUtils';
 
 export default function DailySummary({ orders, products = [] }) {
     const navigate = useNavigate();
@@ -24,43 +26,10 @@ export default function DailySummary({ orders, products = [] }) {
     }, [orders, selectedDate]);
 
     // Aggregate products
-    const productSummary = useMemo(() => {
-        const summary = {};
-
-        for (const order of dayOrders) {
-            for (const item of order.items) {
-                const key = item.variation
-                    ? `${item.productId}-${item.variation}`
-                    : `${item.productId}`;
-
-                if (!summary[key]) {
-                    const product = products.find(p => p.id === item.productId);
-                    let price = 0;
-                    if (product) {
-                        if (item.variation) {
-                            const vPrices = product.variationPrices || product.variation_prices || {};
-                            price = vPrices[item.variation] || product.price;
-                        } else {
-                            price = product.price;
-                        }
-                    }
-
-                    summary[key] = {
-                        productId: item.productId,
-                        name: item.name,
-                        variation: item.variation,
-                        category: item.category || 'Diger',
-                        quantity: 0,
-                        checked: false,
-                        price: price
-                    };
-                }
-                summary[key].quantity += item.quantity;
-            }
-        }
-
-        return summary;
-    }, [dayOrders, products]);
+    const productSummary = useMemo(() =>
+        aggregateProductSummary(dayOrders, products),
+        [dayOrders, products]
+    );
 
     // Generate shopping list from ingredients
     const shoppingList = useMemo(() => {
@@ -135,24 +104,10 @@ export default function DailySummary({ orders, products = [] }) {
         return grouped;
     }, [productSummary, products]);
 
-    // Group by category
-    const byCategory = useMemo(() => {
-        const categories = {};
-
-        for (const [key, item] of Object.entries(productSummary)) {
-            if (!categories[item.category]) {
-                categories[item.category] = [];
-            }
-            categories[item.category].push({ key, ...item });
-        }
-
-        // Sort by quantity within each category
-        for (const category of Object.keys(categories)) {
-            categories[category].sort((a, b) => b.quantity - a.quantity);
-        }
-
-        return categories;
-    }, [productSummary]);
+    const byCategory = useMemo(() =>
+        groupByCategoryUtil(productSummary),
+        [productSummary]
+    );
 
     // Check state (local only, not persisted)
     const [checkedItems, setCheckedItems] = useState({});
@@ -210,18 +165,7 @@ export default function DailySummary({ orders, products = [] }) {
         setCheckedIngredients({});
     };
 
-    const categoryColors = {
-        'Mezeler': '#e94560',
-        'Corbalar': '#ff6b35',
-        'Etli Yemekler': '#8b0000',
-        'Zeytinyagli Yemekler': '#228b22',
-        'Borek Pogaca': '#daa520',
-        'Salatalar': '#32cd32',
-        'Pilavlar': '#f4a460',
-        'Kofte Kebap': '#cd5c5c',
-        'Dolma Sarma': '#9370db',
-        'Paketler': '#ff7f50',
-    };
+    const categoryColors = CATEGORY_COLORS;
 
     const groupColors = {
         'Sebzeler': '#22c55e',

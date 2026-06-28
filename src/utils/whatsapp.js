@@ -1,13 +1,11 @@
 import { formatCurrency, formatDate } from '../hooks/useLocalStorage';
+import { getOrderShortId, extractDeliveryTime, calculateSubtotal } from './orderUtils';
 
 // Generate WhatsApp message for an order
 export function generateWhatsAppMessage(order, customer, items) {
     const orderDate = formatDate(order.date);
-    const orderNumber = `#${order.id.slice(-6).toUpperCase()}`;
-
-    // Extract time from notes if present
-    const timeMatch = (order.notes || '').match(/^\[(\d{2}:\d{2})\]/);
-    const deliveryTime = timeMatch ? timeMatch[1] : null;
+    const orderNumber = getOrderShortId(order.id);
+    const { time: deliveryTime } = extractDeliveryTime(order.notes);
 
     let message = `🍽️ *MEZZESALADE SİPARİŞ*\n\n`;
     message += `📋 Sipariş No: ${orderNumber}\n`;

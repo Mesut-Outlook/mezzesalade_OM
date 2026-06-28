@@ -2,19 +2,10 @@ import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { formatDate } from '../../hooks/useLocalStorage';
 import { useLanguage } from '../../context/LanguageContext';
+import { CATEGORY_COLORS } from '../../utils/constants';
+import { aggregateProductSummary, groupByCategory as groupByCategoryUtil, calculateSubtotal, countItems, extractDeliveryTime } from '../../utils/orderUtils';
 
-const categoryColors = {
-    'Mezeler': '#e94560',
-    'Çorbalar': '#ff6b35',
-    'Etli Yemekler': '#8b0000',
-    'Zeytinyağlı Yemekler': '#228b22',
-    'Börek Poğaça': '#daa520',
-    'Salatalar': '#32cd32',
-    'Pilavlar': '#f4a460',
-    'Köfte Kebap': '#cd5c5c',
-    'Dolma Sarma': '#9370db',
-    'Paketler': '#ff7f50',
-};
+const categoryColors = CATEGORY_COLORS;
 
 function getCalendarDays(year, month) {
     const firstDay = new Date(year, month, 1);
@@ -97,48 +88,15 @@ export default function CalendarDashboard({ orders, customers }) {
     }, [selectedDate, ordersByDate]);
 
     // Get product summary for selected date
-    const productSummary = useMemo(() => {
-        const summary = {};
+    const productSummary = useMemo(() =>
+        aggregateProductSummary(selectedDateOrders),
+        [selectedDateOrders]
+    );
 
-        for (const order of selectedDateOrders) {
-            for (const item of order.items) {
-                const key = item.variation
-                    ? `${item.productId}-${item.variation}`
-                    : `${item.productId}`;
-
-                if (!summary[key]) {
-                    summary[key] = {
-                        name: item.name,
-                        variation: item.variation,
-                        category: item.category || 'Diğer',
-                        quantity: 0
-                    };
-                }
-                summary[key].quantity += item.quantity;
-            }
-        }
-
-        return summary;
-    }, [selectedDateOrders]);
-
-    // Group by category
-    const byCategory = useMemo(() => {
-        const categories = {};
-
-        for (const [key, item] of Object.entries(productSummary)) {
-            if (!categories[item.category]) {
-                categories[item.category] = [];
-            }
-            categories[item.category].push({ key, ...item });
-        }
-
-        // Sort by quantity within each category
-        for (const category of Object.keys(categories)) {
-            categories[category].sort((a, b) => b.quantity - a.quantity);
-        }
-
-        return categories;
-    }, [productSummary]);
+    const byCategory = useMemo(() =>
+        groupByCategoryUtil(productSummary),
+        [productSummary]
+    );
 
     // Total items for selected date
     const totalItems = Object.values(productSummary).reduce((sum, item) => sum + item.quantity, 0);
@@ -191,9 +149,7 @@ export default function CalendarDashboard({ orders, customers }) {
         return customer?.name || t('unknown');
     };
 
-    const getTotalPrice = (order) => {
-        return order.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    };
+    const getTotalPrice = (order) => calculateSubtotal(order.items);
 
     return (
         <div>
@@ -307,12 +263,10 @@ export default function CalendarDashboard({ orders, customers }) {
                                             <div className="font-bold">{getCustomerName(order.customerId)}</div>
                                             <div className="text-muted text-sm">
                                                 {totalOrderItems} {t('items')}
-                                                {order.notes && order.notes.match(/^\[(\d{2}:\d{2})\]/) && (
-                                                    <span className="ml-xs">⏰ {order.notes.match(/^\[(\d{2}:\d{2})\]/)[1]}</span>
-                                                )}
-                                                {order.notes && (
-                                                    <span> • {order.notes.replace(/^\[\d{2}:\d{2}\]\s*/, '')}</span>
-                                                )}
+                                                {(() => { const { time, cleanNotes } = extractDeliveryTime(order.notes); return (<>
+                                                    {time && <span className="ml-xs">⏰ {time}</span>}
+                                                    {cleanNotes && <span> • {cleanNotes}</span>}
+                                                </>); })()}
                                             </div>
                                         </div>
                                         <div className="text-right">
@@ -451,8 +405,9 @@ export default function CalendarDashboard({ orders, customers }) {
                             <div>
                                 {orders.slice(0, 3).map(order => {
                                     const customer = customers.find(c => c.id === order.customerId);
-                                    const totalItems = order.items.reduce((sum, item) => sum + item.quantity, 0);
-                                    const totalPrice = order.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                                    const orderTotalItems = countItems(order.items);
+                                    const totalPrice = calculateSubtotal(order.items);
+                                    const { time: orderTime } = extractDeliveryTime(order.notes);
 
                                     return (
                                         <div
@@ -465,10 +420,10 @@ export default function CalendarDashboard({ orders, customers }) {
                                                 <div className="font-bold">{customer?.name || t('unknown')}</div>
                                                 <div className="text-muted text-sm">
                                                     {formatDate(order.date)}
-                                                    {order.notes && order.notes.match(/^\[(\d{2}:\d{2})\]/) && (
-                                                        <span className="ml-xs">⏰ {order.notes.match(/^\[(\d{2}:\d{2})\]/)[1]}</span>
+                                                    {orderTime && (
+                                                        <span className="ml-xs">⏰ {orderTime}</span>
                                                     )}
-                                                    <span> • {totalItems} {t('items')}</span>
+                                                    <span> • {orderTotalItems} {t('items')}</span>
                                                 </div>
                                             </div>
                                             <div className="text-right">

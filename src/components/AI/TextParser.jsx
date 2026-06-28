@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { parseOrderText } from '../../hooks/useProductMatcher';
+import CustomerSearchDropdown from '../shared/CustomerSearchDropdown';
+import CustomerFormModal from '../shared/CustomerFormModal';
 
 export default function TextParser({ customers, products = [], addCustomer, addOrder }) {
     const navigate = useNavigate();
@@ -13,15 +15,6 @@ export default function TextParser({ customers, products = [], addCustomer, addO
     const [newCustomer, setNewCustomer] = useState({ name: '', phone: '', email: '', address: '', notes: '' });
     const [submitting, setSubmitting] = useState(false);
     const [deliveryFee, setDeliveryFee] = useState(0);
-
-    // Customer search
-    const [customerSearchQuery, setCustomerSearchQuery] = useState('');
-    const [showCustomerDropdown, setShowCustomerDropdown] = useState(false);
-
-    const filteredCustomers = customers.filter(c =>
-        c.name.toLowerCase().includes(customerSearchQuery.toLowerCase()) ||
-        c.phone.includes(customerSearchQuery)
-    );
 
     // Extracted metadata from AI parsing
     const [extractedInfo, setExtractedInfo] = useState(null);
@@ -101,18 +94,12 @@ export default function TextParser({ customers, products = [], addCustomer, addO
         return sum + (price * r.quantity);
     }, 0) + (parseFloat(deliveryFee) || 0);
 
-    // Save new customer
-    const handleSaveCustomer = async () => {
-        if (!newCustomer.name || !newCustomer.phone) {
-            alert('İsim ve telefon zorunludur!');
-            return;
-        }
-
-        const customer = await addCustomer(newCustomer);
+    // Save new customer (via modal)
+    const handleSaveCustomer = async (formData) => {
+        const customer = await addCustomer(formData);
         if (customer) {
             setSelectedCustomer(customer);
             setShowCustomerModal(false);
-            setNewCustomer({ name: '', phone: '', email: '', address: '', notes: '' });
         }
     };
 
@@ -323,85 +310,14 @@ Lahana Sarma`}
                             <div className="card mt-lg mb-md">
                                 <h3 className="mb-md">👤 Müşteri</h3>
 
-                                {selectedCustomer ? (
-                                    <div className="flex justify-between items-center">
-                                        <div>
-                                            <div className="font-bold">{selectedCustomer.name}</div>
-                                            <div className="text-muted">{selectedCustomer.phone}</div>
-                                            {selectedCustomer.address && (
-                                                <div className="text-muted" style={{ fontSize: '0.875rem' }}>📍 {selectedCustomer.address}</div>
-                                            )}
-                                        </div>
-                                        <button
-                                            className="btn btn-secondary"
-                                            onClick={() => setSelectedCustomer(null)}
-                                        >
-                                            Değiştir
-                                        </button>
-                                    </div>
-                                ) : (
-                                    <div className="flex gap-sm flex-col" style={{ position: 'relative' }}>
-                                        <div className="search-container mb-0">
-                                            <span className="search-icon">🔍</span>
-                                            <input
-                                                type="text"
-                                                className="search-input"
-                                                placeholder="Müşteri ara (isim veya telefon)..."
-                                                value={customerSearchQuery}
-                                                onChange={(e) => {
-                                                    setCustomerSearchQuery(e.target.value);
-                                                    setShowCustomerDropdown(true);
-                                                }}
-                                                onFocus={() => setShowCustomerDropdown(true)}
-                                            />
-                                        </div>
-
-                                        {showCustomerDropdown && customerSearchQuery.length > 0 && (
-                                            <div className="card shadow-lg" style={{
-                                                position: 'absolute',
-                                                top: '100%',
-                                                left: 0,
-                                                right: 0,
-                                                zIndex: 100,
-                                                maxHeight: '300px',
-                                                overflowY: 'auto',
-                                                marginTop: '4px',
-                                                padding: '8px'
-                                            }}>
-                                                {filteredCustomers.length > 0 ? (
-                                                    filteredCustomers.map(customer => (
-                                                        <div
-                                                            key={customer.id}
-                                                            className="product-card"
-                                                            style={{ margin: '4px 0', cursor: 'pointer', padding: '12px' }}
-                                                            onClick={() => {
-                                                                setSelectedCustomer(customer);
-                                                                setCustomerSearchQuery('');
-                                                                setShowCustomerDropdown(false);
-                                                            }}
-                                                        >
-                                                            <div className="info">
-                                                                <div className="name">{customer.name}</div>
-                                                                <div className="text-muted" style={{ fontSize: '0.8rem' }}>{customer.phone}</div>
-                                                            </div>
-                                                        </div>
-                                                    ))
-                                                ) : (
-                                                    <div className="text-muted text-center p-md">
-                                                        Müşteri bulunamadı
-                                                    </div>
-                                                )}
-                                            </div>
-                                        )}
-
-                                        <button
-                                            className="btn btn-secondary btn-block"
-                                            onClick={() => setShowCustomerModal(true)}
-                                        >
-                                            + Yeni Müşteri Ekle {newCustomer.name && `(${newCustomer.name})`}
-                                        </button>
-                                    </div>
-                                )}
+                                <CustomerSearchDropdown
+                                    customers={customers}
+                                    selectedCustomer={selectedCustomer}
+                                    onSelectCustomer={setSelectedCustomer}
+                                    onClearCustomer={() => setSelectedCustomer(null)}
+                                    onAddNewClick={() => setShowCustomerModal(true)}
+                                    addNewLabel={`+ Yeni Müşteri Ekle${newCustomer.name ? ` (${newCustomer.name})` : ''}`}
+                                />
                             </div>
 
                             {/* Date & Notes */}
@@ -462,64 +378,16 @@ Lahana Sarma`}
             )}
 
             {/* Customer Modal */}
-            {showCustomerModal && (
-                <div className="modal-overlay" onClick={() => setShowCustomerModal(false)}>
-                    <div className="modal" onClick={e => e.stopPropagation()}>
-                        <div className="modal-header">
-                            <h2>Yeni Müşteri</h2>
-                            <button className="modal-close" onClick={() => setShowCustomerModal(false)}>×</button>
-                        </div>
-
-                        <div className="form-group">
-                            <label className="form-label">İsim *</label>
-                            <input
-                                type="text"
-                                className="form-input"
-                                placeholder="Müşteri adı"
-                                value={newCustomer.name}
-                                onChange={(e) => setNewCustomer({ ...newCustomer, name: e.target.value })}
-                            />
-                        </div>
-
-                        <div className="form-group">
-                            <label className="form-label">Telefon *</label>
-                            <input
-                                type="tel"
-                                className="form-input"
-                                placeholder="+31 6 12345678"
-                                value={newCustomer.phone}
-                                onChange={(e) => setNewCustomer({ ...newCustomer, phone: e.target.value })}
-                            />
-                        </div>
-
-                        <div className="form-group">
-                            <label className="form-label">Email</label>
-                            <input
-                                type="email"
-                                className="form-input"
-                                placeholder="ornek@email.com"
-                                value={newCustomer.email}
-                                onChange={(e) => setNewCustomer({ ...newCustomer, email: e.target.value })}
-                            />
-                        </div>
-
-                        <div className="form-group">
-                            <label className="form-label">Adres</label>
-                            <textarea
-                                className="form-textarea"
-                                placeholder="Teslimat adresi"
-                                value={newCustomer.address}
-                                onChange={(e) => setNewCustomer({ ...newCustomer, address: e.target.value })}
-                                style={{ minHeight: 80 }}
-                            />
-                        </div>
-
-                        <button className="btn btn-primary btn-block" onClick={handleSaveCustomer}>
-                            Müşteriyi Kaydet
-                        </button>
-                    </div>
-                </div>
-            )}
+            <CustomerFormModal
+                visible={showCustomerModal}
+                onClose={() => setShowCustomerModal(false)}
+                onSave={handleSaveCustomer}
+                initialData={newCustomer}
+                title="Yeni Müşteri"
+                showEmail={true}
+                labels={{ save: 'Müşteriyi Kaydet' }}
+                placeholders={{ address: 'Teslimat adresi' }}
+            />
         </div>
     );
 }

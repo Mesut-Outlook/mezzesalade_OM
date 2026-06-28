@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { formatDate, formatCurrency } from '../../hooks/useLocalStorage';
 import { Calendar, Filter, Search, ChevronDown } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
+import OrderCard from '../shared/OrderCard';
 
 const DATE_FILTER_KEYS = [
     'all', 'today', 'yesterday', 'this_week', 'last_week',
@@ -293,39 +294,14 @@ export default function AllOrders({ orders, customers, getCustomer }) {
                         <h3 className="mb-sm text-muted">{date}</h3>
                         {dateOrders.map(order => {
                             const customer = getCustomer(order.customerId);
-                            const totalItems = order.items.reduce((sum, item) => sum + item.quantity, 0);
-                            const totalPrice = order.total || order.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-
                             return (
-                                <div
+                                <OrderCard
                                     key={order.id}
-                                    className="card mb-sm"
-                                    onClick={() => navigate(`/admin/order/${order.id}`)}
-                                    style={{ cursor: 'pointer' }}
-                                >
-                                    <div className="flex justify-between items-center">
-                                        <div>
-                                            <div className="font-bold text-lg">{customer?.name || t('unknown')}</div>
-                                            <div className="text-muted">
-                                                {totalItems} {t('item').toLowerCase()} • #{order.id.slice(-6).toUpperCase()}
-                                            </div>
-                                        </div>
-                                        <div className="text-right">
-                                            <div className="font-bold text-success text-lg">{formatCurrency(totalPrice)}</div>
-                                            <span className={`badge badge-${order.status}`}>
-                                                {t(`status_${order.status}`)}
-                                            </span>
-                                        </div>
-                                    </div>
-
-                                    {/* Items preview */}
-                                    <div className="text-muted mt-sm" style={{ fontSize: '0.875rem' }}>
-                                        {order.items.slice(0, 3).map(item =>
-                                            `${item.quantity}x ${item.name}`
-                                        ).join(', ')}
-                                        {order.items.length > 3 && ` +${order.items.length - 3} ${t('more')}`}
-                                    </div>
-                                </div>
+                                    order={order}
+                                    customerName={customer?.name || t('unknown')}
+                                    statusLabel={t(`status_${order.status}`)}
+                                    moreText={t('more')}
+                                />
                             );
                         })}
                     </div>

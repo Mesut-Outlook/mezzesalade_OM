@@ -3,13 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { formatDate, formatCurrency } from '../../hooks/useLocalStorage';
 import { generateWhatsAppMessage, openWhatsApp } from '../../utils/whatsapp';
 import { useLanguage } from '../../context/LanguageContext';
-
-const STATUS_OPTIONS = [
-    { value: 'new', label: 'Yeni', color: 'var(--accent-primary)' },
-    { value: 'preparing', label: 'Hazırlanıyor', color: 'var(--accent-warning)' },
-    { value: 'ready', label: 'Hazır', color: 'var(--accent-success)' },
-    { value: 'delivered', label: 'Teslim Edildi', color: 'var(--accent-info)' }
-];
+import { STATUS_OPTIONS } from '../../utils/constants';
+import { calculateSubtotal, countItems, getOrderShortId, extractDeliveryTime } from '../../utils/orderUtils';
 
 export default function OrderDetail({ orders, customers, getOrder, getCustomer, updateOrder, deleteOrder }) {
     const { id } = useParams();
@@ -18,9 +13,7 @@ export default function OrderDetail({ orders, customers, getOrder, getCustomer, 
     const order = getOrder(id);
     const customer = order ? getCustomer(order.customerId) : null;
 
-    // Extract time from notes if present
-    const timeMatch = order && order.notes ? order.notes.match(/^\[(\d{2}:\d{2})\]/) : null;
-    const deliveryTime = timeMatch ? timeMatch[1] : null;
+    const { time: deliveryTime } = extractDeliveryTime(order?.notes);
 
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
@@ -42,10 +35,10 @@ export default function OrderDetail({ orders, customers, getOrder, getCustomer, 
         );
     }
 
-    const subtotal = order.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const subtotal = calculateSubtotal(order.items);
     const shipping = order.shipping || 0;
     const total = subtotal + shipping;
-    const totalItems = order.items.reduce((sum, item) => sum + item.quantity, 0);
+    const totalItems = countItems(order.items);
 
     const handleStatusChange = (newStatus) => {
         updateOrder(order.id, { status: newStatus });
@@ -68,7 +61,7 @@ export default function OrderDetail({ orders, customers, getOrder, getCustomer, 
                 <button className="btn btn-icon btn-secondary" onClick={() => navigate(-1)}>
                     ←
                 </button>
-                <h1>#{order.id.slice(-6).toUpperCase()}</h1>
+                <h1>{getOrderShortId(order.id)}</h1>
                 <div className="flex gap-sm">
                     <button
                         className="btn btn-icon btn-secondary"

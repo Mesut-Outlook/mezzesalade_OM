@@ -4,6 +4,7 @@ import { migrateProducts } from '../../lib/supabase';
 import localProducts from '../../data/products.json';
 import ProductFormModal from './ProductFormModal';
 import { getThumbnail } from '../../utils/imageUtils';
+import { CATEGORY_COLORS, CATEGORY_EMOJIS } from '../../utils/constants';
 
 export default function ProductCatalog({ products: allProducts = [], addProduct, updateProduct, deactivateProduct }) {
     const navigate = useNavigate();
@@ -68,31 +69,8 @@ export default function ProductCatalog({ products: allProducts = [], addProduct,
         return stats;
     }, [productsByCategory]);
 
-    const categoryColors = {
-        'Mezeler': '#e94560',
-        'Çorbalar': '#ff6b35',
-        'Etli Yemekler': '#8b0000',
-        'Zeytinyağlı Yemekler': '#228b22',
-        'Börek Poğaça': '#daa520',
-        'Salatalar': '#32cd32',
-        'Pilavlar': '#f4a460',
-        'Köfte Kebap': '#cd5c5c',
-        'Dolma Sarma': '#9370db',
-        'Paketler': '#ff7f50',
-    };
-
-    const categoryEmojis = {
-        'Mezeler': '🥗',
-        'Çorbalar': '🍲',
-        'Etli Yemekler': '🍖',
-        'Zeytinyağlı Yemekler': '🫒',
-        'Börek Poğaça': '🥐',
-        'Salatalar': '🥬',
-        'Pilavlar': '🍚',
-        'Köfte Kebap': '🍢',
-        'Dolma Sarma': '🫑',
-        'Paketler': '🎁',
-    };
+    const categoryColors = CATEGORY_COLORS;
+    const categoryEmojis = CATEGORY_EMOJIS;
 
     return (
         <div>

@@ -1,14 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { formatDate, formatCurrency } from '../../hooks/useLocalStorage';
+import { formatDate } from '../../hooks/useLocalStorage';
 import { useLanguage } from '../../context/LanguageContext';
-
-const STATUS_LABELS = {
-    new: 'Yeni',
-    preparing: 'Hazırlanıyor',
-    ready: 'Hazır',
-    delivered: 'Teslim Edildi'
-};
+import { STATUS_LABELS } from '../../utils/constants';
+import OrderCard from '../shared/OrderCard';
 
 export default function OrderList({ orders, customers, getCustomer }) {
     const navigate = useNavigate();
@@ -105,42 +100,13 @@ export default function OrderList({ orders, customers, getCustomer }) {
                         <h3 className="mb-sm text-muted">{date}</h3>
                         {dateOrders.map(order => {
                             const customer = getCustomer(order.customerId);
-                            const totalItems = order.items.reduce((sum, item) => sum + item.quantity, 0);
-                            const totalPrice = order.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-
                             return (
-                                <div
+                                <OrderCard
                                     key={order.id}
-                                    className="card mb-sm"
-                                    onClick={() => navigate(`/admin/order/${order.id}`)}
-                                    style={{ cursor: 'pointer' }}
-                                >
-                                    <div className="flex justify-between items-center">
-                                        <div>
-                                            <div className="font-bold text-lg">{customer?.name || t('unknown')}</div>
-                                            <div className="text-muted">
-                                                {totalItems} {t('items')} • #{order.id.slice(-6).toUpperCase()}
-                                                {order.notes && order.notes.match(/^\[(\d{2}:\d{2})\]/) && (
-                                                    <span className="ml-xs">⏰ {order.notes.match(/^\[(\d{2}:\d{2})\]/)[1]}</span>
-                                                )}
-                                            </div>
-                                        </div>
-                                        <div className="text-right">
-                                            <div className="font-bold text-success text-lg">€{totalPrice.toFixed(2)}</div>
-                                            <span className={`badge badge-${order.status}`}>
-                                                {STATUS_LABELS[order.status]}
-                                            </span>
-                                        </div>
-                                    </div>
-
-                                    {/* Items preview */}
-                                    <div className="text-muted mt-sm" style={{ fontSize: '0.875rem' }}>
-                                        {order.items.slice(0, 3).map(item =>
-                                            `${item.quantity}x ${item.name}`
-                                        ).join(', ')}
-                                        {order.items.length > 3 && ` +${order.items.length - 3} daha...`}
-                                    </div>
-                                </div>
+                                    order={order}
+                                    customerName={customer?.name || t('unknown')}
+                                    statusLabel={STATUS_LABELS[order.status]}
+                                />
                             );
                         })}
                     </div>

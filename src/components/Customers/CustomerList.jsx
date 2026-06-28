@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
+import { calculateSubtotal } from '../../utils/orderUtils';
+import CustomerFormModal from '../shared/CustomerFormModal';
 
 export default function CustomerList({ customers, orders, addCustomer, updateCustomer, deleteCustomer }) {
     const navigate = useNavigate();
@@ -8,8 +10,6 @@ export default function CustomerList({ customers, orders, addCustomer, updateCus
     const [searchQuery, setSearchQuery] = useState('');
     const [showModal, setShowModal] = useState(false);
     const [editingCustomer, setEditingCustomer] = useState(null);
-    const [formData, setFormData] = useState({ name: '', phone: '', email: '', address: '', notes: '' });
-    const [saving, setSaving] = useState(false);
 
     // Filter customers
     const filteredCustomers = customers.filter(customer => {
@@ -28,49 +28,30 @@ export default function CustomerList({ customers, orders, addCustomer, updateCus
     const getTotalSpent = (customerId) => {
         return orders
             .filter(o => String(o.customerId) === String(customerId))
-            .reduce((sum, order) => {
-                return sum + order.items.reduce((s, item) => s + (item.price * item.quantity), 0);
-            }, 0);
+            .reduce((sum, order) => sum + calculateSubtotal(order.items), 0);
     };
 
     // Open modal for new customer
     const handleNew = () => {
         setEditingCustomer(null);
-        setFormData({ name: '', phone: '', email: '', address: '', notes: '' });
         setShowModal(true);
     };
 
     // Open modal for editing customer
     const handleEdit = (customer) => {
         setEditingCustomer(customer);
-        setFormData({
-            name: customer.name,
-            phone: customer.phone,
-            email: customer.email || '',
-            address: customer.address || '',
-            notes: customer.notes || ''
-        });
         setShowModal(true);
     };
 
     // Save customer
-    const handleSave = async () => {
-        if (!formData.name || !formData.phone) {
-            alert(t('validation_name_phone'));
-            return;
-        }
-
-        setSaving(true);
-
+    const handleSave = async (formData) => {
         if (editingCustomer) {
             await updateCustomer(editingCustomer.id, formData);
         } else {
             await addCustomer(formData);
         }
 
-        setSaving(false);
         setShowModal(false);
-        setFormData({ name: '', phone: '', email: '', address: '', notes: '' });
         setEditingCustomer(null);
     };
 
@@ -173,75 +154,37 @@ export default function CustomerList({ customers, orders, addCustomer, updateCus
             )}
 
             {/* Customer Modal */}
-            {showModal && (
-                <div className="modal-overlay" onClick={() => setShowModal(false)}>
-                    <div className="modal" onClick={e => e.stopPropagation()}>
-                        <div className="modal-header">
-                            <h2>{editingCustomer ? t('edit_customer_title') : t('new_customer_title')}</h2>
-                            <button className="modal-close" onClick={() => setShowModal(false)}>×</button>
-                        </div>
-
-                        <div className="form-group">
-                            <label className="form-label">{t('name_label')} *</label>
-                            <input
-                                type="text"
-                                className="form-input"
-                                placeholder={t('name_placeholder')}
-                                value={formData.name}
-                                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                            />
-                        </div>
-
-                        <div className="form-group">
-                            <label className="form-label">{t('phone_label')} *</label>
-                            <input
-                                type="tel"
-                                className="form-input"
-                                placeholder="+31 6 ..."
-                                value={formData.phone}
-                                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                            />
-                        </div>
-
-                        <div className="form-group">
-                            <label className="form-label">{t('email_label')}</label>
-                            <input
-                                type="email"
-                                className="form-input"
-                                placeholder={t('email_placeholder')}
-                                value={formData.email}
-                                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                            />
-                        </div>
-
-                        <div className="form-group">
-                            <label className="form-label">{t('address_label')}</label>
-                            <textarea
-                                className="form-textarea"
-                                placeholder={t('address_placeholder')}
-                                value={formData.address}
-                                onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                                style={{ minHeight: 80 }}
-                            />
-                        </div>
-
-                        <div className="form-group">
-                            <label className="form-label">{t('note_label')}</label>
-                            <textarea
-                                className="form-textarea"
-                                placeholder={t('notes_placeholder')}
-                                value={formData.notes}
-                                onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                                style={{ minHeight: 60 }}
-                            />
-                        </div>
-
-                        <button className="btn btn-primary btn-block" onClick={handleSave} disabled={saving}>
-                            {saving ? t('saving_btn') : (editingCustomer ? t('update_btn') : t('save'))}
-                        </button>
-                    </div>
-                </div>
-            )}
+            <CustomerFormModal
+                visible={showModal}
+                onClose={() => { setShowModal(false); setEditingCustomer(null); }}
+                onSave={handleSave}
+                initialData={editingCustomer ? {
+                    name: editingCustomer.name,
+                    phone: editingCustomer.phone,
+                    email: editingCustomer.email || '',
+                    address: editingCustomer.address || '',
+                    notes: editingCustomer.notes || ''
+                } : {}}
+                title={editingCustomer ? t('edit_customer_title') : t('new_customer_title')}
+                showEmail={true}
+                labels={{
+                    name: `${t('name_label')} *`,
+                    phone: `${t('phone_label')} *`,
+                    email: t('email_label'),
+                    address: t('address_label'),
+                    notes: t('note_label'),
+                    save: editingCustomer ? t('update_btn') : t('save'),
+                    saving: t('saving_btn'),
+                    validation: t('validation_name_phone')
+                }}
+                placeholders={{
+                    name: t('name_placeholder'),
+                    phone: '+31 6 ...',
+                    email: t('email_placeholder'),
+                    address: t('address_placeholder'),
+                    notes: t('notes_placeholder')
+                }}
+            />
         </div>
     );
 }

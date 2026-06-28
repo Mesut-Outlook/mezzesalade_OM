@@ -11,6 +11,7 @@ import { useLanguage } from '../../context/LanguageContext';
 import { getThumbnail } from '../../utils/imageUtils';
 import { sendOrderNotification } from '../../utils/emailService';
 import { generateWhatsAppMessage, generateWhatsAppUrl } from '../../utils/whatsapp';
+import { calculateSubtotal, getOrderShortId } from '../../utils/orderUtils';
 import './CustomerOrder.css';
 
 export default function CustomerOrderView({ products = [], addOrder, addCustomer, updateOrder, existingOrderDates = [] }) {
@@ -103,7 +104,7 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
     }, [availableCategories, selectedCategory]);
 
     // Calculate totals
-    const subtotal = orderItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const subtotal = calculateSubtotal(orderItems);
     // Delivery fee: Amsterdam içi 8€, dışı 10€
     // Amsterdam posta kodları: 10xx ve 11xx (örn: 1012 AB, 1066 WK, 1105 AZ)
     const addressLower = customerInfo.address?.toLowerCase() || '';
@@ -605,7 +606,7 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
             <main className="customer-main">
                 {editingOrder && (
                     <div className="edit-banner">
-                        <span>📝 {t('update_order')}: #{editingOrder.id.slice(-6).toUpperCase()}</span>
+                        <span>📝 {t('update_order')}: {getOrderShortId(editingOrder.id)}</span>
                         <button className="btn btn-sm" onClick={cancelEdit}>✕</button>
                     </div>
                 )}
