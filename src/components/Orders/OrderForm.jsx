@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
 import { getAllProducts, searchProducts, getProductsByCategory } from '../../hooks/useProductMatcher';
+import { getThumbnail } from '../../utils/imageUtils';
 
 export default function OrderForm({ customers, products = [], orders = [], addCustomer, addOrder, updateOrder }) {
     const navigate = useNavigate();
@@ -622,7 +623,13 @@ function ProductItem({ product, onSelect }) {
         <div>
             <div className="product-card" onClick={handleClick} style={{ cursor: 'pointer' }}>
                 {product.image && (
-                    <img src={product.image} alt={product.name} onError={(e) => e.target.style.display = 'none'} />
+                    <img
+                        src={getThumbnail(product.image, { width: 120, height: 120, resize: 'cover' })}
+                        alt={product.name}
+                        loading="lazy"
+                        decoding="async"
+                        onError={(e) => e.target.style.display = 'none'}
+                    />
                 )}
                 <div className="info">
                     <div className="name">{product.name}</div>

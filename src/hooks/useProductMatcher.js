@@ -1,5 +1,4 @@
 import Fuse from 'fuse.js';
-import localProducts from '../data/products.json';
 
 // Normalize Turkish characters for better matching
 function normalizeTurkish(text) {

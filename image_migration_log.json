@@ -1,0 +1,554 @@
+[
+  {
+    "id": "41492cc2-69d3-48ab-97b0-c2676ae01391",
+    "name": "Haydari",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/09/Haydari-scaled.jpeg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/41492cc2-69d3-48ab-97b0-c2676ae01391_1782633896191.webp"
+  },
+  {
+    "id": "b414c95d-0d6f-4651-91e5-7b5b613e3a5a",
+    "name": "Fava",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/11/Screenshot-2021-11-22-at-22.35.06.png",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/b414c95d-0d6f-4651-91e5-7b5b613e3a5a_1782633899018.webp"
+  },
+  {
+    "id": "30914033-4440-44c0-bb57-53571f893be6",
+    "name": "Muhammara",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2023/01/Muhammara-e1696679568682.jpeg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/30914033-4440-44c0-bb57-53571f893be6_1782633900463.webp"
+  },
+  {
+    "id": "85e3643a-e3d1-4ce4-9cc9-d01299811310",
+    "name": "Mercimekli Kofte",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/10/14fd640e-cc0a-4ff9-9bd0-4af71ace2566.jpg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/85e3643a-e3d1-4ce4-9cc9-d01299811310_1782633902762.webp"
+  },
+  {
+    "id": "e25a9682-5101-4ecd-ad40-05ee64c520f3",
+    "name": "Mucver",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2023/10/Mucver.jpeg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/e25a9682-5101-4ecd-ad40-05ee64c520f3_1782633904507.webp"
+  },
+  {
+    "id": "f2a5a5bc-e362-49c2-a341-c9856af9281e",
+    "name": "Zeytinyagli Yesil Fasulye",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/09/Yesil-Fasulye-Green-Bean-with-olive-oil.jpg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/f2a5a5bc-e362-49c2-a341-c9856af9281e_1782633906572.webp"
+  },
+  {
+    "id": "bca466b8-dff7-4696-918f-12c8821a5f3a",
+    "name": "Cerkez Tavugu",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2023/01/Cerkez-Tavugu-e1696679782548.jpeg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/bca466b8-dff7-4696-918f-12c8821a5f3a_1782633907598.webp"
+  },
+  {
+    "id": "8a973b02-b755-49f6-a269-d2da8f5147bf",
+    "name": "Patates Salatasi",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/09/Patates-Salatasi-Potato-Salad.jpeg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/8a973b02-b755-49f6-a269-d2da8f5147bf_1782633909215.webp"
+  },
+  {
+    "id": "70e7268f-9be4-4393-9510-10623db7b8a8",
+    "name": "Sebzeli Kereviz",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/09/Kereviz-Celery-with-olive-oil.png",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/70e7268f-9be4-4393-9510-10623db7b8a8_1782633910759.webp"
+  },
+  {
+    "id": "af594883-d397-4ebc-8ea7-983b347ee7a1",
+    "name": "Kuru Dolma",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2023/10/Kuru-Patlican-Dolma.jpeg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/af594883-d397-4ebc-8ea7-983b347ee7a1_1782633912383.webp"
+  },
+  {
+    "id": "a3813fa5-6db2-4ced-8046-ecf6d8033ba1",
+    "name": "Babagannus",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/09/babagannus-e1632641687202.jpg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/a3813fa5-6db2-4ced-8046-ecf6d8033ba1_1782633914010.webp"
+  },
+  {
+    "id": "6a93f8c9-a15a-43d7-9325-1e127af7c3fb",
+    "name": "Mercimek Corbasi",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-07-at-19.38.23.png",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/6a93f8c9-a15a-43d7-9325-1e127af7c3fb_1782633916020.webp"
+  },
+  {
+    "id": "8dd2ed38-2f74-4237-a3a2-8d2b9f383247",
+    "name": "Pirinc Pilavi",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-05-at-22.46.47.png",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/8dd2ed38-2f74-4237-a3a2-8d2b9f383247_1782633918396.webp"
+  },
+  {
+    "id": "f4f2a3d1-3e49-47b1-81c4-cbe2ba3bdf8d",
+    "name": "Patlican Kebabi",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/09/241392260_397599131871540_1521625808484700261_n_17926333900764068-e1632258076278.jpg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/f4f2a3d1-3e49-47b1-81c4-cbe2ba3bdf8d_1782633920076.webp"
+  },
+  {
+    "id": "139dec51-9c95-438a-b84d-57e8bdbd80f8",
+    "name": "Karisik Kizartma",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/09/Karisik-Kizartma-scaled.jpeg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/139dec51-9c95-438a-b84d-57e8bdbd80f8_1782633922973.webp"
+  },
+  {
+    "id": "eb8ce21f-f0cd-435d-82f1-d7ce0d1ce134",
+    "name": "Etli Patlican Tava",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-05-at-22.52.08-e1633467259418.png",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/eb8ce21f-f0cd-435d-82f1-d7ce0d1ce134_1782633924717.webp"
+  },
+  {
+    "id": "8d7c8d94-330e-4fb0-92d3-ff606f796a52",
+    "name": "Sehriyeli Tavuk Corbasi",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-07-at-19.49.19.png",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/8d7c8d94-330e-4fb0-92d3-ff606f796a52_1782633928364.webp"
+  },
+  {
+    "id": "66c63053-77d5-4fc4-a1ee-0e43715eecd8",
+    "name": "Meyhane Pilavi",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-05-at-23.06.35.png",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/66c63053-77d5-4fc4-a1ee-0e43715eecd8_1782633931509.webp"
+  },
+  {
+    "id": "bc3d81d3-f7e3-4fe7-a5ad-2cff604abe7e",
+    "name": "Bakla",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-05-at-22.48.50.png",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/bc3d81d3-f7e3-4fe7-a5ad-2cff604abe7e_1782633934412.webp"
+  },
+  {
+    "id": "4cb771f0-4188-4803-8e5a-2fc7c883eb6b",
+    "name": "Kadinbudu Kofte",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/09/Kadinbudu-Kofte.png",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/4cb771f0-4188-4803-8e5a-2fc7c883eb6b_1782633936384.webp"
+  },
+  {
+    "id": "597f9f75-fb47-42c7-81cd-b5ac49edad26",
+    "name": "Lahana Sarma",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/09/Screenshot-2021-09-21-at-23.15.09.png",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/597f9f75-fb47-42c7-81cd-b5ac49edad26_1782633938566.webp"
+  },
+  {
+    "id": "345d7167-29dc-4795-a0a0-9c02e6006dfc",
+    "name": "Fellah Kofte",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/09/Sarimsakli-Kofte-scaled.jpeg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/345d7167-29dc-4795-a0a0-9c02e6006dfc_1782633940892.webp"
+  },
+  {
+    "id": "f075cbe2-af1f-4d2b-bc5f-4cd003aa09f3",
+    "name": "Kusbasi Etli Bezelye",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-05-at-22.51.01.png",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/f075cbe2-af1f-4d2b-bc5f-4cd003aa09f3_1782633943294.webp"
+  },
+  {
+    "id": "955f9954-87e7-454d-ba1d-ccb92402b48e",
+    "name": "Makarna Salatasi",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-07-at-19.37.04.png",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/955f9954-87e7-454d-ba1d-ccb92402b48e_1782633945488.webp"
+  },
+  {
+    "id": "80bea380-17eb-43c2-91ab-ebd25610f202",
+    "name": "Sebzeli Kusbasi Dana Et Sote",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2023/10/Screenshot-2023-10-07-at-14.44.32.png",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/80bea380-17eb-43c2-91ab-ebd25610f202_1782633945902.webp"
+  },
+  {
+    "id": "a4b9bcf3-db88-4c20-8c6b-683aca0a6269",
+    "name": "Kusbasi Etli Nohut",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-07-at-19.37.28-e1633850209263.png",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/a4b9bcf3-db88-4c20-8c6b-683aca0a6269_1782633949609.webp"
+  },
+  {
+    "id": "3aa88c55-ab2b-4382-8fa7-07a6d17fbc69",
+    "name": "Ezogelin Corbasi",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-07-at-19.24.46.png",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/3aa88c55-ab2b-4382-8fa7-07a6d17fbc69_1782633952630.webp"
+  },
+  {
+    "id": "cc2226ea-c025-48d9-8b72-7c03b2d6903d",
+    "name": "Zeytinyagli Kabak",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-05-at-22.46.26.png",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/cc2226ea-c025-48d9-8b72-7c03b2d6903d_1782633954263.webp"
+  },
+  {
+    "id": "eb1d49dc-b10f-4906-93d5-e60da18dc905",
+    "name": "Zeytinyagli Pirasa",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-06-at-00.01.30.png",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/eb1d49dc-b10f-4906-93d5-e60da18dc905_1782633955253.webp"
+  },
+  {
+    "id": "cdef2177-e925-46d5-9704-da06923aff6d",
+    "name": "Imam Bayildi",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/11/Screenshot-2021-11-26-at-00.20.47.png",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/cdef2177-e925-46d5-9704-da06923aff6d_1782633956698.webp"
+  },
+  {
+    "id": "fa9ad362-58df-4fbf-b529-0a28b1a64694",
+    "name": "Izmir Kofte",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-06-at-00.00.35.png",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/fa9ad362-58df-4fbf-b529-0a28b1a64694_1782633957434.webp"
+  },
+  {
+    "id": "2f5a99e5-2f1e-41b9-8903-ab4e83258a97",
+    "name": "Humus Sade",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/09/Screenshot-2021-09-21-at-23.04.34.png",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/2f5a99e5-2f1e-41b9-8903-ab4e83258a97_1782633960774.webp"
+  },
+  {
+    "id": "a2bc8bd6-f426-4e74-81d8-ee5273404171",
+    "name": "Marul Tarator",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/10/Marul-Tarator.jpeg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/a2bc8bd6-f426-4e74-81d8-ee5273404171_1782633962435.webp"
+  },
+  {
+    "id": "1d6fa4ed-251b-462e-9f71-e0ccf01d6688",
+    "name": "Atom Meze",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-10-at-12.27.35.png",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/1d6fa4ed-251b-462e-9f71-e0ccf01d6688_1782633962789.webp"
+  },
+  {
+    "id": "ff511f7c-6be6-46c1-9a46-6e0689c1ffe9",
+    "name": "Fasulye Piyaz",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/09/Fasulye-Bean-Piyaz.png",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/ff511f7c-6be6-46c1-9a46-6e0689c1ffe9_1782633963687.webp"
+  },
+  {
+    "id": "e80f7019-981b-419c-b70e-426f5355bc3a",
+    "name": "Barbunya Pilaki",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/09/Barbunya-Pilaki.png",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/e80f7019-981b-419c-b70e-426f5355bc3a_1782633964621.webp"
+  },
+  {
+    "id": "20cf49de-7d03-4170-91cf-355d9c474b63",
+    "name": "Enginarli Pilav",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/11/Screenshot-2021-11-24-at-19.35.39-e1637882485611.png",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/20cf49de-7d03-4170-91cf-355d9c474b63_1782633965170.webp"
+  },
+  {
+    "id": "926b5d73-78ca-417f-a315-f32edfae02e7",
+    "name": "Etli Pide (1 Kilo)",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2023/10/Etli-Pide.jpeg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/926b5d73-78ca-417f-a315-f32edfae02e7_1782633965799.webp"
+  },
+  {
+    "id": "1cd8fb22-9b2e-4a33-8947-5ccbcc36d9cc",
+    "name": "Kereviz Kapama",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/10/A0B4D004-5B53-40F9-A272-5A9588265DA4_1_105_c.jpeg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/1cd8fb22-9b2e-4a33-8947-5ccbcc36d9cc_1782633966316.webp"
+  },
+  {
+    "id": "d7ecfbfe-1482-4e2b-bdac-16b693d5a739",
+    "name": "Zeytinyagli Ispanak",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/10/c9378a76-85e7-4130-9138-b8c2c5e10589.jpg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/d7ecfbfe-1482-4e2b-bdac-16b693d5a739_1782633968583.webp"
+  },
+  {
+    "id": "dc0fa69a-0a91-4739-965a-15461e5d5ac7",
+    "name": "Kusbasi Etli Bamya",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2023/10/WhatsApp-Image-2023-10-07-at-14.02.26-e1696680385202.jpeg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/dc0fa69a-0a91-4739-965a-15461e5d5ac7_1782633969179.webp"
+  },
+  {
+    "id": "3235df59-857b-459b-bdad-ab79a02299e7",
+    "name": "Firinda Patatesli Tavuk",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/10/4455132A-DB6D-4A8C-B898-01C6CA3C5C06_1_105_c.jpeg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/3235df59-857b-459b-bdad-ab79a02299e7_1782633970824.webp"
+  },
+  {
+    "id": "9a6087cc-77f1-4f16-9c39-7bbcea87541e",
+    "name": "Bulgur Pilavi",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-07-at-19.34.26.png",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/9a6087cc-77f1-4f16-9c39-7bbcea87541e_1782633973332.webp"
+  },
+  {
+    "id": "555a7b43-8d37-4c6c-9d44-813725f9ec75",
+    "name": "Havuc Tarator",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-12-20-at-10.49.40.png",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/555a7b43-8d37-4c6c-9d44-813725f9ec75_1782633975358.webp"
+  },
+  {
+    "id": "987aa0eb-e1b1-4242-9272-0d05eb8b37fc",
+    "name": "Yogurtlu Pancar",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-10-at-12.24.36.png",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/987aa0eb-e1b1-4242-9272-0d05eb8b37fc_1782633976082.webp"
+  },
+  {
+    "id": "ac309c3a-838b-48e3-a77b-ad4aa9519484",
+    "name": "Kozlenmis Biber Salatasi",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-18-at-11.13.14-e1634548514595.png",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/ac309c3a-838b-48e3-a77b-ad4aa9519484_1782633976572.webp"
+  },
+  {
+    "id": "4fcc30a8-e794-4a08-94e6-71e9fbaa6578",
+    "name": "Gavurdagi Salatasi",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/10/966986D5-F259-4584-BCDD-D1D53E156965_1_105_c.jpeg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/4fcc30a8-e794-4a08-94e6-71e9fbaa6578_1782633978222.webp"
+  },
+  {
+    "id": "cd1ebbc6-2de5-4f86-8825-8b648d442a5e",
+    "name": "Yesil Mercimek Salatasi",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/09/Yesil-Mercimek-Salatasi-Green-Lentil-Salad.png",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/cd1ebbc6-2de5-4f86-8825-8b648d442a5e_1782633980666.webp"
+  },
+  {
+    "id": "be2d98e0-34d2-4693-9a3d-59b5c1e57c55",
+    "name": "Yayla Corbasi",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/10/Yayla-Corbasi.jpeg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/be2d98e0-34d2-4693-9a3d-59b5c1e57c55_1782633981754.webp"
+  },
+  {
+    "id": "439dae2f-0a29-4646-b1b9-e7deca8d874f",
+    "name": "Kiymali Karnabahar",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/11/31EC6EC6-655B-4B53-A313-A29DD9DC4D24_1_105_c-e1635965530987.jpeg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/439dae2f-0a29-4646-b1b9-e7deca8d874f_1782633983187.webp"
+  },
+  {
+    "id": "aa35bb84-976c-48c6-bb0e-c38517860851",
+    "name": "Kusbasi Etli Kuru Fasulye",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/11/IMG_5953-scaled-e1635966627701.jpeg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/aa35bb84-976c-48c6-bb0e-c38517860851_1782633985492.webp"
+  },
+  {
+    "id": "e31c0f57-aa59-4ab4-b435-eb30a722f61c",
+    "name": "Kiymali Borulce",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/11/F4C77B13-2516-4E5C-99E1-D76FA676CE4B_1_105_c-e1636270694379.jpeg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/e31c0f57-aa59-4ab4-b435-eb30a722f61c_1782633987134.webp"
+  },
+  {
+    "id": "e566103c-0663-4a99-b6b7-bfb4c6d4de4f",
+    "name": "Eristeli Yesil Mercimek",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/11/00C50305-7CD2-4759-9D2E-CEF67DC26191_1_105_c.jpeg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/e566103c-0663-4a99-b6b7-bfb4c6d4de4f_1782633988837.webp"
+  },
+  {
+    "id": "51e59995-ae0a-4733-925a-5d4c46a7c790",
+    "name": "Ispanak Salatasi",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/11/Screenshot-2021-11-22-at-22.28.10.png",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/51e59995-ae0a-4733-925a-5d4c46a7c790_1782633992277.webp"
+  },
+  {
+    "id": "e272689a-8011-4fdb-964f-d9447517ac27",
+    "name": "Peynirli Pogaca (30 adet)",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2023/01/Peynirli-Pogaca-1.jpeg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/e272689a-8011-4fdb-964f-d9447517ac27_1782633993641.webp"
+  },
+  {
+    "id": "7a0bddd2-4307-451d-8505-e9d3f3c08ee1",
+    "name": "Sakalli Peynirli Pogaca (30 adet)",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/09/Sakalli-Pogaca-scaled.jpeg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/7a0bddd2-4307-451d-8505-e9d3f3c08ee1_1782633996506.webp"
+  },
+  {
+    "id": "81632193-9aa4-4a0b-b959-c54159dc6b44",
+    "name": "Borulce Salatasi",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/12/7a6228c3-7f46-4fd1-a59a-cca37c821875.jpg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/81632193-9aa4-4a0b-b959-c54159dc6b44_1782633998303.webp"
+  },
+  {
+    "id": "c598ac3d-0157-4f9e-aee5-ae28a9ec1407",
+    "name": "Mercimekli Bulgur Pilavi",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/12/140036289_849977359114015_3396104366951605284_n.jpg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/c598ac3d-0157-4f9e-aee5-ae28a9ec1407_1782633999584.webp"
+  },
+  {
+    "id": "a5efdb7b-2149-450b-9380-22823e494420",
+    "name": "Kiymali Musakka",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2022/01/Musakka.jpeg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/a5efdb7b-2149-450b-9380-22823e494420_1782634001547.webp"
+  },
+  {
+    "id": "9830804b-00a9-445a-8459-5d1c88e6707a",
+    "name": "Kiymali Patates Oturtma",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2022/09/7e578fe3-c73b-45c4-81f5-c9468c54d0c8.jpg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/9830804b-00a9-445a-8459-5d1c88e6707a_1782634003312.webp"
+  },
+  {
+    "id": "206c8137-b9a4-4ea5-b13d-86087fe91991",
+    "name": "Tabule Salatasi",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2022/09/94539818-8c5e-4d2d-a2c2-ebf7b132ba96.jpg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/206c8137-b9a4-4ea5-b13d-86087fe91991_1782634005008.webp"
+  },
+  {
+    "id": "fef4a678-ac5a-4259-89a2-637be9ca5c69",
+    "name": "Orman Kebabi",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2023/01/WhatsApp-Image-2023-10-07-at-13.11.00-e1696682151364.jpeg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/fef4a678-ac5a-4259-89a2-637be9ca5c69_1782634005563.webp"
+  },
+  {
+    "id": "c81e8725-8a75-494d-9ca8-61c7c6aea5da",
+    "name": "Pirasa Graten",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2022/09/c8226e41-90e2-4e17-938b-fecfd4ddf647.jpg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/c81e8725-8a75-494d-9ca8-61c7c6aea5da_1782634006120.webp"
+  },
+  {
+    "id": "fc806372-c0b4-41ef-840d-9f3124c8cf21",
+    "name": "Sebzeli Kofte",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2023/01/WhatsApp-Image-2023-10-07-at-11.46.02.jpeg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/fc806372-c0b4-41ef-840d-9f3124c8cf21_1782634007476.webp"
+  },
+  {
+    "id": "e23a0759-1e9b-4694-b4d0-4b58f6c97e10",
+    "name": "Et Kavurma",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2022/09/274f0775-e4e7-479a-a102-c7c1b8d908aa-e1662913162668.jpg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/e23a0759-1e9b-4694-b4d0-4b58f6c97e10_1782634009372.webp"
+  },
+  {
+    "id": "b0b55fa2-d80d-4f44-b3da-2d69258f586a",
+    "name": "Saksuka",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2023/01/Saksuka.jpeg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/b0b55fa2-d80d-4f44-b3da-2d69258f586a_1782634010700.webp"
+  },
+  {
+    "id": "322e74ee-3729-4c87-8b55-b12e0f9dd930",
+    "name": "Tavuk Sote",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2023/01/GetResizeImage.jpeg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/322e74ee-3729-4c87-8b55-b12e0f9dd930_1782634011956.webp"
+  },
+  {
+    "id": "1e63e5d7-a27d-4ea1-993d-b98fc4affe37",
+    "name": "Tavuklu Nohutlu Pilav",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2023/01/Screenshot-2023-02-05-at-14.52.46.png",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/1e63e5d7-a27d-4ea1-993d-b98fc4affe37_1782634013966.webp"
+  },
+  {
+    "id": "e38cb6e0-6b05-49bd-8584-6e90848a5c3e",
+    "name": "Kisir",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/09/Kisir.jpg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/e38cb6e0-6b05-49bd-8584-6e90848a5c3e_1782634016275.webp"
+  },
+  {
+    "id": "b03628f7-a639-4457-a906-6f3acdad6eed",
+    "name": "Sigara Boregi",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/09/Sigara-Boregi.png",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/b03628f7-a639-4457-a906-6f3acdad6eed_1782634018037.webp"
+  },
+  {
+    "id": "da61ec04-70fa-4c48-b615-30a0ff3850ba",
+    "name": "Tarhana Corbasi",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/10/40FBB12B-B389-47D7-971C-2BDCA001F8FE_1_105_c-e1636270537330.jpeg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/da61ec04-70fa-4c48-b615-30a0ff3850ba_1782634018515.webp"
+  },
+  {
+    "id": "e26ec09c-5237-48c6-85c2-cc3f71048f0b",
+    "name": "Eksili Kofte",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2022/12/Eksili-Kofte.jpeg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/e26ec09c-5237-48c6-85c2-cc3f71048f0b_1782634020257.webp"
+  },
+  {
+    "id": "090dcced-b035-4f92-b978-50fde721fbe9",
+    "name": "Domates Corbasi",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2023/01/Screenshot-2023-01-01-at-17.28.53.png",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/090dcced-b035-4f92-b978-50fde721fbe9_1782634022278.webp"
+  },
+  {
+    "id": "4deee548-e4bc-4fb6-b0e2-e577e00b2c04",
+    "name": "Milfoy Borek",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2022/01/75b57c1e-1f43-406f-a347-47fd73d99261-e1696680271565.jpg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/4deee548-e4bc-4fb6-b0e2-e577e00b2c04_1782634023551.webp"
+  },
+  {
+    "id": "c72734f4-c580-4a46-998f-2f18c5e2ccf2",
+    "name": "Kuskus Pilavi",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2023/10/Screenshot-2023-10-07-at-14.30.36.png",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/c72734f4-c580-4a46-998f-2f18c5e2ccf2_1782634025775.webp"
+  },
+  {
+    "id": "88d27d03-b0c3-4950-a39d-b038ee813d4b",
+    "name": "Karniyarik",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2023/01/Karniyarikjpeg-e1696678363182.jpeg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/88d27d03-b0c3-4950-a39d-b038ee813d4b_1782634027226.webp"
+  },
+  {
+    "id": "423f5452-16b2-4a9a-a1bf-89c7bb2d121a",
+    "name": "Mutebbel",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2023/01/Mutebbel-e1744575907919.jpg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/423f5452-16b2-4a9a-a1bf-89c7bb2d121a_1782634027861.webp"
+  },
+  {
+    "id": "323a1950-9d34-4069-b008-e319ac60d246",
+    "name": "Kopoglu",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2023/01/Kopoglu.jpeg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/323a1950-9d34-4069-b008-e319ac60d246_1782634028381.webp"
+  },
+  {
+    "id": "21c4603b-b713-47cb-bb0b-74a3d1034a04",
+    "name": "Pancar Salatasi",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2023/01/Pancar-Salatasi.jpg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/21c4603b-b713-47cb-bb0b-74a3d1034a04_1782634028955.webp"
+  },
+  {
+    "id": "118fc80a-ae4d-4f59-9f17-3510630c3373",
+    "name": "Yogurtlu Kereviz",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2023/01/Screenshot-2023-02-05-at-14.47.28.png",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/118fc80a-ae4d-4f59-9f17-3510630c3373_1782634030730.webp"
+  },
+  {
+    "id": "563859fa-3132-4f96-80a0-a603dbaaf8e2",
+    "name": "Canak Kofte",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2023/01/Canak-Kofte-2.jpeg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/563859fa-3132-4f96-80a0-a603dbaaf8e2_1782634031171.webp"
+  },
+  {
+    "id": "c8cc7944-1b27-4075-958a-d66b006c8892",
+    "name": "Kuru Kofte",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2023/01/Screenshot-2023-01-21-at-11.51.28.png",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/c8cc7944-1b27-4075-958a-d66b006c8892_1782634033034.webp"
+  },
+  {
+    "id": "d25657cf-1c58-4fb7-a48a-3c229c0aabeb",
+    "name": "Firin Biber Dolma",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2023/10/Firin-Biber-Dolma-2.jpeg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/d25657cf-1c58-4fb7-a48a-3c229c0aabeb_1782634033629.webp"
+  },
+  {
+    "id": "41b527d4-115a-453d-834c-88612065874f",
+    "name": "Soguk Yogurt Corbasi",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2023/01/Soguk-Yogut-Corbasi.jpeg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/41b527d4-115a-453d-834c-88612065874f_1782634033966.webp"
+  },
+  {
+    "id": "7b74b7b7-65b9-4cd5-8c9a-6e096b9866e0",
+    "name": "Kofteli Patlican Sarma",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2023/10/WhatsApp-Image-2023-10-07-at-14.13.04.jpeg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/7b74b7b7-65b9-4cd5-8c9a-6e096b9866e0_1782634034354.webp"
+  },
+  {
+    "id": "e18e7271-97a7-4b7e-ac44-99e46cf1a0af",
+    "name": "Dana Rosto ve Patates Pure",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2023/10/WhatsApp-Image-2023-10-02-at-18.16.25.jpeg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/e18e7271-97a7-4b7e-ac44-99e46cf1a0af_1782634035384.webp"
+  },
+  {
+    "id": "21c034bb-4360-4dbb-a3a6-535f3a0e9b54",
+    "name": "Sinkonta",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2023/10/WhatsApp-Image-2023-10-07-at-14.27.49.jpeg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/21c034bb-4360-4dbb-a3a6-535f3a0e9b54_1782634035846.webp"
+  },
+  {
+    "id": "62423da8-6c60-4d08-a2ff-13efac4db6a7",
+    "name": "Karnabahar Salatasi",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2023/01/WhatsApp-Image-2023-10-07-at-13.22.40.jpeg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/62423da8-6c60-4d08-a2ff-13efac4db6a7_1782634036339.webp"
+  },
+  {
+    "id": "3cb92734-5593-47bc-baf2-64826988a957",
+    "name": "Mantarli Sebze Yemegi",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2023/01/WhatsApp-Image-2023-10-07-at-13.17.03.jpeg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/3cb92734-5593-47bc-baf2-64826988a957_1782634036799.webp"
+  },
+  {
+    "id": "2f63a6c3-6ba4-410f-a271-4424beebf12e",
+    "name": "Kabak Sayan",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2023/10/Screenshot-2023-10-07-at-14.39.29.png",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/2f63a6c3-6ba4-410f-a271-4424beebf12e_1782634037304.webp"
+  },
+  {
+    "id": "66d8fbc6-b207-461f-a365-ec60261fd427",
+    "name": "Yogurtlu Patlican",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2025/04/YOGURTLU-PATLICAN.jpeg",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/66d8fbc6-b207-461f-a365-ec60261fd427_1782634037803.webp"
+  },
+  {
+    "id": "0ed6403b-278a-487e-a000-f0a3a20d23ba",
+    "name": "Ispanakli Borek",
+    "oldUrl": "https://mezzesalade.nl/wp-content/uploads/2021/10/Screenshot-2021-10-05-at-22.45.56-e1696766609935.png",
+    "newUrl": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/0ed6403b-278a-487e-a000-f0a3a20d23ba_1782634038835.webp"
+  }
+]
