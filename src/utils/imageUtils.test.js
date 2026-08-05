@@ -11,20 +11,24 @@ describe('getThumbnail', () => {
     describe('Supabase URLs', () => {
         const supabaseUrl = 'https://abc.supabase.co/storage/v1/object/public/product-images/photo.jpg';
 
-        it('transforms Supabase public URLs to render/image path', () => {
+        // Supabase's native transformation endpoint is a paid feature and returns
+        // 403 FeatureNotEnabled on the free tier, so these URLs go through the
+        // wsrv.nl proxy like every other image.
+        it('proxies Supabase URLs through wsrv.nl instead of render/image', () => {
             const result = getThumbnail(supabaseUrl);
-            expect(result).toContain('/render/image/public/');
-            expect(result).not.toContain('/object/public/');
+            expect(result).toContain('https://wsrv.nl/?url=');
+            expect(result).not.toContain('/render/image/public/');
         });
 
-        it('appends width, height, resize query params', () => {
+        it('keeps the original /object/public/ URL as the proxied source', () => {
             const result = getThumbnail(supabaseUrl);
-            expect(result).toContain('?width=300&height=300&resize=cover');
+            expect(result).toContain(encodeURIComponent(supabaseUrl));
         });
 
         it('uses custom dimensions', () => {
             const result = getThumbnail(supabaseUrl, { width: 100, height: 200, resize: 'contain' });
-            expect(result).toContain('?width=100&height=200&resize=contain');
+            expect(result).toContain('&w=100&h=200');
+            expect(result).toContain('&fit=contain');
         });
     });
 
