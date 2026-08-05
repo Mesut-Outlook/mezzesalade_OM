@@ -1,4 +1,5 @@
 import Fuse from 'fuse.js';
+import { toDateKey } from '../utils/dateUtils';
 
 // Normalize Turkish characters for better matching
 export function normalizeTurkish(text) {
@@ -145,16 +146,6 @@ export function isPhoneNumber(text) {
         /^\d{10,12}$/.test(cleaned);
 }
 
-// Format a Date as YYYY-MM-DD using its local components.
-// Do NOT use toISOString() here: dates built with new Date(y, m, d) sit at local
-// midnight, which UTC-converts back to the previous day in NL (UTC+1/+2), so
-// every parsed date would come out one day early.
-function toLocalDateString(date) {
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${date.getFullYear()}-${month}-${day}`;
-}
-
 // Detect date patterns
 export function parseDate(text) {
     const cleanText = text.toLowerCase().trim();
@@ -185,7 +176,7 @@ export function parseDate(text) {
         const month = monthsTR[monthName] ?? monthsEN[monthName];
         if (month !== undefined && day >= 1 && day <= 31) {
             const date = new Date(year, month, day);
-            return toLocalDateString(date);
+            return toDateKey(date);
         }
     }
 
@@ -195,7 +186,7 @@ export function parseDate(text) {
         const year = parseInt(match[3]);
         if (day >= 1 && day <= 31 && month >= 0 && month <= 11) {
             const date = new Date(year, month, day);
-            return toLocalDateString(date);
+            return toDateKey(date);
         }
     }
 

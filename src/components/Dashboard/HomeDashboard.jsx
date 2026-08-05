@@ -17,6 +17,7 @@ import {
 import { formatCurrency, formatDate } from '../../hooks/useLocalStorage';
 import { useAuth } from '../../context/AuthContext';
 import { useLanguage } from '../../context/LanguageContext';
+import { todayKey, yesterdayKey } from '../../utils/dateUtils';
 
 export default function HomeDashboard({ orders = [], customers = [], products = [], getCustomer }) {
     const navigate = useNavigate();
@@ -26,8 +27,8 @@ export default function HomeDashboard({ orders = [], customers = [], products = 
 
     // Stats Calculation
     const stats = useMemo(() => {
-        const today = new Date().toISOString().split('T')[0];
-        const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+        const today = todayKey();
+        const yesterday = yesterdayKey();
 
         const todayOrders = orders.filter(o => o.date === today);
         const yesterdayOrders = orders.filter(o => o.date === yesterday);

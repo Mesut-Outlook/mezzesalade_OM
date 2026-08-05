@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { parseOrderText } from '../../hooks/useProductMatcher';
+import { todayKey } from '../../utils/dateUtils';
 
 export default function TextParser({ customers, products = [], addCustomer, addOrder }) {
     const navigate = useNavigate();
     const [inputText, setInputText] = useState('');
     const [parsedResults, setParsedResults] = useState([]);
     const [selectedCustomer, setSelectedCustomer] = useState(null);
-    const [orderDate, setOrderDate] = useState(new Date().toISOString().split('T')[0]);
+    const [orderDate, setOrderDate] = useState(todayKey());
     const [orderNotes, setOrderNotes] = useState('');
     const [showCustomerModal, setShowCustomerModal] = useState(false);
     const [newCustomer, setNewCustomer] = useState({ name: '', phone: '', email: '', address: '', notes: '' });

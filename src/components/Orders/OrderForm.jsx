@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
 import { getAllProducts, searchProducts, getProductsByCategory } from '../../hooks/useProductMatcher';
 import { getThumbnail } from '../../utils/imageUtils';
+import { todayKey } from '../../utils/dateUtils';
 
 export default function OrderForm({ customers, products = [], orders = [], addCustomer, addOrder, updateOrder }) {
     const navigate = useNavigate();
@@ -16,7 +17,7 @@ export default function OrderForm({ customers, products = [], orders = [], addCu
     const [showProductModal, setShowProductModal] = useState(false);
     const [orderItems, setOrderItems] = useState([]);
     const [orderNotes, setOrderNotes] = useState('');
-    const [orderDate, setOrderDate] = useState(new Date().toISOString().split('T')[0]);
+    const [orderDate, setOrderDate] = useState(todayKey());
     const [deliveryTime, setDeliveryTime] = useState('');
     const [shippingFee, setShippingFee] = useState(0);
 

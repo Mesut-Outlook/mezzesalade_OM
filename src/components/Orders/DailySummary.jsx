@@ -3,6 +3,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import { getProductById } from '../../hooks/useProductMatcher';
 import { openDailySummaryWhatsApp, openCustomerMenuWhatsApp } from '../AI/SummaryGenerator';
 import { ShoppingCart, ClipboardList, ChevronLeft, ChevronRight, MessageCircle, Trash2 } from 'lucide-react';
+import { todayKey, addDays, toDateKeyFrom, parseDateKey } from '../../utils/dateUtils';
 
 export default function DailySummary({ orders, products = [] }) {
     const navigate = useNavigate();
@@ -10,15 +11,12 @@ export default function DailySummary({ orders, products = [] }) {
     const dateParam = searchParams.get('date');
     const [activeTab, setActiveTab] = useState('products'); // 'products' or 'shopping'
 
-    const today = new Date();
-    const [selectedDate, setSelectedDate] = useState(
-        dateParam || today.toISOString().split('T')[0]
-    );
+    const [selectedDate, setSelectedDate] = useState(dateParam || todayKey());
 
     // Filter orders for selected date
     const dayOrders = useMemo(() => {
         return orders.filter(order => {
-            const orderDate = new Date(order.date).toISOString().split('T')[0];
+            const orderDate = toDateKeyFrom(order.date);
             return orderDate === selectedDate;
         });
     }, [orders, selectedDate]);
@@ -187,7 +185,7 @@ export default function DailySummary({ orders, products = [] }) {
 
     // Format date for display
     const formatDisplayDate = (dateStr) => {
-        const date = new Date(dateStr);
+        const date = parseDateKey(dateStr);
         const days = ['Pazar', 'Pazartesi', 'Sali', 'Carsamba', 'Persembe', 'Cuma', 'Cumartesi'];
         const months = ['Ocak', 'Subat', 'Mart', 'Nisan', 'Mayis', 'Haziran', 'Temmuz', 'Agustos', 'Eylul', 'Ekim', 'Kasim', 'Aralik'];
         return `${days[date.getDay()]}, ${date.getDate()} ${months[date.getMonth()]}`;
@@ -195,17 +193,13 @@ export default function DailySummary({ orders, products = [] }) {
 
     // Navigation
     const goToPreviousDay = () => {
-        const date = new Date(selectedDate);
-        date.setDate(date.getDate() - 1);
-        setSelectedDate(date.toISOString().split('T')[0]);
+        setSelectedDate(addDays(selectedDate, -1));
         setCheckedItems({});
         setCheckedIngredients({});
     };
 
     const goToNextDay = () => {
-        const date = new Date(selectedDate);
-        date.setDate(date.getDate() + 1);
-        setSelectedDate(date.toISOString().split('T')[0]);
+        setSelectedDate(addDays(selectedDate, 1));
         setCheckedItems({});
         setCheckedIngredients({});
     };
@@ -244,14 +238,14 @@ export default function DailySummary({ orders, products = [] }) {
                 <h1>📊 Gunluk Ozet</h1>
                 <button
                     className="btn btn-icon btn-success"
-                    onClick={() => openDailySummaryWhatsApp(new Date(selectedDate), byCategory, totalItems)}
+                    onClick={() => openDailySummaryWhatsApp(parseDateKey(selectedDate), byCategory, totalItems)}
                     title="Ozet Raporu Paylas"
                 >
                     <ClipboardList size={20} />
                 </button>
                 <button
                     className="btn btn-icon btn-primary"
-                    onClick={() => openCustomerMenuWhatsApp(new Date(selectedDate), byCategory)}
+                    onClick={() => openCustomerMenuWhatsApp(parseDateKey(selectedDate), byCategory)}
                     title="Musteri Menusu Paylas"
                     style={{ marginLeft: '8px' }}
                 >

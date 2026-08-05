@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { TrendingUp, TrendingDown, Calendar, ChevronRight, Package, ArrowLeft } from 'lucide-react';
 import { formatCurrency, formatDate } from '../../hooks/useLocalStorage';
 import { useLanguage } from '../../context/LanguageContext';
+import { todayKey, yesterdayKey } from '../../utils/dateUtils';
 
 export default function RevenueReport({ orders = [], customers = [], getCustomer }) {
     const navigate = useNavigate();
@@ -11,8 +12,8 @@ export default function RevenueReport({ orders = [], customers = [], getCustomer
 
     // ...
     const { dailyRevenues, pendingOrders, todayTotal, yesterdayTotal, trend } = useMemo(() => {
-        const today = new Date().toISOString().split('T')[0];
-        const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+        const today = todayKey();
+        const yesterday = yesterdayKey();
 
         // Group orders by date
         const revenueByDate = {};
@@ -60,7 +61,7 @@ export default function RevenueReport({ orders = [], customers = [], getCustomer
     };
 
     // Is today or future
-    const isToday = (dateStr) => dateStr === new Date().toISOString().split('T')[0];
+    const isToday = (dateStr) => dateStr === todayKey();
     const isFuture = (dateStr) => new Date(dateStr) > new Date();
 
     return (

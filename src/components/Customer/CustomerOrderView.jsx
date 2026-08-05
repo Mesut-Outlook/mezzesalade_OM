@@ -11,6 +11,7 @@ import { useLanguage } from '../../context/LanguageContext';
 import { getThumbnail } from '../../utils/imageUtils';
 import { sendOrderNotification } from '../../utils/emailService';
 import { generateWhatsAppMessage, generateWhatsAppUrl } from '../../utils/whatsapp';
+import { todayKey } from '../../utils/dateUtils';
 import './CustomerOrder.css';
 
 export default function CustomerOrderView({ products = [], addOrder, addCustomer, updateOrder, existingOrderDates = [] }) {
@@ -50,7 +51,7 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
     const [deliveryMethod, setDeliveryMethod] = useState('pickup'); // 'home' or 'pickup'
     const [customerInfo, setCustomerInfo] = useState({ id: null, name: '', phone: '', address: '' });
     const [orderNotes, setOrderNotes] = useState('');
-    const [orderDate, setOrderDate] = useState(preselectedDate || new Date().toISOString().split('T')[0]);
+    const [orderDate, setOrderDate] = useState(preselectedDate || todayKey());
     const [deliveryTime, setDeliveryTime] = useState('');
 
     // Derived state (needs state variables for calculation)
@@ -212,7 +213,7 @@ export default function CustomerOrderView({ products = [], addOrder, addCustomer
         setEditingOrder(null);
         setOrderItems([]);
         setOrderNotes('');
-        setOrderDate(new Date().toISOString().split('T')[0]);
+        setOrderDate(todayKey());
         setDeliveryTime('');
     };
 

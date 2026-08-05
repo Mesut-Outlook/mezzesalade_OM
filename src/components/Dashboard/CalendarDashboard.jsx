@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { formatDate } from '../../hooks/useLocalStorage';
 import { useLanguage } from '../../context/LanguageContext';
+import { toDateKey, toDateKeyFrom, parseDateKey } from '../../utils/dateUtils';
 
 const categoryColors = {
     'Mezeler': '#e94560',
@@ -51,7 +52,7 @@ function isSameDay(date1, date2) {
 }
 
 function formatDisplayDate(dateStr, lang) {
-    const date = new Date(dateStr);
+    const date = parseDateKey(dateStr);
     return date.toLocaleDateString(lang === 'tr' ? 'tr-TR' : (lang === 'en' ? 'en-US' : 'nl-NL'), {
         weekday: 'long',
         day: 'numeric',
@@ -80,7 +81,7 @@ export default function CalendarDashboard({ orders, customers }) {
     const ordersByDate = useMemo(() => {
         const grouped = {};
         for (const order of orders) {
-            const dateKey = new Date(order.date).toDateString();
+            const dateKey = toDateKeyFrom(order.date);
             if (!grouped[dateKey]) {
                 grouped[dateKey] = [];
             }
@@ -92,7 +93,7 @@ export default function CalendarDashboard({ orders, customers }) {
     // Get orders for selected date
     const selectedDateOrders = useMemo(() => {
         if (!selectedDate) return [];
-        const dateKey = selectedDate.toDateString();
+        const dateKey = toDateKey(selectedDate);
         return ordersByDate[dateKey] || [];
     }, [selectedDate, ordersByDate]);
 
@@ -399,7 +400,7 @@ export default function CalendarDashboard({ orders, customers }) {
                             className="btn btn-secondary btn-block mt-md"
                             onClick={() => {
                                 setShowSummaryModal(false);
-                                navigate(`/admin/daily-summary?date=${selectedDate.toISOString().split('T')[0]}`);
+                                navigate(`/admin/daily-summary?date=${toDateKey(selectedDate)}`);
                             }}
                         >
                             🖨️ {t('printable_summary')}

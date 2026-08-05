@@ -1,5 +1,6 @@
 // Custom hook for localStorage with React state sync
 import { useState, useEffect } from 'react';
+import { parseDateKey } from '../utils/dateUtils';
 
 export function useLocalStorage(key, initialValue) {
     // Get stored value or use initial value
@@ -32,7 +33,10 @@ export function generateId() {
 
 // Format date for display
 export function formatDate(dateString) {
-    const date = new Date(dateString);
+    // parseDateKey kullanılıyor: new Date('2025-06-15') tarihi UTC gece yarısı
+    // olarak okur, toLocaleDateString ise yerel saate çevirir — bu da UTC'nin
+    // gerisindeki timezone'larda bir önceki günü gösterirdi.
+    const date = parseDateKey(dateString);
     return date.toLocaleDateString('tr-TR', {
         weekday: 'long',
         day: '2-digit',
