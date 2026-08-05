@@ -70,20 +70,23 @@ export async function deleteCustomer(id) {
 }
 
 // Public function to find customer by phone
+// NOTE: this is called from the PUBLIC /ozel-siparis page. It used to select('*')
+// on the whole `customers` table and filter in JS, which dumped every customer's
+// name/phone/email/address/notes to any visitor's browser (PII leak). It now
+// calls the `customer_identify` Postgres RPC (see supabase/hotfix_customer_identify.sql),
+// which does the digit-normalization/suffix matching server-side and returns at
+// most one row with only { id, name, phone, address }. Do not revert to select('*').
 export async function fetchCustomerByPhone(phone) {
     if (!phone) return null;
-    const cleanPhone = phone.replace(/\D/g, '');
-    const { data, error } = await supabase
-        .from('customers')
-        .select('*');
 
-    if (error || !data) return null;
+    const { data, error } = await supabase.rpc('customer_identify', { p_phone: phone });
 
-    // Filter in JS for flexible matching
-    return data.find(c => {
-        const custPhone = (c.phone || '').replace(/\D/g, '');
-        return custPhone.endsWith(cleanPhone.slice(-9)) || cleanPhone.endsWith(custPhone.slice(-9));
-    });
+    if (error) {
+        console.error('Error identifying customer by phone:', error);
+        return null;
+    }
+
+    return data?.[0] ?? null;
 }
 
 // Public function to fetch specific customer orders
