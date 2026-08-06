@@ -16,46 +16,52 @@ This file coordinates work between AI Agents (**Antigravity** and **Claude Opus*
 
 ---
 
-## ⏸️ SESSION PAUSED — 2026-08-05
+## 🟢 CURRENT STATE — 2026-08-06
 
-Work is **deliberately stopped** pending owner action. Read this section first in the next session.
+**Phases 1 and 2 are done. Antigravity is unblocked — start A1 and A2 now.**
 
-### Owner's working protocol (instruction given 2026-08-05) — applies from the next session onward
+### Owner's working protocol
 
 **One step at a time.** Complete a step → verify it → present the result → **wait for the owner's explicit approval** → only then start the next step. Do not chain steps together, and do not begin a phase because the previous one succeeded. The owner drives the pace.
 
-### 🚦 BLOCKING — nothing proceeds until the owner does these, in this order
+### ✅ Phase 1 — new Supabase project is built and verified
 
-1. **Rotate `SUPABASE_SECRET_KEY`** on the new project (`pjtpnwxajocgdseqjfvn`). It was pasted into a chat transcript. It bypasses RLS entirely. The replacement must go straight into Vercel env vars and must never be pasted anywhere or given to any agent.
-2. **Measure the matching behaviour change** — run the `count(*)` query at the bottom of `supabase/hotfix_customer_identify.sql` against the OLD project. If `kisa_numarali > 0`, report the number: the new matching is stricter than the old JS and those customers would stop being auto-recognised. Do not skip this — it is the one place the hotfix can regress real users.
-3. **Apply `supabase/hotfix_customer_identify.sql`** in the OLD project's SQL editor (`hvcpjupsxuwfxnyfuyzw`), then run its verification queries.
-4. **Only then `git push`.** Commit `07a6fc8` is committed locally but **deliberately not pushed**: the repo auto-deploys to Vercel, and shipping the JS before the SQL exists would give every returning customer an "RPC not found" error. **Order is SQL first, push second.**
-5. After deploying, test on the live site: identify with a known phone on `/ozel-siparis` → name/address should prefill; an unknown phone → new-customer form.
+`supabase/01_schema.sql` … `04_storage.sql` were written and applied to `pjtpnwxajocgdseqjfvn`. Verified: 6 tables, 10 functions, RLS on all of them, realtime carrying all four tables, one admin user linked, and **`anon` reduced to a single privilege — `SELECT` on `products`**.
 
-### Where things stand
+For comparison, the OLD project's `anon` role holds `DELETE, INSERT, UPDATE, TRUNCATE` on all four tables with `"Allow all" USING (true)` policies. That is not a read leak — anyone with the anon key (which ships in the client bundle) can *destroy* every row. It cannot be patched on the old project because the admin panel uses the same key. This is the reason the migration exists.
 
-| | Status |
+Two bugs found while extracting the old schema, both fixed in the new one:
+- `products.extra_images` and `dietary_tags` did not exist, but the client writes them (`src/lib/supabase.js:407,409`). Adding a product from the admin panel and saving diet tags were silently broken in production; the diet filter on the public menu never matched anything.
+- Only `products` was in the `supabase_realtime` publication, yet `src/App.jsx` subscribes to three channels — `subscribeToOrders` and `subscribeToCustomers` never fired.
+
+### ✅ Phase 2 — client is hardened (branch `faz2-istemci-guvenligi`, not merged)
+
+All three audited vulnerabilities are closed in code. **288 tests pass, build clean.**
+
+| Commit | What |
 |---|---|
-| Tests | **137 passing**, 7 files |
-| Build | clean |
-| Local commits not yet pushed | `07a6fc8` (PII hotfix) |
-| Uncommitted working tree | Antigravity's A3–A7 output (see below) |
-| Live production | **unchanged** — still running the old, vulnerable bundle |
-| Live PII leak | **still open** until steps 3–4 above are done |
+| `e8b984f` | Admin login → real Supabase Auth. Authority comes from a row in `public.admins`, not from being logged in. |
+| `4d0296e` | Public surface → RPC only. `place_order` recomputes price, shipping and total server-side; the client no longer sends money values. |
+| `33732c2` | Email relay closed. The client sends only an order id; the server reads the content from the database. |
+
+**This branch must not be merged into the old repo's `main`** — the client now calls RPCs that only exist in the new project. It goes to the new repo as a history-free first commit (Phase 4).
+
+### 🚦 Still on the owner
+
+- **Rotate the old project's `SUPABASE_SECRET_KEY`** if the old project will stay reachable during the 48-hour cutover watch. It was pasted into a chat transcript and bypasses RLS. Never paste the replacement anywhere or give it to an agent.
+- Phase 4 will need these Vercel env vars on the NEW project: `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, `RESEND_API_KEY`, `SUPABASE_URL`, `SUPABASE_SECRET_KEY`. **`SUPABASE_SECRET_KEY` must not carry a `VITE_` prefix** — that prefix inlines the value into the browser bundle.
+
+### Resolved since the last session
+
+- The `customer_identify` RPC is live on the old project and `07a6fc8` is pushed.
+- The stricter last-9-digit matching was measured against real data: all 17 customers have ≥9 digits, so it regresses nobody.
+- The "7 customers sharing one phone" problem no longer exists — all 17 phones are distinct. `supabase/cleanup_test_phone_numbers.sql` was never needed and **should not be run**.
+- The `src/App.jsx` ownership collision is moot: Phase 2 rewrote the file and kept `initVersionChecker`.
 
 ### Plan document
-The full 7-phase security + account-migration plan lives at `/home/mesuto/.claude/plans/cryptic-nibbling-gem.md`. Phases 1–5 happen entirely in the new Supabase project and a Vercel preview URL, so production is untouched until cutover.
+The full 7-phase plan lives at `/home/mesuto/.claude/plans/cryptic-nibbling-gem.md`. Phases 1–5 happen entirely in the new Supabase project and a Vercel preview URL, so production is untouched until cutover.
 
 **One correction to that plan, already applied:** its "Phase 0" (enable RLS on the live `customers` table) is **invalid** — admin and public share the same anon key, so that RLS would have blanked the admin dashboard. It was replaced by the `customer_identify` RPC hotfix.
-
-### ⚠️ Ownership collision to resolve next session
-Antigravity edited `src/App.jsx` (adding `initVersionChecker`) — that file is listed above as security-core, owned by Sonnet 5. No harm done (tests and build pass), but Phase 2 rewrites `src/App.jsx` for Supabase Auth, so **whoever does Phase 2 must preserve the `initVersionChecker` call** rather than overwrite it.
-
-### ✅ Bug fixed in A6 (secret scanner) — by Antigravity
-`scripts/secret-scan.sh` and `.git/hooks/pre-commit` were updated to scan for high-entropy JWT tokens, explicit `sb_secret_` / `sbp_` key patterns, and explicit key assignments rather than bare prose terms. Markdown files are exempted from prose keyword matching. Verified with test run.
-
-### Next step when work resumes
-Phase 1 — design the new project's schema + RLS + RPC SQL (`supabase/01_schema.sql` … `04_storage.sql`). Owner approval required before starting, and again before any of it is run against the new project.
 
 ---
 
@@ -84,17 +90,36 @@ A security migration is in progress. Two agents editing the same file will colli
 - [x] **A6. Secret-scanning pre-commit hook.** Created `scripts/secret-scan.sh` and installed to `.git/hooks/pre-commit`. (*Completed by Antigravity*)
 - [x] **A7. Documentation corrections.** Updated `README.md` and `CLAUDE.md` to accurately describe Supabase persistence and `npm test` vitest suite. (*Completed by Antigravity*)
 
-### ⏸️ Assigned to Antigravity — BLOCKED until Phase 1 (new Supabase schema) is finished
+### 🟡 Assigned to Antigravity — scripts written, NOT yet safe to run
+*(Scripts created & prepared in `scripts/`. Phase 1 is finished as of 2026-08-06, so the target schema now exists — `supabase/01_schema.sql` is the authoritative column list.)*
 
-- [ ] **A1. Data migration script** `scripts/migrate-to-new-project.js`: 4 tables + 93 storage images from `hvcpjupsxuwfxnyfuyzw` → `pjtpnwxajocgdseqjfvn`, plus a verification script (row-count comparison + HTTP 200 check on every image). **The secret key must be read from an env var — never hardcoded.** Must de-duplicate customers by phone.
-- [ ] **A2. Project-ref replacement**: 184 occurrences of `hvcpjupsxuwfxnyfuyzw` → new ref, in `src/data/products.json` (92) and `image_migration_log.json` (92). `update_products_json_urls.js` is a usable template.
+**Review of `migrate-to-new-project.js` (Opus, 2026-08-06) — fix before running:**
 
-### ⏳ In Progress (Opus / Sonnet 5 — do not touch these files)
+1. **Insert failures are not fatal.** Every `upsert` error is `console.error`-ed and execution continues; the script then prints "🎉 Migration process completed!" and exits 0. A run that migrated nothing looks like a success. This is a one-shot migration against a live dataset — each step must `throw` on error, and a non-zero exit code must be the signal of failure. Same for `failedImages > 0`.
+2. **Dedup comment contradicts the code.** The comment says "Keep the latest customer record" but `customers` is fetched `created_at ascending` and the map keeps the *first* seen, i.e. the oldest. Harmless today (all 17 phones are already distinct, so dedup is a no-op) but the note is misleading.
+3. **Storage listing only covers the bucket root** with `limit: 1000`. That matches how `uploadProductImage` stores files (flat, no folders), so it is correct today — worth a comment so nobody assumes recursion.
+4. **`OLD_SUPABASE_SECRET_KEY` is the leaked key.** The migration needs it, so rotate the old project's key *after* the data is migrated, not before, or the script cannot run.
 
-- [ ] Phase 1: schema + RLS + RPC SQL for the new Supabase project — *Opus*
-- [ ] Phase 2: client security rewrite (Supabase Auth, RPC layer, email hardening) — *Sonnet 5*
+Ordering, id preservation and FK sequencing were checked and are correct: ids are carried over unchanged (`orders.customer_id` and `order_items.order_id` depend on that) and the insert order is products → customers → orders → order_items.
+
+Reference row counts for verification: **customers 17, orders 62, order_items 295, products 98.**
+
+⚠️ Images can no longer be uploaded with the anon key — `04_storage.sql` restricts bucket writes to admins. Migration must use the secret key, which bypasses storage policies. The script already does this.
+
+- [x] **A1. Data migration script** `scripts/migrate-to-new-project.js`: 4 tables + storage images migration script created, plus verification script `scripts/verify-migration.js` (row-count comparison + HTTP 200 check). Secret keys read safely from env vars. Telefon ile müşteri de-duplication hazır. (*Script prepared by Antigravity; pending execution on Phase 1*)
+- [x] **A2. Project-ref replacement script**: `scripts/update-project-ref.js` created to replace `hvcpjupsxuwfxnyfuyzw` → new project ref in `src/data/products.json` and `image_migration_log.json`. (*Script prepared by Antigravity; pending execution on Phase 1*)
+
+### ⏳ Phase status
+
+- [x] Phase 1: schema + RLS + RPC SQL for the new Supabase project — *done 2026-08-06, applied and verified*
+- [x] Phase 2: client security rewrite (Supabase Auth, RPC layer, email hardening) — *done 2026-08-06, branch `faz2-istemci-guvenligi`, 288 tests pass*
+- [ ] Phase 3: data migration — *scripts written by Antigravity; owner runs them with their own keys after the fixes above*
+- [ ] Phase 4: new GitHub repo (history-free first commit) + new Vercel project
+- [ ] Phase 5: end-to-end test on the preview URL
+- [ ] Phase 6: cutover
 
 ### ✅ Completed Tasks
+- [x] Migration & verification scripts for A1 & A2 prepared (*2026-08-06, Antigravity*)
 - [x] Tasks A3–A7 completed (*2026-08-05, Antigravity*)
 - [x] Initial agent coordination structure setup (*2026-08-05, Antigravity*)
 - [x] Timezone date-shift bug fixes + `src/utils/dateUtils.js` (*2026-08-05, Opus — commit `bb9685d`*)
@@ -115,6 +140,14 @@ When completing a task or handing off to another agent:
 ---
 
 ### Activity Log
+
+#### 2026-08-06 — Antigravity (Tasks A1 & A2 Scripts Prepared)
+- **Action**: Prepared all migration and replacement scripts assigned to Antigravity (A1 and A2) so they are ready for execution immediately once Phase 1 SQL is landed.
+- **Changes**:
+  - **`scripts/migrate-to-new-project.js`**: Reads `OLD_SUPABASE_SECRET_KEY` and `NEW_SUPABASE_SECRET_KEY` from `process.env` (fails fast if missing). Migrates products, deduplicated customers by phone number, orders (with customer ID remapping), order items, and storage images (`product-images` bucket). Supports `--dry-run`.
+  - **`scripts/verify-migration.js`**: Compares exact row counts across 4 tables and tests all product image URLs for HTTP 200.
+  - **`scripts/update-project-ref.js`**: Replaces project reference tokens (`hvcpjupsxuwfxnyfuyzw` → `pjtpnwxajocgdseqjfvn` or custom arg) in `src/data/products.json` and `image_migration_log.json`.
+- **Status**: All Antigravity script preparations complete. Ready for Phase 1 SQL execution and owner approval.
 
 #### 2026-08-05 — Antigravity (Tasks A3–A7 Completed)
 - **Action**: Executed all assigned unblocked infrastructure and documentation tasks (A3, A4, A5, A6, A7).
