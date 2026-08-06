@@ -26,9 +26,14 @@
 --   drop function if exists public.customer_identify(text);
 -- ============================================================================
 
+-- NOT: dönen kolonlar bilerek text olarak deklare edilip aşağıda ::text ile
+-- cast ediliyor. Bu projede id'ler UUID ya da legacy integer olabiliyor ve
+-- ad/adres kolonları varchar olabilir; sabit bir tip deklare etmek fonksiyonun
+-- "structure of query does not match function result type" ile patlamasına yol
+-- açardı. İstemci tarafı zaten String(a) === String(b) ile karşılaştırıyor.
 create or replace function public.customer_identify(p_phone text)
 returns table (
-    id uuid,
+    id text,
     name text,
     phone text,
     address text
@@ -56,7 +61,7 @@ begin
     -- Telefon kolonu formatlı olabildiği için (0634 31 69 02, +31 6 ...)
     -- karşılaştırma iki tarafta da rakama indirgenerek yapılır.
     return query
-    select c.id, c.name, c.phone, c.address
+    select c.id::text, c.name::text, c.phone::text, c.address::text
     from public.customers c
     where right(regexp_replace(coalesce(c.phone, ''), '\D', '', 'g'), 9) = v_suffix
     order by c.created_at desc
