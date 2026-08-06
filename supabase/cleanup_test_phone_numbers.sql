@@ -11,7 +11,7 @@
 --
 -- YAPILACAK
 --   Bu kayıtlara belirgin şekilde SAHTE, birbirinden farklı numaralar atanır:
---   0611111111, 0622222222, ... 0677777777
+--   0699999991, 0699999992, ... (en eski kayıttan başlayarak)
 --
 -- ⚠️ ÖNCE OKU
 --   Bu numarayı GERÇEK bir siparişte de kullanmış olabilirsin. O 7 kayıttan
@@ -37,22 +37,31 @@ select c.id,
        c.name                                    as isim,
        c.phone                                   as eski_telefon,
        c.created_at                              as olusturma,
-       '06' || repeat(
-           row_number() over (order by c.created_at, c.id)::text, 8
+       '06' || lpad(
+           row_number() over (order by c.created_at, c.id)::text, 8, '9'
        )                                         as yeni_telefon
 from public.customers c
 join hedef h
   on right(regexp_replace(coalesce(c.phone,''),'\D','','g'), 9) = h.son9
 order by c.created_at, c.id;
 
--- Beklenen: 7 satır, yeni_telefon sütunu 0611111111 ... 0677777777.
+-- Beklenen: 7 satır, yeni_telefon sütunu 0699999991 ... 0699999997.
 -- İsimlerden biri gerçek müşteriyse BURADA DUR, bana söyle.
 
 
 -- ============================================================================
 -- ADIM 2 — YEDEK (geri alabilmek için şart)
+-- ----------------------------------------------------------------------------
+-- ⚠️ Yedek 'public' şemasına KONMAZ. İçinde isim + gerçek telefon var, yani
+--    PII. Supabase public şemasındaki yeni tablolara anon için varsayılan
+--    yetki veriyor ve yeni tabloda RLS kapalı geliyor -- yedek orada olsaydı
+--    anon key'i olan herkes okuyabilirdi. PostgREST yalnızca 'public' şemasını
+--    dışa açtığı için 'arsiv' şemasındaki tabloya hiçbir REST isteği ulaşamaz.
 -- ============================================================================
-create table if not exists public.customers_phone_backup_20260806 as
+create schema if not exists arsiv;
+revoke all on schema arsiv from anon, authenticated;
+
+create table if not exists arsiv.customers_phone_backup_20260806 as
 select c.id, c.name, c.phone, c.created_at, now() as yedeklendi
 from public.customers c
 where right(regexp_replace(coalesce(c.phone,''),'\D','','g'), 9) in (
@@ -63,8 +72,10 @@ where right(regexp_replace(coalesce(c.phone,''),'\D','','g'), 9) in (
     having count(*) > 1
 );
 
+revoke all on arsiv.customers_phone_backup_20260806 from anon, authenticated;
+
 -- Doğrula: 7 satır olmalı
-select count(*) as yedeklenen from public.customers_phone_backup_20260806;
+select count(*) as yedeklenen from arsiv.customers_phone_backup_20260806;
 
 
 -- ============================================================================
@@ -79,8 +90,8 @@ with hedef as (
 ),
 numaralanmis as (
     select c.id,
-           '06' || repeat(
-               row_number() over (order by c.created_at, c.id)::text, 8
+           '06' || lpad(
+               row_number() over (order by c.created_at, c.id)::text, 8, '9'
            ) as yeni_telefon
     from public.customers c
     join hedef h
@@ -129,9 +140,13 @@ where c.phone is not null and btrim(c.phone) <> '';
 -- ============================================================================
 -- update public.customers c
 -- set phone = b.phone
--- from public.customers_phone_backup_20260806 b
+-- from arsiv.customers_phone_backup_20260806 b
 -- where c.id = b.id;
 --
--- Yedek tablosunu işi bitince sil:
--- drop table public.customers_phone_backup_20260806;
+-- Yedeği işin sonuna kadar TUT. Veri taşıma bitip yeni projede doğrulama
+-- yapıldıktan sonra sil:
+-- drop schema arsiv cascade;
+--
+-- NOT: veri taşıma betiği (A1) yalnızca 'public' şemasını kopyalar;
+--      'arsiv' şemasının yeni projeye taşınmaması gerekir.
 -- ============================================================================
