@@ -50,6 +50,34 @@ order by c.created_at, c.id;
 
 
 -- ============================================================================
+-- ADIM 1b — "gerçek mi test mi" için nesnel ölçüt (yine hiçbir şeyi değiştirmez)
+-- ----------------------------------------------------------------------------
+-- İsme bakarak karar vermek zayıf. Asıl soru: bu kaydın gerçek sipariş
+-- geçmişi var mı? 0 sipariş -> rahatça test kabul edilir.
+-- Gerçek tutarlı ve yakın tarihli siparişleri varsa dikkat.
+-- ============================================================================
+with hedef as (
+    select right(regexp_replace(coalesce(phone,''),'\D','','g'), 9) as son9
+    from public.customers
+    where phone is not null and btrim(phone) <> ''
+    group by 1
+    having count(*) > 1
+)
+select c.name                    as isim,
+       c.address                 as adres,
+       c.created_at::date        as olusturma,
+       count(o.id)               as siparis_sayisi,
+       coalesce(sum(o.total), 0) as toplam_tutar,
+       max(o.date)               as son_siparis
+from public.customers c
+join hedef h
+  on right(regexp_replace(coalesce(c.phone,''),'\D','','g'), 9) = h.son9
+left join public.orders o on o.customer_id = c.id
+group by c.id, c.name, c.address, c.created_at
+order by count(o.id) desc, c.created_at;
+
+
+-- ============================================================================
 -- ADIM 2 — YEDEK (geri alabilmek için şart)
 -- ----------------------------------------------------------------------------
 -- ⚠️ Yedek 'public' şemasına KONMAZ. İçinde isim + gerçek telefon var, yani
