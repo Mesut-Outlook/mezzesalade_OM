@@ -74,9 +74,14 @@ async function runMigration() {
     const updatedProducts = products.map(p => ({
         ...p,
         image: updateUrlRef(p.image, oldRef, newRef),
+        // Eski veritabanında extra_images kolonu YOK, yani p.extra_images
+        // undefined geliyor. Anahtarı yine de yazdığımız için supabase-js onu
+        // kolon listesine katıyor ama gövdeden düşürüyor; PostgREST de bunu
+        // NULL olarak yorumlayıp yeni şemadaki not-null kısıtına takılıyor.
+        // Boş diziye düşürerek kolonun kendi default'uyla aynı sonucu veriyoruz.
         extra_images: Array.isArray(p.extra_images)
             ? p.extra_images.map(img => updateUrlRef(img, oldRef, newRef))
-            : p.extra_images
+            : (p.extra_images ?? [])
     }));
 
     if (!DRY_RUN && updatedProducts.length > 0) {

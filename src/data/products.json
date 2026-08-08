@@ -5,7 +5,7 @@
         "price": 19,
         "category": "Mezeler",
         "description": "Aubergine, tomato, green and red pepper, onion, parsley",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/a3813fa5-6db2-4ced-8046-ecf6d8033ba1_1782633914010.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/a3813fa5-6db2-4ced-8046-ecf6d8033ba1_1782633914010.webp",
         "dietary_tags": [
             "V",
             "GF"
@@ -26,7 +26,7 @@
             "VG",
             "V"
         ],
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/85e3643a-e3d1-4ce4-9cc9-d01299811310_1782633902762.webp"
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/85e3643a-e3d1-4ce4-9cc9-d01299811310_1782633902762.webp"
     },
     {
         "id": 69,
@@ -37,7 +37,7 @@
         "dietary_tags": [
             "VG"
         ],
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/e25a9682-5101-4ecd-ad40-05ee64c520f3_1782633904507.webp"
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/e25a9682-5101-4ecd-ad40-05ee64c520f3_1782633904507.webp"
     },
     {
         "id": 70,
@@ -45,7 +45,7 @@
         "price": 18,
         "category": "Börek Poğaça",
         "description": "Thin phyllo dough filled with fresh white cheese",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/b03628f7-a639-4457-a906-6f3acdad6eed_1782634018037.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/b03628f7-a639-4457-a906-6f3acdad6eed_1782634018037.webp",
         "dietary_tags": [
             "VG"
         ]
@@ -56,7 +56,7 @@
         "price": 18,
         "category": "Zeytinyağlı Yemekler",
         "description": "Green Bean, tomato, onion, olive oil",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/f2a5a5bc-e362-49c2-a341-c9856af9281e_1782633906572.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/f2a5a5bc-e362-49c2-a341-c9856af9281e_1782633906572.webp",
         "dietary_tags": [
             "V",
             "VG",
@@ -72,7 +72,7 @@
         "dietary_tags": [
             "VG"
         ],
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/41492cc2-69d3-48ab-97b0-c2676ae01391_1782633896191.webp"
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/41492cc2-69d3-48ab-97b0-c2676ae01391_1782633896191.webp"
     },
     {
         "id": 74,
@@ -83,7 +83,7 @@
         "dietary_tags": [
             "VG"
         ],
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/b414c95d-0d6f-4651-91e5-7b5b613e3a5a_1782633899018.webp"
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/b414c95d-0d6f-4651-91e5-7b5b613e3a5a_1782633899018.webp"
     },
     {
         "id": 76,
@@ -91,7 +91,7 @@
         "price": 20,
         "category": "Mezeler",
         "description": "Chicken, walnut, bread crumbs, garlic",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/bca466b8-dff7-4696-918f-12c8821a5f3a_1782633907598.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/bca466b8-dff7-4696-918f-12c8821a5f3a_1782633907598.webp",
         "dietary_tags": [
             "N"
         ]
@@ -102,7 +102,7 @@
         "price": 17,
         "category": "Salatalar",
         "description": "Potato, onion, corn, parsley, olive oil",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/8a973b02-b755-49f6-a269-d2da8f5147bf_1782633909215.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/8a973b02-b755-49f6-a269-d2da8f5147bf_1782633909215.webp",
         "dietary_tags": [
             "V",
             "VG",
@@ -115,7 +115,7 @@
         "price": 17,
         "category": "Zeytinyağlı Yemekler",
         "description": "",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/70e7268f-9be4-4393-9510-10623db7b8a8_1782633910759.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/70e7268f-9be4-4393-9510-10623db7b8a8_1782633910759.webp",
         "dietary_tags": [
             "V",
             "VG",
@@ -132,7 +132,7 @@
             "N",
             "VG"
         ],
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/30914033-4440-44c0-bb57-53571f893be6_1782633900463.webp"
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/30914033-4440-44c0-bb57-53571f893be6_1782633900463.webp"
     },
     {
         "id": 84,
@@ -140,7 +140,7 @@
         "price": 22,
         "category": "Dolma Sarma",
         "description": "Dried peppers or eggplants stuffed with rice and meat/olive oil",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/af594883-d397-4ebc-8ea7-983b347ee7a1_1782633912383.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/af594883-d397-4ebc-8ea7-983b347ee7a1_1782633912383.webp",
         "variations": [
             "Etli",
             "Zeytinyağlı"
@@ -156,7 +156,7 @@
         "price": 22,
         "category": "Dolma Sarma",
         "description": "Cabbage rolls with rice and meat/olive oil",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/597f9f75-fb47-42c7-81cd-b5ac49edad26_1782633938566.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/597f9f75-fb47-42c7-81cd-b5ac49edad26_1782633938566.webp",
         "variations": [
             "Etli",
             "Zeytinyağlı"
@@ -172,7 +172,7 @@
         "price": 15,
         "category": "Çorbalar",
         "description": "Classic Turkish lentil soup",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/6a93f8c9-a15a-43d7-9325-1e127af7c3fb_1782633916020.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/6a93f8c9-a15a-43d7-9325-1e127af7c3fb_1782633916020.webp",
         "dietary_tags": [
             "V",
             "VG"
@@ -184,7 +184,7 @@
         "price": 15,
         "category": "Pilavlar",
         "description": "",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/8dd2ed38-2f74-4237-a3a2-8d2b9f383247_1782633918396.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/8dd2ed38-2f74-4237-a3a2-8d2b9f383247_1782633918396.webp",
         "variations": [
             "Small",
             "Medium",
@@ -200,7 +200,7 @@
         "price": 24,
         "category": "Köfte Kebap",
         "description": "Eggplant and meat kebab",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/f4f2a3d1-3e49-47b1-81c4-cbe2ba3bdf8d_1782633920076.webp"
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/f4f2a3d1-3e49-47b1-81c4-cbe2ba3bdf8d_1782633920076.webp"
     },
     {
         "id": 139,
@@ -211,7 +211,7 @@
         "dietary_tags": [
             "VG"
         ],
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/139dec51-9c95-438a-b84d-57e8bdbd80f8_1782633922973.webp"
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/139dec51-9c95-438a-b84d-57e8bdbd80f8_1782633922973.webp"
     },
     {
         "id": 143,
@@ -219,7 +219,7 @@
         "price": 21,
         "category": "Etli Yemekler",
         "description": "Lamb, eggplant, and tomatoes stew",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/eb8ce21f-f0cd-435d-82f1-d7ce0d1ce134_1782633924717.webp"
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/eb8ce21f-f0cd-435d-82f1-d7ce0d1ce134_1782633924717.webp"
     },
     {
         "id": 144,
@@ -227,7 +227,7 @@
         "price": 17,
         "category": "Çorbalar",
         "description": "Chicken soup with orzo",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/8d7c8d94-330e-4fb0-92d3-ff606f796a52_1782633928364.webp"
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/8d7c8d94-330e-4fb0-92d3-ff606f796a52_1782633928364.webp"
     },
     {
         "id": 146,
@@ -235,7 +235,7 @@
         "price": 15,
         "category": "Pilavlar",
         "description": "",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/66c63053-77d5-4fc4-a1ee-0e43715eecd8_1782633931509.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/66c63053-77d5-4fc4-a1ee-0e43715eecd8_1782633931509.webp",
         "dietary_tags": [
             "N",
             "V"
@@ -247,7 +247,7 @@
         "price": 17,
         "category": "Zeytinyağlı Yemekler",
         "description": "",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/bc3d81d3-f7e3-4fe7-a5ad-2cff604abe7e_1782633934412.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/bc3d81d3-f7e3-4fe7-a5ad-2cff604abe7e_1782633934412.webp",
         "dietary_tags": [
             "V",
             "VG",
@@ -260,7 +260,7 @@
         "price": 20,
         "category": "Köfte Kebap",
         "description": "Meatballs with rice",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/4cb771f0-4188-4803-8e5a-2fc7c883eb6b_1782633936384.webp"
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/4cb771f0-4188-4803-8e5a-2fc7c883eb6b_1782633936384.webp"
     },
     {
         "id": 162,
@@ -271,7 +271,7 @@
         "dietary_tags": [
             "VG"
         ],
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/e38cb6e0-6b05-49bd-8584-6e90848a5c3e_1782634016275.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/e38cb6e0-6b05-49bd-8584-6e90848a5c3e_1782634016275.webp",
         "variations": [
             "Small",
             "Medium",
@@ -284,7 +284,7 @@
         "price": 19,
         "category": "Mezeler",
         "description": "Bulgur, corn semolina, flour, tomato, garlic sauce",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/345d7167-29dc-4795-a0a0-9c02e6006dfc_1782633940892.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/345d7167-29dc-4795-a0a0-9c02e6006dfc_1782633940892.webp",
         "dietary_tags": [
             "V",
             "VG"
@@ -296,7 +296,7 @@
         "price": 20,
         "category": "Etli Yemekler",
         "description": "Diced lamb with fresh green peas",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/f075cbe2-af1f-4d2b-bc5f-4cd003aa09f3_1782633943294.webp"
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/f075cbe2-af1f-4d2b-bc5f-4cd003aa09f3_1782633943294.webp"
     },
     {
         "id": 211,
@@ -304,7 +304,7 @@
         "price": 17,
         "category": "Salatalar",
         "description": "",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/955f9954-87e7-454d-ba1d-ccb92402b48e_1782633945488.webp"
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/955f9954-87e7-454d-ba1d-ccb92402b48e_1782633945488.webp"
     },
     {
         "id": 212,
@@ -312,7 +312,7 @@
         "price": 22,
         "category": "Etli Yemekler",
         "description": "Diced lamb sautéed with fresh vegetables",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/80bea380-17eb-43c2-91ab-ebd25610f202_1782633945902.webp"
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/80bea380-17eb-43c2-91ab-ebd25610f202_1782633945902.webp"
     },
     {
         "id": 227,
@@ -320,7 +320,7 @@
         "price": 20,
         "category": "Etli Yemekler",
         "description": "Diced lamb with chickpeas",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/a4b9bcf3-db88-4c20-8c6b-683aca0a6269_1782633949609.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/a4b9bcf3-db88-4c20-8c6b-683aca0a6269_1782633949609.webp",
         "variations": [
             "Etli",
             "Zeytinyağlı"
@@ -336,7 +336,7 @@
         "price": 15,
         "category": "Çorbalar",
         "description": "Lentils, bulgur, and spices",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/3aa88c55-ab2b-4382-8fa7-07a6d17fbc69_1782633952630.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/3aa88c55-ab2b-4382-8fa7-07a6d17fbc69_1782633952630.webp",
         "dietary_tags": [
             "VG"
         ]
@@ -347,7 +347,7 @@
         "price": 17,
         "category": "Zeytinyağlı Yemekler",
         "description": "",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/cc2226ea-c025-48d9-8b72-7c03b2d6903d_1782633954263.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/cc2226ea-c025-48d9-8b72-7c03b2d6903d_1782633954263.webp",
         "dietary_tags": [
             "V",
             "VG",
@@ -360,7 +360,7 @@
         "price": 18,
         "category": "Börek Poğaça",
         "description": "Spinach börek",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/0ed6403b-278a-487e-a000-f0a3a20d23ba_1782634038835.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/0ed6403b-278a-487e-a000-f0a3a20d23ba_1782634038835.webp",
         "dietary_tags": [
             "VG"
         ]
@@ -371,7 +371,7 @@
         "price": 17,
         "category": "Zeytinyağlı Yemekler",
         "description": "",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/eb1d49dc-b10f-4906-93d5-e60da18dc905_1782633955253.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/eb1d49dc-b10f-4906-93d5-e60da18dc905_1782633955253.webp",
         "dietary_tags": [
             "V",
             "VG",
@@ -384,7 +384,7 @@
         "price": 18,
         "category": "Zeytinyağlı Yemekler",
         "description": "",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/cdef2177-e925-46d5-9704-da06923aff6d_1782633956698.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/cdef2177-e925-46d5-9704-da06923aff6d_1782633956698.webp",
         "dietary_tags": [
             "V",
             "VG",
@@ -397,7 +397,7 @@
         "price": 21,
         "category": "Köfte Kebap",
         "description": "Meatballs with tomatoes and peppers",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/fa9ad362-58df-4fbf-b529-0a28b1a64694_1782633957434.webp"
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/fa9ad362-58df-4fbf-b529-0a28b1a64694_1782633957434.webp"
     },
     {
         "id": 273,
@@ -405,7 +405,7 @@
         "price": 15,
         "category": "Çorbalar",
         "description": "Fermented flour and yogurt soup",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/da61ec04-70fa-4c48-b615-30a0ff3850ba_1782634018515.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/da61ec04-70fa-4c48-b615-30a0ff3850ba_1782634018515.webp",
         "dietary_tags": [
             "VG"
         ]
@@ -416,7 +416,7 @@
         "price": 40,
         "category": "Börek Poğaça",
         "description": "Meat pide with spiced ground meat",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/926b5d73-78ca-417f-a315-f32edfae02e7_1782633965799.webp"
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/926b5d73-78ca-417f-a315-f32edfae02e7_1782633965799.webp"
     },
     {
         "id": 279,
@@ -424,7 +424,7 @@
         "price": 18,
         "category": "Mezeler",
         "description": "Chickpea, tahini, spices",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/2f5a99e5-2f1e-41b9-8903-ab4e83258a97_1782633960774.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/2f5a99e5-2f1e-41b9-8903-ab4e83258a97_1782633960774.webp",
         "dietary_tags": [
             "V",
             "VG",
@@ -437,7 +437,7 @@
         "price": 17,
         "category": "Zeytinyağlı Yemekler",
         "description": "",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/1cd8fb22-9b2e-4a33-8947-5ccbcc36d9cc_1782633966316.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/1cd8fb22-9b2e-4a33-8947-5ccbcc36d9cc_1782633966316.webp",
         "dietary_tags": [
             "V",
             "VG",
@@ -450,7 +450,7 @@
         "price": 17,
         "category": "Zeytinyağlı Yemekler",
         "description": "Spinach, onion, olive oil",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/d7ecfbfe-1482-4e2b-bdac-16b693d5a739_1782633968583.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/d7ecfbfe-1482-4e2b-bdac-16b693d5a739_1782633968583.webp",
         "dietary_tags": [
             "V",
             "VG",
@@ -463,7 +463,7 @@
         "price": 20,
         "category": "Etli Yemekler",
         "description": "Diced lamb with okra",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/dc0fa69a-0a91-4739-965a-15461e5d5ac7_1782633969179.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/dc0fa69a-0a91-4739-965a-15461e5d5ac7_1782633969179.webp",
         "variations": [
             "Etli",
             "Zeytinyağlı"
@@ -479,7 +479,7 @@
         "price": 22,
         "category": "Etli Yemekler",
         "description": "Baked chicken with potatoes",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/3235df59-857b-459b-bdad-ab79a02299e7_1782633970824.webp"
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/3235df59-857b-459b-bdad-ab79a02299e7_1782633970824.webp"
     },
     {
         "id": 315,
@@ -487,7 +487,7 @@
         "price": 15,
         "category": "Pilavlar",
         "description": "",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/9a6087cc-77f1-4f16-9c39-7bbcea87541e_1782633973332.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/9a6087cc-77f1-4f16-9c39-7bbcea87541e_1782633973332.webp",
         "dietary_tags": [
             "VG"
         ]
@@ -498,7 +498,7 @@
         "price": 17,
         "category": "Mezeler",
         "description": "",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/555a7b43-8d37-4c6c-9d44-813725f9ec75_1782633975358.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/555a7b43-8d37-4c6c-9d44-813725f9ec75_1782633975358.webp",
         "dietary_tags": [
             "VG"
         ]
@@ -509,7 +509,7 @@
         "price": 15,
         "category": "Salatalar",
         "description": "",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/987aa0eb-e1b1-4242-9272-0d05eb8b37fc_1782633976082.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/987aa0eb-e1b1-4242-9272-0d05eb8b37fc_1782633976082.webp",
         "dietary_tags": [
             "VG",
             "GF"
@@ -521,7 +521,7 @@
         "price": 17,
         "category": "Mezeler",
         "description": "",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/a2bc8bd6-f426-4e74-81d8-ee5273404171_1782633962435.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/a2bc8bd6-f426-4e74-81d8-ee5273404171_1782633962435.webp",
         "dietary_tags": [
             "VG"
         ]
@@ -537,7 +537,7 @@
             "VG",
             "GF"
         ],
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/1d6fa4ed-251b-462e-9f71-e0ccf01d6688_1782633962789.webp"
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/1d6fa4ed-251b-462e-9f71-e0ccf01d6688_1782633962789.webp"
     },
     {
         "id": 324,
@@ -545,7 +545,7 @@
         "price": 17,
         "category": "Salatalar",
         "description": "",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/ac309c3a-838b-48e3-a77b-ad4aa9519484_1782633976572.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/ac309c3a-838b-48e3-a77b-ad4aa9519484_1782633976572.webp",
         "dietary_tags": [
             "V",
             "VG",
@@ -558,7 +558,7 @@
         "price": 18,
         "category": "Mezeler",
         "description": "",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/b0b55fa2-d80d-4f44-b3da-2d69258f586a_1782634010700.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/b0b55fa2-d80d-4f44-b3da-2d69258f586a_1782634010700.webp",
         "dietary_tags": [
             "VG"
         ]
@@ -569,7 +569,7 @@
         "price": 17,
         "category": "Salatalar",
         "description": "",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/4fcc30a8-e794-4a08-94e6-71e9fbaa6578_1782633978222.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/4fcc30a8-e794-4a08-94e6-71e9fbaa6578_1782633978222.webp",
         "dietary_tags": [
             "V",
             "N"
@@ -581,7 +581,7 @@
         "price": 18,
         "category": "Mezeler",
         "description": "",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/ff511f7c-6be6-46c1-9a46-6e0689c1ffe9_1782633963687.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/ff511f7c-6be6-46c1-9a46-6e0689c1ffe9_1782633963687.webp",
         "dietary_tags": [
             "VG"
         ]
@@ -592,7 +592,7 @@
         "price": 17,
         "category": "Salatalar",
         "description": "",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/cd1ebbc6-2de5-4f86-8825-8b648d442a5e_1782633980666.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/cd1ebbc6-2de5-4f86-8825-8b648d442a5e_1782633980666.webp",
         "dietary_tags": [
             "V",
             "VG",
@@ -605,7 +605,7 @@
         "price": 18,
         "category": "Mezeler",
         "description": "Borlotti bean, carrot, parsley, olive oil",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/e80f7019-981b-419c-b70e-426f5355bc3a_1782633964621.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/e80f7019-981b-419c-b70e-426f5355bc3a_1782633964621.webp",
         "dietary_tags": [
             "V",
             "VG",
@@ -618,7 +618,7 @@
         "price": 15,
         "category": "Çorbalar",
         "description": "Yogurt, mint, and spices soup",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/be2d98e0-34d2-4693-9a3d-59b5c1e57c55_1782633981754.webp"
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/be2d98e0-34d2-4693-9a3d-59b5c1e57c55_1782633981754.webp"
     },
     {
         "id": 420,
@@ -626,7 +626,7 @@
         "price": 20,
         "category": "Etli Yemekler",
         "description": "Mixed lamb and beef mince with cauliflower",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/439dae2f-0a29-4646-b1b9-e7deca8d874f_1782633983187.webp"
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/439dae2f-0a29-4646-b1b9-e7deca8d874f_1782633983187.webp"
     },
     {
         "id": 425,
@@ -634,7 +634,7 @@
         "price": 20,
         "category": "Etli Yemekler",
         "description": "Diced lamb with white beans",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/aa35bb84-976c-48c6-bb0e-c38517860851_1782633985492.webp"
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/aa35bb84-976c-48c6-bb0e-c38517860851_1782633985492.webp"
     },
     {
         "id": 431,
@@ -642,7 +642,7 @@
         "price": 20,
         "category": "Etli Yemekler",
         "description": "Lamb and beef mince with black-eyed peas",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/e31c0f57-aa59-4ab4-b435-eb30a722f61c_1782633987134.webp"
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/e31c0f57-aa59-4ab4-b435-eb30a722f61c_1782633987134.webp"
     },
     {
         "id": 432,
@@ -650,7 +650,7 @@
         "price": 17,
         "category": "Zeytinyağlı Yemekler",
         "description": "",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/e566103c-0663-4a99-b6b7-bfb4c6d4de4f_1782633988837.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/e566103c-0663-4a99-b6b7-bfb4c6d4de4f_1782633988837.webp",
         "dietary_tags": [
             "VG"
         ]
@@ -661,7 +661,7 @@
         "price": 17,
         "category": "Salatalar",
         "description": "",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/51e59995-ae0a-4733-925a-5d4c46a7c790_1782633992277.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/51e59995-ae0a-4733-925a-5d4c46a7c790_1782633992277.webp",
         "dietary_tags": [
             "V",
             "VG"
@@ -673,7 +673,7 @@
         "price": 18,
         "category": "Pilavlar",
         "description": "",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/20cf49de-7d03-4170-91cf-355d9c474b63_1782633965170.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/20cf49de-7d03-4170-91cf-355d9c474b63_1782633965170.webp",
         "dietary_tags": [
             "VG"
         ]
@@ -684,7 +684,7 @@
         "price": 34,
         "category": "Börek Poğaça",
         "description": "Cheese pastry, 30 pieces per kg",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/e272689a-8011-4fdb-964f-d9447517ac27_1782633993641.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/e272689a-8011-4fdb-964f-d9447517ac27_1782633993641.webp",
         "dietary_tags": [
             "VG"
         ]
@@ -695,7 +695,7 @@
         "price": 34,
         "category": "Börek Poğaça",
         "description": "Bearded cheese pastry, 30 pieces per kg",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/7a0bddd2-4307-451d-8505-e9d3f3c08ee1_1782633996506.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/7a0bddd2-4307-451d-8505-e9d3f3c08ee1_1782633996506.webp",
         "dietary_tags": [
             "VG"
         ]
@@ -706,7 +706,7 @@
         "price": 17,
         "category": "Salatalar",
         "description": "",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/81632193-9aa4-4a0b-b959-c54159dc6b44_1782633998303.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/81632193-9aa4-4a0b-b959-c54159dc6b44_1782633998303.webp",
         "dietary_tags": [
             "V",
             "VG",
@@ -719,7 +719,7 @@
         "price": 15,
         "category": "Pilavlar",
         "description": "",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/c598ac3d-0157-4f9e-aee5-ae28a9ec1407_1782633999584.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/c598ac3d-0157-4f9e-aee5-ae28a9ec1407_1782633999584.webp",
         "dietary_tags": [
             "VG"
         ]
@@ -730,7 +730,7 @@
         "price": 21,
         "category": "Etli Yemekler",
         "description": "Eggplant with mixed lamb and beef mince",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/a5efdb7b-2149-450b-9380-22823e494420_1782634001547.webp"
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/a5efdb7b-2149-450b-9380-22823e494420_1782634001547.webp"
     },
     {
         "id": 620,
@@ -738,7 +738,7 @@
         "price": 20,
         "category": "Etli Yemekler",
         "description": "Lamb and beef mince with potatoes",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/9830804b-00a9-445a-8459-5d1c88e6707a_1782634003312.webp"
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/9830804b-00a9-445a-8459-5d1c88e6707a_1782634003312.webp"
     },
     {
         "id": 626,
@@ -746,7 +746,7 @@
         "price": 18,
         "category": "Mezeler",
         "description": "",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/206c8137-b9a4-4ea5-b13d-86087fe91991_1782634005008.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/206c8137-b9a4-4ea5-b13d-86087fe91991_1782634005008.webp",
         "dietary_tags": [
             "V",
             "VG"
@@ -758,7 +758,7 @@
         "price": 21,
         "category": "Köfte Kebap",
         "description": "Vegetables and meat kebab",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/fef4a678-ac5a-4259-89a2-637be9ca5c69_1782634005563.webp"
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/fef4a678-ac5a-4259-89a2-637be9ca5c69_1782634005563.webp"
     },
     {
         "id": 631,
@@ -766,7 +766,7 @@
         "price": 17,
         "category": "Zeytinyağlı Yemekler",
         "description": "",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/c81e8725-8a75-494d-9ca8-61c7c6aea5da_1782634006120.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/c81e8725-8a75-494d-9ca8-61c7c6aea5da_1782634006120.webp",
         "dietary_tags": [
             "VG"
         ]
@@ -777,7 +777,7 @@
         "price": 21,
         "category": "Köfte Kebap",
         "description": "Meatballs with vegetables",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/fc806372-c0b4-41ef-840d-9f3124c8cf21_1782634007476.webp"
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/fc806372-c0b4-41ef-840d-9f3124c8cf21_1782634007476.webp"
     },
     {
         "id": 635,
@@ -785,7 +785,7 @@
         "price": 24,
         "category": "Köfte Kebap",
         "description": "Sautéed meat at high heat",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/e23a0759-1e9b-4694-b4d0-4b58f6c97e10_1782634009372.webp"
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/e23a0759-1e9b-4694-b4d0-4b58f6c97e10_1782634009372.webp"
     },
     {
         "id": 650,
@@ -793,7 +793,7 @@
         "price": 20,
         "category": "Köfte Kebap",
         "description": "Meatballs with Turkish sour sauce",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/e26ec09c-5237-48c6-85c2-cc3f71048f0b_1782634020257.webp"
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/e26ec09c-5237-48c6-85c2-cc3f71048f0b_1782634020257.webp"
     },
     {
         "id": 747,
@@ -801,7 +801,7 @@
         "price": 15,
         "category": "Çorbalar",
         "description": "Fresh tomato soup",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/090dcced-b035-4f92-b978-50fde721fbe9_1782634022278.webp"
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/090dcced-b035-4f92-b978-50fde721fbe9_1782634022278.webp"
     },
     {
         "id": 751,
@@ -809,7 +809,7 @@
         "price": 22,
         "category": "Etli Yemekler",
         "description": "Chicken sautéed with vegetables",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/322e74ee-3729-4c87-8b55-b12e0f9dd930_1782634011956.webp"
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/322e74ee-3729-4c87-8b55-b12e0f9dd930_1782634011956.webp"
     },
     {
         "id": 752,
@@ -825,7 +825,7 @@
         "price": 20,
         "category": "Börek Poğaça",
         "description": "Puff pastry börek (20 pieces)",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/4deee548-e4bc-4fb6-b0e2-e577e00b2c04_1782634023551.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/4deee548-e4bc-4fb6-b0e2-e577e00b2c04_1782634023551.webp",
         "variations": [
             "Kıymalı",
             "Peynirli",
@@ -843,7 +843,7 @@
         "price": 15,
         "category": "Pilavlar",
         "description": "",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/c72734f4-c580-4a46-998f-2f18c5e2ccf2_1782634025775.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/c72734f4-c580-4a46-998f-2f18c5e2ccf2_1782634025775.webp",
         "dietary_tags": [
             "VG"
         ]
@@ -854,7 +854,7 @@
         "price": 21,
         "category": "Etli Yemekler",
         "description": "Stuffed eggplant with mince",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/88d27d03-b0c3-4950-a39d-b038ee813d4b_1782634027226.webp"
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/88d27d03-b0c3-4950-a39d-b038ee813d4b_1782634027226.webp"
     },
     {
         "id": 756,
@@ -862,7 +862,7 @@
         "price": 18,
         "category": "Mezeler",
         "description": "",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/423f5452-16b2-4a9a-a1bf-89c7bb2d121a_1782634027861.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/423f5452-16b2-4a9a-a1bf-89c7bb2d121a_1782634027861.webp",
         "dietary_tags": [
             "VG"
         ]
@@ -873,7 +873,7 @@
         "price": 18,
         "category": "Mezeler",
         "description": "",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/323a1950-9d34-4069-b008-e319ac60d246_1782634028381.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/323a1950-9d34-4069-b008-e319ac60d246_1782634028381.webp",
         "dietary_tags": [
             "VG"
         ]
@@ -884,7 +884,7 @@
         "price": 15,
         "category": "Salatalar",
         "description": "",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/21c4603b-b713-47cb-bb0b-74a3d1034a04_1782634028955.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/21c4603b-b713-47cb-bb0b-74a3d1034a04_1782634028955.webp",
         "dietary_tags": [
             "VG"
         ]
@@ -895,7 +895,7 @@
         "price": 15,
         "category": "Salatalar",
         "description": "",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/118fc80a-ae4d-4f59-9f17-3510630c3373_1782634030730.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/118fc80a-ae4d-4f59-9f17-3510630c3373_1782634030730.webp",
         "dietary_tags": [
             "VG"
         ]
@@ -906,7 +906,7 @@
         "price": 20,
         "category": "Etli Yemekler",
         "description": "Chicken and chickpea rice",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/1e63e5d7-a27d-4ea1-993d-b98fc4affe37_1782634013966.webp"
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/1e63e5d7-a27d-4ea1-993d-b98fc4affe37_1782634013966.webp"
     },
     {
         "id": 764,
@@ -914,7 +914,7 @@
         "price": 21,
         "category": "Köfte Kebap",
         "description": "Meatballs with special sauce",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/563859fa-3132-4f96-80a0-a603dbaaf8e2_1782634031171.webp"
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/563859fa-3132-4f96-80a0-a603dbaaf8e2_1782634031171.webp"
     },
     {
         "id": 767,
@@ -922,7 +922,7 @@
         "price": 22,
         "category": "Köfte Kebap",
         "description": "Traditional meatballs",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/c8cc7944-1b27-4075-958a-d66b006c8892_1782634033034.webp"
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/c8cc7944-1b27-4075-958a-d66b006c8892_1782634033034.webp"
     },
     {
         "id": 841,
@@ -930,7 +930,7 @@
         "price": 22,
         "category": "Dolma Sarma",
         "description": "Oven baked stuffed peppers",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/d25657cf-1c58-4fb7-a48a-3c229c0aabeb_1782634033629.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/d25657cf-1c58-4fb7-a48a-3c229c0aabeb_1782634033629.webp",
         "variations": [
             "Etli",
             "Zeytinyağlı"
@@ -946,7 +946,7 @@
         "price": 15,
         "category": "Çorbalar",
         "description": "Cold yogurt soup with mint",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/41b527d4-115a-453d-834c-88612065874f_1782634033966.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/41b527d4-115a-453d-834c-88612065874f_1782634033966.webp",
         "dietary_tags": [
             "VG",
             "GF"
@@ -958,7 +958,7 @@
         "price": 21,
         "category": "Köfte Kebap",
         "description": "Eggplant wrap with meatballs",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/7b74b7b7-65b9-4cd5-8c9a-6e096b9866e0_1782634034354.webp"
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/7b74b7b7-65b9-4cd5-8c9a-6e096b9866e0_1782634034354.webp"
     },
     {
         "id": 848,
@@ -966,7 +966,7 @@
         "price": 24,
         "category": "Köfte Kebap",
         "description": "",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/e18e7271-97a7-4b7e-ac44-99e46cf1a0af_1782634035384.webp"
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/e18e7271-97a7-4b7e-ac44-99e46cf1a0af_1782634035384.webp"
     },
     {
         "id": 849,
@@ -974,7 +974,7 @@
         "price": 18,
         "category": "Mezeler",
         "description": "Squash and vegetables cooked with olive oil",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/21c034bb-4360-4dbb-a3a6-535f3a0e9b54_1782634035846.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/21c034bb-4360-4dbb-a3a6-535f3a0e9b54_1782634035846.webp",
         "variations": [
             "Acılı",
             "Acısız"
@@ -989,7 +989,7 @@
         "price": 18,
         "category": "Salatalar",
         "description": "",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/62423da8-6c60-4d08-a2ff-13efac4db6a7_1782634036339.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/62423da8-6c60-4d08-a2ff-13efac4db6a7_1782634036339.webp",
         "dietary_tags": [
             "V"
         ]
@@ -1000,7 +1000,7 @@
         "price": 17,
         "category": "Zeytinyağlı Yemekler",
         "description": "",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/3cb92734-5593-47bc-baf2-64826988a957_1782634036799.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/3cb92734-5593-47bc-baf2-64826988a957_1782634036799.webp",
         "dietary_tags": [
             "V",
             "VG",
@@ -1013,7 +1013,7 @@
         "price": 18,
         "category": "Mezeler",
         "description": "",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/2f63a6c3-6ba4-410f-a271-4424beebf12e_1782634037304.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/2f63a6c3-6ba4-410f-a271-4424beebf12e_1782634037304.webp",
         "dietary_tags": [
             "V"
         ]
@@ -1024,7 +1024,7 @@
         "price": 18,
         "category": "Mezeler",
         "description": "",
-        "image": "https://hvcpjupsxuwfxnyfuyzw.supabase.co/storage/v1/object/public/product-images/66d8fbc6-b207-461f-a365-ec60261fd427_1782634037803.webp",
+        "image": "https://pjtpnwxajocgdseqjfvn.supabase.co/storage/v1/object/public/product-images/66d8fbc6-b207-461f-a365-ec60261fd427_1782634037803.webp",
         "dietary_tags": [
             "VG"
         ]
