@@ -76,3 +76,4 @@ Veriler tarayıcının LocalStorage'ında saklanır:
 3. **Siparişi Kaydet**: Müşteri seç ve kaydet
 4. **Günlük Özet**: Eşin mutfakta ne hazırlayacağını görsün
 5. **WhatsApp Gönder**: Sipariş detayını müşteriye gönder
+# mezzesalade
