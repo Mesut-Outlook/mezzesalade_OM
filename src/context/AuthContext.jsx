@@ -16,9 +16,14 @@ export function AuthProvider({ children }) {
     }, []);
 
     const login = (username, password) => {
-        // Simple admin check based on the credentials you provided
-        if (username === 'admin' && password === 'admin123!') {
-            const userData = { username: 'admin', role: 'admin' };
+        const adminUser = import.meta.env.VITE_ADMIN_USERNAME || 'admin';
+        const adminPass = import.meta.env.VITE_ADMIN_PASSWORD;
+        if (!adminPass) {
+            console.error('VITE_ADMIN_PASSWORD is not configured');
+            return false;
+        }
+        if (username === adminUser && password === adminPass) {
+            const userData = { username: adminUser, role: 'admin' };
             setUser(userData);
             localStorage.setItem('admin_user', JSON.stringify(userData));
             return true;

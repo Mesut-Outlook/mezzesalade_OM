@@ -19,8 +19,9 @@ There is no test suite, linter, or typecheck configured. `find_customers.js` and
 
 ## Environment
 
-The app requires these env vars (Vite exposes `VITE_`-prefixed vars to the client; `.env*` is gitignored):
+The app requires these env vars (Vite exposes `VITE_`-prefixed vars to the client; `.env*` is gitignored). See `.env.example` for a template:
 - `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` — Supabase project (used by `src/lib/supabase.js`)
+- `VITE_ADMIN_USERNAME`, `VITE_ADMIN_PASSWORD` — admin panel login credentials (client-side check)
 - `RESEND_API_KEY` — server-side only, used by the Vercel serverless function `api/send-email.js`
 
 Deployed on Vercel. `vercel.json` rewrites `/api/*` to serverless functions and everything else to `index.html` (SPA fallback for client-side routing).
@@ -40,7 +41,7 @@ Routing logic in `App.jsx` splits the app into public and admin surfaces:
 - **Public routes** (no auth): `/` (CustomerLanding), `/toplu-siparis` (JoinOrderSelection), `/ozel-siparis` (CustomerOrderView). These let customers place orders. They fetch only anonymized/public data via `fetchPublicOrders` and write directly with the raw `*Db` functions.
 - **Admin routes** (`/admin/*`): gated by `isAuthenticated`. Unauthenticated access renders `LoginPage`. The full management UI (dashboard, calendar, revenue, order/product/customer management, AI parser, daily summary) lives here.
 
-Auth (`src/context/AuthContext.jsx`) is intentionally trivial — a hardcoded `admin`/`admin123!` check stored in LocalStorage. There is no real server-side authorization; treat the admin gate as cosmetic, and remember the Supabase anon key plus RLS (configured in Supabase, not in this repo) is what actually protects data.
+Auth (`src/context/AuthContext.jsx`) reads credentials from `VITE_ADMIN_USERNAME` / `VITE_ADMIN_PASSWORD` env vars and stores the session in LocalStorage. There is no real server-side authorization; treat the admin gate as cosmetic, and remember the Supabase anon key plus RLS (configured in Supabase, not in this repo) is what actually protects data.
 
 ### Product matching (AI parser) — `src/hooks/useProductMatcher.js`
 The "AI" order parser is **not** an LLM — it's Fuse.js fuzzy matching plus regex heuristics. `parseOrderText(text, productList)` parses pasted WhatsApp messages line-by-line: it strips metadata lines (phone/date/address detected by regex), extracts quantity+name from several patterns, normalizes Turkish characters (`ı→i`, `ş→s`, etc.) for matching, and returns matched products with confidence scores and alternatives. When editing matching behavior, the key tunables are the Fuse `threshold` and the `normalizeTurkish` map. Note this module imports a static `src/data/products.json` fallback, but live matching should use the Supabase `products` passed in as `productList`.
